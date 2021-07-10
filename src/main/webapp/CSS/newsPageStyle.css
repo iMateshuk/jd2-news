@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+body {
+	background-color: rgb(185, 179, 175)
+}
+
+#wrapper {
+	text-align: center;
+}
+
+h1 {
+	color: #408080;
+}
+
+em {
+	color: red;
+}
+
+#user_action {
+	color: #0080c0;
+}
+
+#answer {
+	color: #008080;
+	font-style : bold;
+}
