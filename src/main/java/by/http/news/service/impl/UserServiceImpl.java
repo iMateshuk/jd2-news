@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService {
 
 	private static final UserDAO userDAO = provider.getUserDAO();
 
-	private static final String EXP_LOGIN = "[^.*\\w+.*]";
-	private static final String EXP_EMAIL = "^\\w{3}\\w*@\\w{3}\\w*\\.\\w{2}\\w*$";
+	private static final String EXP_SYMBOLS = ".*\\W+.*";
+	private static final String EXP_EMAIL = "\\w{3}\\w*@\\w{3}\\w*\\.\\w{2}\\w*";
 
 	@Override
 	public void registration(UserData userData) throws ServiceException {
@@ -56,10 +56,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(UserData userData) throws ServiceException {
-
+		
 		try {
+
+			String key = UserDataField.LOGIN.toString();
+			String value = userData.getLogin();
 			
-			CheckField.checkKVLMin(UserDataField.LOGIN.toString(), userData.getLogin(), 3);
+			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 
 			userDAO.delete(userData);
 
@@ -74,7 +78,7 @@ public class UserServiceImpl implements UserService {
 	public void password(UserData userData) throws ServiceException {
 
 		try {
-			
+
 			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 8);
 
 			userDAO.password(userData);
@@ -88,11 +92,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User authorization(UserData userData) throws ServiceException {
-
+		
 		try {
 			
-			CheckField.checkKVLMin(UserDataField.LOGIN.toString(), userData.getLogin(), 3);
-			CheckField.checkKVE(UserDataField.LOGIN.toString(), userData.getLogin(), EXP_LOGIN);
+			String key = UserDataField.LOGIN.toString();
+			String value = userData.getLogin();
+
+			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			
 			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 3);
 
 			return userDAO.authorization(userData);
@@ -105,22 +113,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void checkField(UserData userData) throws ServiceException {
-
+		
 		try {
-
-			CheckField.checkKVLMin(UserDataField.AGE.toString(), userData.getAge(), 1);
 			
-			CheckField.checkKVLMax(UserDataField.AGE.toString(), userData.getAge(), 3);
+			String key = UserDataField.LOGIN.toString();
+			String value = userData.getLogin();
 
-			CheckField.checkKI(UserDataField.AGE.toString(), userData.getAge());
+			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			
+			key = UserDataField.AGE.toString();
+			value = userData.getAge();
+			
+			CheckField.checkKVLMin(key, value, 1);
+			CheckField.checkKVLMax(key, value, 3);
+			CheckField.checkKI(key, value);
 
 			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 3);
 
-			CheckField.checkKVLMin(UserDataField.LOGIN.toString(), userData.getLogin(), 3);
+			
+			if (!CheckField.checkKVN(userData.getEmail())) {
 
-			CheckField.checkKVE(UserDataField.LOGIN.toString(), userData.getLogin(), EXP_LOGIN);
+				CheckField.checkKVE(UserDataField.EMAIL.toString(), userData.getEmail(), EXP_EMAIL);
+			}
+			
+			if (!CheckField.checkKVN(userData.getName())) {
 
-			CheckField.checkKVE(UserDataField.EMAIL.toString(), userData.getEmail(), EXP_EMAIL);
+				CheckField.checkKVE(UserDataField.NAME.toString(), userData.getName(), EXP_SYMBOLS);
+			}
 
 		} catch (UtilException e) {
 

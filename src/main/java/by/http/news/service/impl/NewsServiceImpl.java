@@ -24,7 +24,6 @@ public class NewsServiceImpl implements NewsService {
 	private static final NewsDAO newsDAO = provider.getNewsDAO();
 
 	private static final String EXP_BODY = ".*fuck you.*";
-
 	private static final String EXP_STAR = "\\*";
 
 	@Override
@@ -39,6 +38,7 @@ public class NewsServiceImpl implements NewsService {
 			newsDAO.add(news);
 
 		} catch (DAOException | UtilException e) {
+			
 			throw new ServiceException(e.getMessage(), e);
 		}
 
@@ -101,7 +101,7 @@ public class NewsServiceImpl implements NewsService {
 			String key = NewsField.TITLE.toString();
 			String value = news.getTitle();
 
-			if (!value.isEmpty()) {
+			if (!CheckField.checkKVN(value)) {
 
 				CheckField.checkKVLMin(key, value, 2);
 
@@ -112,7 +112,7 @@ public class NewsServiceImpl implements NewsService {
 			
 			value = news.getStyle();
 			
-			if (!(value == null || value.isEmpty())) {
+			if (!CheckField.checkKVN(value)) {
 				
 				CheckField.checkVA(value, user.getAge());
 			}

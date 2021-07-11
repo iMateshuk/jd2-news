@@ -6,17 +6,22 @@ public class CheckField {
 	
 	public static void checkKVN(String key, String value) throws UtilException {
 
-		if (value == null || value.isEmpty() || value.isBlank()) {
+		if (checkKVN(value)) {
 
 			throw new UtilException(key + " is empty");
 		}
+	}
+	
+	public static boolean checkKVN(String value) {
+
+		return  (value == null || value.isEmpty() || value.isBlank());
 	}
 	
 	public static void checkKVE(String key, String value, String expression) throws UtilException {
 
 		if (value.matches(expression)) {
 
-			throw new UtilException(key + " find illegal value in: " + value);
+			throw new UtilException(key + ": find illegal value in: " + value);
 		}
 
 	}
