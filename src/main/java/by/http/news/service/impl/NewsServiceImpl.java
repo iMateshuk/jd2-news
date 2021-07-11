@@ -24,7 +24,7 @@ public class NewsServiceImpl implements NewsService {
 	private static final NewsDAO newsDAO = provider.getNewsDAO();
 
 	private static final String EXP_BODY = ".*fuck you.*";
-	private static final String EXP_STAR = "\\*";
+	private static final String EXP_STAR = ".*\\*+.*";
 
 	@Override
 	public void add(News news) throws ServiceException {

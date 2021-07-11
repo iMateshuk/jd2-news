@@ -26,6 +26,16 @@ public class CheckField {
 
 	}
 	
+	public static void checkKVEnot(String key, String value, String expression) throws UtilException {
+
+		if (!value.matches(expression)) {
+
+			throw new UtilException(key + ": find illegal value in: " + value);
+		}
+
+	}
+	
+	
 	public static void checkKI(String key, String age) throws UtilException {
 
 		try {

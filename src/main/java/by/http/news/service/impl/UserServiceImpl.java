@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	private static final UserDAO userDAO = provider.getUserDAO();
 
 	private static final String EXP_SYMBOLS = ".*\\W+.*";
-	private static final String EXP_EMAIL = "\\w{3}\\w*@\\w{3}\\w*\\.\\w{2}\\w*";
+	private static final String EXP_EMAIL = "[\\w_+-\\.]+@[\\w-\\.]+\\.[a-zA-Z]{2,4}";
 
 	@Override
 	public void registration(UserData userData) throws ServiceException {
@@ -119,27 +119,36 @@ public class UserServiceImpl implements UserService {
 			String key = UserDataField.LOGIN.toString();
 			String value = userData.getLogin();
 
+			CheckField.checkKVN(key, value);
 			CheckField.checkKVLMin(key, value, 3);
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 			
 			key = UserDataField.AGE.toString();
 			value = userData.getAge();
 			
+			CheckField.checkKVN(key, value);
 			CheckField.checkKVLMin(key, value, 1);
 			CheckField.checkKVLMax(key, value, 3);
 			CheckField.checkKI(key, value);
-
-			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 3);
-
 			
-			if (!CheckField.checkKVN(userData.getEmail())) {
+			key = UserDataField.PASSWORD.toString();
+			value = userData.getPassword();
 
-				CheckField.checkKVE(UserDataField.EMAIL.toString(), userData.getEmail(), EXP_EMAIL);
+			CheckField.checkKVN(key, value);
+			CheckField.checkKVLMin(key, value, 3);
+
+			value = userData.getEmail();
+			
+			if (!CheckField.checkKVN(value)) {
+
+				CheckField.checkKVEnot(UserDataField.EMAIL.toString(), value, EXP_EMAIL);
 			}
 			
-			if (!CheckField.checkKVN(userData.getName())) {
+			value = userData.getName();
+			
+			if (!CheckField.checkKVN(value)) {
 
-				CheckField.checkKVE(UserDataField.NAME.toString(), userData.getName(), EXP_SYMBOLS);
+				CheckField.checkKVE(UserDataField.NAME.toString(), value, EXP_SYMBOLS);
 			}
 
 		} catch (UtilException e) {
