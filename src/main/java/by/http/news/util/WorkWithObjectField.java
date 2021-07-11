@@ -9,6 +9,7 @@ public class WorkWithObjectField {
 	private static final String START_SET = "set";
 	private static final String START_GET = "get";
 	private static final String VALUE_EMPTY = "";
+	private static final String REGEX_RETURN_TYPE = ".*\\.String$";
 
 	public static void value(Object object) throws UtilException {
 
@@ -45,7 +46,8 @@ public class WorkWithObjectField {
 
 			methodName = method.getName();
 			
-			if (methodName.startsWith(START_GET) && methodName.equalsIgnoreCase(nameMatch)) {
+			if (methodName.startsWith(START_GET) && methodName.equalsIgnoreCase(nameMatch)
+					&& method.getReturnType().toString().matches(REGEX_RETURN_TYPE)) {
 				
 				try {
 
