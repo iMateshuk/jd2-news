@@ -39,9 +39,9 @@ public class GoToMainPage implements Command {
 
 			request.setAttribute("message", e.getMessage());
 		}
-
+		
 		request.setAttribute("newses", newses);
-
+		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 
