@@ -40,6 +40,8 @@ public class GoToMainPage implements Command {
 			request.setAttribute("message", e.getMessage());
 		}
 		
+		request.getSession(true).setAttribute("local", request.getParameter("local"));
+		
 		request.setAttribute("newses", newses);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
