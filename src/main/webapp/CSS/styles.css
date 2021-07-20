@@ -27,6 +27,10 @@ h2 {
 	text-align: center;
 }
 
+.ru, .en{
+	float:right;margin:0 5px;
+}
+
 .headerLeft {
 	float: left;
 }

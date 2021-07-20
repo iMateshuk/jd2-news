@@ -14,43 +14,51 @@
 <title>Insert title here</title>
 <link href="CSS/styles.css" rel="stylesheet" type="text/css">
 
-<%-- <fmt:setLocale value="${sessionScope.local}" />
+<fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
 <fmt:message bundle="${loc}" key="local.message" var="message" />
-<fmt:message bundle="${loc}" key="local.locbutton.name.ru"
-	var="ru_button" />
-<fmt:message bundle="${loc}" key="local.locbutton.name.en"
-	var="en_button" /> --%>
+<fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.enter" var="enter_button" />
+<fmt:message bundle="${loc}" key="local.loctext.name.news" var="news_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.title" var="title_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.info" var="info_text" />
 
 </head>
 <body>
 
-<%-- 	<form action="Controller" method="post">
-		<input type="hidden" name="local" value="ru" />
-		<button type="submit" name="command" value="main" />${ru_button}</button><br />
-	</form>
+	<div class="locale">
 
-	<form action="Controller" method="post">
-		<input type="hidden" name="local" value="en" />
-		<button type="submit" name="command" value="main" />${en_button}</button><br />
-	</form>
+		<div class="en">
 
-	<c:out value="${message}" /> --%>
-	
-	
-	
-	
+			<form action="Controller" method="post">
+				<input type="hidden" name="local" value="ru" />
+				<button type="submit" name="command" value="main" />${ru_button}</button>
+			</form>
+		</div>
+
+		<div class="ru">
+
+			<form action="Controller" method="post">
+				<input type="hidden" name="local" value="en" />
+				<button type="submit" name="command" value="main" />${en_button}</button>
+			</form>
+		</div>
+
+	</div>
+
+	<br /><br />
 
 	<div class="header">
 
 		<div class="headerLeft">
 
-			<h1>NEWS</h1>
+			<h1>${news_text}</h1>
 
 		</div>
 
 		<div class="headerRight">
-		
+
 		<form action="Controller" method="post">
 		
 			<c:if test="${user != null}">
@@ -61,7 +69,7 @@
 			
 			<%-- <c:if test="${user == null || user.getRole() == 'admin'}"> --%>
 	
-				<button class="user" type="submit" name="command" value="user_tools">User tools</button>
+				<button class="user" type="submit" name="command" value="user_tools">${enter_button}</button>
 	
 			<%-- </c:if> --%>
 			
@@ -81,7 +89,7 @@
 	
 		<c:if test="${newses == null}">
 	
-			<p class="info"> Soon there will be <strong>NEWS</strong> !!! </p>
+			<p class="info"> ${info_text} <strong>${news_text}</strong> !!! </p>
 	
 		</c:if>
 	
@@ -89,7 +97,7 @@
 		
 			<c:forEach var="news" items="${newses}">
 		
-				<i>Title:</i> <strong> <c:out value="${news.getTitle()}" /> </strong>
+				<i>${title_text}:</i> <strong> <c:out value="${news.getTitle()}" /> </strong>
 				<button type="button" class="collapsible"> <c:out value="${news.getBrief()}" /> ... </button>
 				<div class="content"> <p> <c:out value="${news.getBody()}" /> </p> </div>
 			
