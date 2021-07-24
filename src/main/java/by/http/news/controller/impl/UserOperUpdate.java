@@ -40,6 +40,13 @@ public class UserOperUpdate implements Command {
 			User user = (User) request.getSession().getAttribute("user");
 
 			UserData userData = CREATOR.create(request);
+			
+			System.out.println(userData.getRole() + " UPDATE");
+
+			if (!userData.getRole().equals(user.getRole()) && !user.getRole().equals("admin")) {
+
+				userData.setRole(user.getRole());
+			}
 
 			View.print(userData);
 

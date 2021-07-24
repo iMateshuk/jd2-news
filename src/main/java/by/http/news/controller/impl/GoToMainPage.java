@@ -33,6 +33,8 @@ public class GoToMainPage implements Command {
 			
 			View.print(newses);
 			
+			request.setAttribute("newses", newses);
+			
 		} catch (ServiceException e) {
 			// TODO: handle exception
 			LogWriter.writeLog(e);
@@ -41,8 +43,6 @@ public class GoToMainPage implements Command {
 		}
 		
 		request.getSession(true).setAttribute("local", request.getParameter("local"));
-		
-		request.setAttribute("newses", newses);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);

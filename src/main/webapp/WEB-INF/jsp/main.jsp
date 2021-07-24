@@ -19,7 +19,9 @@
 <fmt:message bundle="${loc}" key="local.message" var="message" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
-<fmt:message bundle="${loc}" key="local.locbutton.name.enter" var="enter_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.logged_out" var="logged_out" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_tools" />
 <fmt:message bundle="${loc}" key="local.loctext.name.news" var="news_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.title" var="title_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.info" var="info_text" />
@@ -63,19 +65,19 @@
 		
 			<c:if test="${user != null}">
 		
-				<button class="user" type="submit" name="command" value="loggedout">Logged out</button>
+				<button class="user" type="submit" name="command" value="loggedout">${logged_out}</button>
 		
 			</c:if>
 			
 			<%-- <c:if test="${user == null || user.getRole() == 'admin'}"> --%>
 	
-				<button class="user" type="submit" name="command" value="user_tools">${enter_button}</button>
+				<button class="user" type="submit" name="command" value="user_tools">${user_tools}</button>
 	
 			<%-- </c:if> --%>
 			
 			<c:if test="${user != null }"> <!-- && user.getRole() != 'user' -->
 	
-				<button class="news" type="submit" name="command" value="news_tools">News tools</button>
+				<button class="news" type="submit" name="command" value="news_tools">${news_tools}</button>
 	
 			</c:if>
 		

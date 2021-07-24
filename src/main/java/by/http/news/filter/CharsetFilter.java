@@ -22,13 +22,13 @@ public class CharsetFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse responce, FilterChain chain)
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		request.setCharacterEncoding(encoding);
-		responce.setCharacterEncoding(encoding);
+		response.setCharacterEncoding(encoding);
 
-		chain.doFilter(request, responce);
+		chain.doFilter(request, response);
 
 	}
 

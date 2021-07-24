@@ -3,6 +3,8 @@ package by.http.news.filter;
 import java.io.IOException;
 import java.util.Enumeration;
 
+/*import jakarta.servlet.DispatcherType;*/
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -10,11 +12,11 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
+/*import jakarta.servlet.annotation.WebFilter;*/
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
-@WebFilter("/RequestLogging")
+/*@WebFilter(dispatcherTypes = {DispatcherType.REQUEST }, servletNames = { "Controller" }, urlPatterns = {"/Controller"})*/
 public class RequestLogging implements Filter{
 	
 	private ServletContext context;

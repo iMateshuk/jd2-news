@@ -37,7 +37,7 @@ public class UserAuthorization implements Command {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
-
+			
 			response.sendRedirect(
 					"Controller?command=" + commandAutho + "&message=User session time out.&action=" + commandAutho);
 			return;
@@ -46,7 +46,7 @@ public class UserAuthorization implements Command {
 		User user = (User) request.getSession().getAttribute("user");
 
 		if (user != null) {
-
+			
 			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + user.getLogin() + " "
 					+ " already logged in!&action=" + commandAutho);
 			return;

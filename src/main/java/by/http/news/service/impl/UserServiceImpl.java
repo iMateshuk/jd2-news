@@ -39,15 +39,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void update(UserData userData) throws ServiceException {
 
-		userData.setPassword("noNeedToUpdate");
-
-		checkField(userData);
-
 		try {
-
+			
+			String key = UserDataField.NAME.toString();
+			String value = userData.getName();
+			
+			CheckField.checkKVN(key, value);
+			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			CheckField.checkKVLMin(key, value, 3);
+			
+			key = UserDataField.EMAIL.toString();
+			value = userData.getEmail();
+			
+			CheckField.checkKVN(key, value);
+			CheckField.checkKVEnot(key, value, EXP_EMAIL);
+			
 			userDAO.update(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e.getMessage(), e);
 		}
