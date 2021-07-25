@@ -1,5 +1,7 @@
 package by.http.news.util.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import by.http.news.bean.News;
@@ -12,7 +14,7 @@ import by.http.news.util.NewsField;
 import by.http.news.util.UtilException;
 import by.http.news.util.WorkWithObjectField;
 
-public class NewsCreator implements Creator<News, String> {
+public class NewsCreator implements Creator<News, ResultSet> {
 
 	private Map<CombineEnum, String> fieldsData;
 
@@ -25,13 +27,25 @@ public class NewsCreator implements Creator<News, String> {
 	}
 
 	@Override
-	public News create(String object) throws UtilException {
+	public News create(ResultSet object) throws UtilException {
 
-		// fieldsDataGetMap(); // commit if next is return create();
+		fieldsDataGetMap();
 
-		return create();
+		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+
+			try {
+				
+				fieldsData.replace(fields.getKey(), object.getString(fields.getKey().toString().toLowerCase()));
+			} catch (SQLException e) {
+
+				throw new UtilException(e.getMessage(), e);
+			}
+		}
+
+		return createNews();
+
 	}
-	
+
 	private void fieldsDataGetMap() {
 
 		fieldsData = FieldMapCreator.create(NewsField.class.getEnumConstants());
@@ -40,7 +54,7 @@ public class NewsCreator implements Creator<News, String> {
 	private News generate() throws UtilException {
 
 		fieldsData.forEach((k, v) -> fieldsData.replace(k, Generator.genString((int) (Math.random() * 10 + 1))));
-		
+
 		return createNews();
 
 	}

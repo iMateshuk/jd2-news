@@ -12,6 +12,8 @@ import by.http.news.dao.DAOException;
 import by.http.news.dao.UserDAO;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
+import by.http.news.util.Generator;
+import by.http.news.util.UserSQL;
 import by.http.news.util.UtilException;
 
 public class UserDB implements UserDAO {
@@ -23,20 +25,8 @@ public class UserDB implements UserDAO {
 	private final static String SERVER = "jdbc:mysql://127.0.0.1/myusers?useSSL=false";
 	private final static String USER = "localUser";
 	private final static String PASSWORD = "localPassw0rd";
-
-	private final static String WHERE_LOGIN = "WHERE login=?";
-
-	private final static String SQL_REGISTRATION = "INSERT INTO users(name,login,password,email,role,age) VALUES(?,?,?,?,?,?)";
-	private final static String SQL_USER_UPDATE = "UPDATE users SET name=?, email=?, role=? " + WHERE_LOGIN;
-	private final static String SQL_PASSWORD_UPDATE = "UPDATE users SET password=? " + WHERE_LOGIN;
-	private final static String SQL_SELECT = "SELECT * FROM users WHERE login='";
-	private final static String SQL_DELETE = "DELETE FROM users " + WHERE_LOGIN;
-
+	
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
-
-	private final static String COLLUM_LABEL_PASSWORD = "password";
-	private final static String COLLUM_LABEL_AGE = "age";
-	private final static String COLLUM_LABEL_ROLE = "role";
 
 	{
 
@@ -56,11 +46,11 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
 
-			PreparedStatement ps = con.prepareStatement(SQL_REGISTRATION);
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_INSERT_USER.getSQL());
 
 			ps.setString(1, userData.getName());
 			ps.setString(2, userData.getLogin());
-			ps.setString(3, userData.getPassword());
+			ps.setString(3, Generator.genStringHash(userData.getPassword()));
 			ps.setString(4, userData.getEmail());
 			ps.setString(5, userData.getRole());
 			ps.setString(6, userData.getAge());
@@ -79,13 +69,13 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
 
-			PreparedStatement ps = con.prepareStatement(SQL_USER_UPDATE);
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_USER.getSQL());
 
 			ps.setString(1, userData.getName());
 			ps.setString(2, userData.getEmail());
 			ps.setString(3, userData.getRole());
 			ps.setString(4, userData.getLogin());
-			
+
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -99,9 +89,9 @@ public class UserDB implements UserDAO {
 	public void delete(UserData userData) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
-			
-			PreparedStatement ps = con.prepareStatement(SQL_DELETE);
-			
+
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
+
 			ps.setString(1, userData.getLogin());
 
 			ps.executeUpdate();
@@ -117,13 +107,18 @@ public class UserDB implements UserDAO {
 	public User authorization(UserData userData) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+			
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
+			
+			ps.setString(1, userData.getLogin());
 
-			ResultSet rs = con.createStatement().executeQuery(SQL_SELECT + userData.getLogin() + "'");
+			ResultSet rs = ps.executeQuery();
 
-			if (rs.next() && rs.getString(COLLUM_LABEL_PASSWORD).equals(userData.getPassword())) {
+			if (rs.next()
+					&& rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL()).equals(Generator.genStringHash(userData.getPassword()))) {
 
-				userData.setAge(rs.getString(COLLUM_LABEL_AGE));
-				userData.setRole(rs.getString(COLLUM_LABEL_ROLE));
+				userData.setAge(rs.getString(UserSQL.SQL_COLLUM_LABEL_AGE.getSQL()));
+				userData.setRole(rs.getString(UserSQL.SQL_COLLUM_LABEL_ROLE.getSQL()));
 
 				return CREATOR.create(userData);
 			}
@@ -141,11 +136,11 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
 
-			PreparedStatement ps = con.prepareStatement(SQL_PASSWORD_UPDATE);
-			
-			ps.setString(1, userData.getPassword());
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD.getSQL());
+
+			ps.setString(1, Generator.genStringHash(userData.getPassword()));
 			ps.setString(2, userData.getLogin());
-			
+
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

@@ -1,5 +1,7 @@
 package by.http.news.util;
 
+import java.sql.ResultSet;
+
 import by.http.news.bean.News;
 import by.http.news.bean.User;
 import by.http.news.bean.UserData;
@@ -17,7 +19,7 @@ public class CreatorProvider {
 
 	private final Creator<UserData, HttpServletRequest> userDataCreator = new UserDataCreator();
 
-	private final Creator<News, String> newsCreator = new NewsCreator();
+	private final Creator<News, ResultSet> newsCreator = new NewsCreator();
 
 	private final Creator<News, HttpServletRequest> newsDataCreator = new NewsDataCreator();
 
@@ -40,7 +42,7 @@ public class CreatorProvider {
 		return userDataCreator;
 	}
 
-	public Creator<News, String> getNewsCreator() {
+	public Creator<News, ResultSet> getNewsCreator() {
 
 		return newsCreator;
 	}

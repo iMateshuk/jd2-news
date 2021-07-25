@@ -17,6 +17,20 @@ public class Generator {
 		return localGenerator(stringLenght, NUMBER);
 	}
 	
+	public static String genStringHash(String string) {
+		
+		char[] chars = string.toCharArray();
+		
+		int hash = 7;
+		
+		for (int i = 0; i < string.length(); i++) {
+			
+		    hash = hash*31 + chars[i];
+		}
+		
+		return String.valueOf(hash);
+	}
+	
 	private static String localGenerator(final int stringLenght, final String AZNUMBER) {
 		
 		Random random = new Random();
