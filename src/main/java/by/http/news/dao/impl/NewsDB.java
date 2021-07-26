@@ -52,9 +52,7 @@ public class NewsDB implements NewsDAO {
 
 			ps.setString(1, news.getTitle());
 
-			ResultSet resSet = ps.executeQuery();
-
-			if (!resSet.next()) {
+			if (!ps.executeQuery().next()) {
 
 				ps = con.prepareStatement(NewsSQL.SQL_INSERT_NEWS.getSQL());
 
@@ -88,7 +86,7 @@ public class NewsDB implements NewsDAO {
 			ps.setString(1, news.getTitle());
 
 			ResultSet resSet = ps.executeQuery();
-
+			
 			if (resSet.next()) {
 
 				ps = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());
@@ -119,20 +117,22 @@ public class NewsDB implements NewsDAO {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
 
+			String newsTitle = news.getTitle();
+
 			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
-			ps.setString(1, news.getTitle());
+			ps.setString(1, newsTitle);
 
 			if (ps.executeQuery().next()) {
 
 				ps = con.prepareStatement(NewsSQL.SQL_DELETE_NEWS_TITLE.getSQL());
 
-				ps.setString(1, news.getTitle());
+				ps.setString(1, newsTitle);
 
 				ps.executeUpdate();
 			} else {
 
-				throw new DAOException("News whith title:" + news.getTitle() + " not exist.");
+				throw new DAOException("News whith title:" + newsTitle + " not exist.");
 			}
 
 		} catch (SQLException e) {
@@ -145,45 +145,49 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public List<News> choose(News news) throws DAOException {
 
-		List<News> newses = new ArrayList<>();
-
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+			
+			String  sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + news.getStyle() + " ORDER BY date DESC";
 
-			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
+			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, news.getTitle());
-			ps.setString(2, news.getStyle());
 
-			ResultSet rs = ps.executeQuery();
+			return newsCreator(ps.executeQuery());
 
-			while (rs.next()) {
-
-				newses.add(CREATOR.create());
-			}
-
-		} catch (SQLException | UtilException e) {
+		} catch (SQLException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
 
-		return newses;
 	}
 
 	@Override
 	public List<News> load() throws DAOException {
 
-		List<News> newses = new ArrayList<>();
-
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
 
-			ResultSet rs = con.prepareStatement(NewsSQL.SQL_SELECT_DATE_FOR_LOAD.getSQL()).executeQuery();
+			return newsCreator(con.createStatement().executeQuery(NewsSQL.SQL_SELECT_DATE_FOR_LOAD.getSQL()));
+
+		} catch (SQLException e) {
+
+			throw new DAOException(e.getMessage(), e);
+		}
+
+	}
+
+	private List<News> newsCreator(ResultSet rs) throws DAOException {
+
+		List<News> newses = new ArrayList<>();
+
+		try {
 
 			while (rs.next()) {
 
 				newses.add(CREATOR.create(rs));
 			}
 
-		} catch (UtilException | SQLException e) {
+		} catch (SQLException | UtilException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}

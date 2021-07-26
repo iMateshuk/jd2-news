@@ -22,9 +22,10 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.logged_out" var="logged_out" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_tools" />
-<fmt:message bundle="${loc}" key="local.loctext.name.news" var="news_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.title" var="title_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.info" var="info_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.news" var="news_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.title" var="title_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.info" var="info_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.emty" var="empty_text" />
 
 </head>
 <body>
@@ -90,15 +91,21 @@
 	<div id="body">
 	
 		<c:if test="${newses == null}">
-	
+
 			<p class="info"> ${info_text} <strong>${news_text}</strong> !!! </p>
+	
+		</c:if>
+		
+		<c:if test="${empty newses}">
+
+			<p class="info"> ${empty_text} <strong>${news_text}</strong> !!!</p>
 	
 		</c:if>
 	
 		<c:if test="${newses != null}">
 		
 			<c:forEach var="news" items="${newses}">
-		
+
 				<i>${title_text}:</i> <strong> <c:out value="${news.getTitle()}" /> </strong>
 				<button type="button" class="collapsible"> <c:out value="${news.getBrief()}" /> ... </button>
 				<div class="content"> <p> <c:out value="${news.getBody()}" /> </p> </div>

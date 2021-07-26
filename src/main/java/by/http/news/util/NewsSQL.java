@@ -9,7 +9,8 @@ public enum NewsSQL {
 	SQL_SELECT_TITLE_ID("SELECT title, id FROM news WHERE title=?"),
 	SQL_SELECT_ALL("SELECT * FROM news"),
 	SQL_SELECT_TITLE_STYLE("SELECT * FROM news WHERE title=? AND style=?"),
-	SQL_SELECT_DATE_FOR_LOAD("SELECT * FROM news where style not in ('adult') ORDER BY date DESC LIMIT 10"),
+	SQL_SELECT_DATE_FOR_LOAD("SELECT * FROM news where style NOT IN ('adult') ORDER BY date DESC LIMIT 10"),
+	SQL_SELECT_CHOOSE("SELECT * FROM news WHERE title LIKE ? AND style "),
 
 	SQL_COLLUM_LABEL_ID("id"),
 	SQL_COLLUM_LABEL_TITLE("title");

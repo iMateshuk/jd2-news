@@ -25,7 +25,7 @@ public class UserDB implements UserDAO {
 	private final static String SERVER = "jdbc:mysql://127.0.0.1/myusers?useSSL=false";
 	private final static String USER = "localUser";
 	private final static String PASSWORD = "localPassw0rd";
-	
+
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
 
 	{
@@ -89,12 +89,24 @@ public class UserDB implements UserDAO {
 	public void delete(UserData userData) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+			
+			String userLogin =  userData.getLogin();
 
-			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
 
-			ps.setString(1, userData.getLogin());
+			ps.setString(1, userLogin);
 
-			ps.executeUpdate();
+			if (ps.executeQuery().next()) {
+
+				ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
+
+				ps.setString(1, userLogin);
+
+				ps.executeUpdate();
+			} else {
+				
+				throw new DAOException("User login:" + userLogin + " not exist.");
+			}
 
 		} catch (SQLException e) {
 
@@ -107,15 +119,15 @@ public class UserDB implements UserDAO {
 	public User authorization(UserData userData) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
-			
+
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
-			
+
 			ps.setString(1, userData.getLogin());
 
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()
-					&& rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL()).equals(Generator.genStringHash(userData.getPassword()))) {
+			if (rs.next() && rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL())
+					.equals(Generator.genStringHash(userData.getPassword()))) {
 
 				userData.setAge(rs.getString(UserSQL.SQL_COLLUM_LABEL_AGE.getSQL()));
 				userData.setRole(rs.getString(UserSQL.SQL_COLLUM_LABEL_ROLE.getSQL()));

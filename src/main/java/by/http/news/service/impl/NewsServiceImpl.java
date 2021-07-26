@@ -107,7 +107,7 @@ public class NewsServiceImpl implements NewsService {
 
 				CheckField.checkKVE(key, value, EXP_STAR);
 
-				news.setTitle(".*" + value + ".*");
+				news.setTitle("%" + value + "%");
 			}
 			
 			value = news.getStyle();
@@ -115,6 +115,11 @@ public class NewsServiceImpl implements NewsService {
 			if (!CheckField.checkKVN(value)) {
 				
 				CheckField.checkVA(value, user.getAge());
+				
+				news.setStyle("IN ('" +  value + "')");
+			} else {
+				
+				news.setStyle("NOT IN ('adult')");
 			}
 
 			return newsDAO.choose(news);

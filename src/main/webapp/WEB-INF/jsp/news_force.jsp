@@ -37,7 +37,8 @@
 			
 			Enter body<em>*</em>:
 			<br />
-			<input type="text" name="body" value="" />
+			<textarea name="body" rows="20" cols="60" maxlength="1000"></textarea>
+			<!-- <input type="text" name="body" value="" /> -->
 			<br />
 			
 		</c:if>

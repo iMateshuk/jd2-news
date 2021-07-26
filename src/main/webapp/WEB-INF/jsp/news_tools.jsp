@@ -36,13 +36,13 @@
 		
 		</c:if>
 		
-		<c:if test="${user != null && user.getRole() == 'user'}">
+		<%-- <c:if test="${user != null && user.getRole() == 'user'}"> --%>
 		
 			<button type="submit" name="action" value="news_choose">Choose News</button>
 
 		<br /><br />
 		
-		</c:if>
+		<%-- </c:if> --%>
 		
 		</form>
 		
