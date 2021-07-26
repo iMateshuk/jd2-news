@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -9,78 +10,116 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <link href="CSS/userPageStyle.css" rel="stylesheet" type="text/css">
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="localization.local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.send" var="send_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
+
+<fmt:message bundle="${loc}" key="local.loctext.name.name" var="name_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.login" var="login_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.password" var="password_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.email" var="email_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.required" var="required_txt" />
+
+<fmt:message bundle="${loc}" key="local.loctext.name.role" var="role_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.admin" var="admin_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.editor" var="editor_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.user" var="user_text" />
+
 </head>
 <body>
 
-	<div id='wrapper'>
+	<div class="locale">
 
-		<h1>User ${fn:replace(action, 'user_', '')}</h1>
+		<div class="locale">
 
-		<form action="Controller" method="post">
+			<div class="en">
 
-			Enter login<em>*</em>:
-			<br />
-			<input type="text" name="login" value="" />
-			<br />
+				<form action="Controller" method="post">
+					<input type="hidden" name="local" value="ru" />
+					<button class="local" type="submit" name="command" value="user_force" />${ru_button}</button>
+				</form>
+			</div>
 
-			<c:if test="${action == 'user_password'}">
-				Enter password<em>*</em>:
-				<br />
-				<input type="password" name="password" value="" />
-				<br />
-			</c:if>
+			<div class="ru">
 
-			<c:if test="${action != 'user_delete' && action != 'user_password'}">
+				<form action="Controller" method="post">
+					<input type="hidden" name="local" value="en" />
+					<button class="local" type="submit" name="command" value="user_force" />${en_button}</button>
+				</form>
+			</div>
+		</div>
+		<br /> <br />
+
+		<div id='wrapper'>
+
+			<h1>User ${fn:replace(action, 'user_', '')}</h1>
+
+			<form action="Controller" method="post">
+
+				${login_text}<em>*</em>: <br /> <input type="text" name="login"
+					value="" /> <br />
+
+				<c:if test="${action == 'user_password'}">
+					${password_text}<em>*</em>:
+					<br />
+					<input type="password" name="password" value="" />
+					<br />
+				</c:if>
+
+				<c:if test="${action != 'user_delete' && action != 'user_password'}">
 	
-				Enter Name<em>*</em>:
+				${name_text}<em>*</em>:
 				<br />
-				<input type="text" name="name" value="" />
-				<br />
+					<input type="text" name="name" value="" />
+					<br />
 			
-				Enter e-mail<em>*</em>:
+				${email_text}<em>*</em>:
 				<br />
-				<input type="text" name="email" value="" />
-				<br />
+					<input type="text" name="email" value="" />
+					<br />
 
-				<c:if test="${user != null && user.getRole() == 'admin'}">
+					<c:if test="${user != null && user.getRole() == 'admin'}">
 			
-					Choose user role (default - User):
+					${role_text}:
 					<br />
-					<input type="radio" name="role" value="admin" />Admin
-					<input type="radio" name="role" value="editor" />Editor
-					<input type="radio" name="role" value="user" />User
+						<input type="radio" name="role" value="admin" />${admin_text}
+					<input type="radio" name="role" value="editor" />${editor_text}
+					<input type="radio" name="role" value="user" />${user_text}
 					<br />
-					<br />
+						<br />
+
+					</c:if>
 
 				</c:if>
 
-			</c:if>
+				<em> * - ${required_txt} </em> <br /> <br />
 
-			<em> * - required </em> <br />
+				<button type="submit" name="command" value="${action}">${send_button}</button>
+
+			</form>
+
 			<br />
 
-			<button type="submit" name="command" value="${action}">Send</button>
+			<form action="Controller" method="post">
 
-		</form>
+				<button type="submit" name="command" value="user_tools">${user_tools}</button>
 
-		<br />
+			</form>
 
-		<form action="Controller" method="post">
+			<br /> <br />
 
-			<button type="submit" name="command" value="user_tools">User tools</button>
+			<form action="Controller" method="post">
 
-		</form>
+				<button type="submit" name="command" value="index">${main_button}</button>
 
-		<br />
-		<br />
+			</form>
 
-		<form action="Controller" method="post">
-
-			<button type="submit" name="command" value="index">Main Page</button>
-
-		</form>
-
-	</div>
-
+		</div>
 </body>
 </html>

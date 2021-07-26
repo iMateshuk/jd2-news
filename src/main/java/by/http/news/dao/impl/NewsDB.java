@@ -30,6 +30,10 @@ public class NewsDB implements NewsDAO {
 
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	private final static String ANSWER_BEGIN = "News whith title:";
+	private final static String ANSWER_END_NOT = " not exist.";
+	private final static String ANSWER_END_EX = " exist, check you data.";
+
 	{
 
 		try {
@@ -66,12 +70,12 @@ public class NewsDB implements NewsDAO {
 
 			} else {
 
-				throw new DAOException("News whith title:" + news.getTitle() + " exist, check you data.");
+				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX);
 			}
 
 		} catch (SQLException e) {
 
-			throw new DAOException("Maybe news exist, check you data.", e);
+			throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX, e);
 		}
 
 	}
@@ -86,7 +90,7 @@ public class NewsDB implements NewsDAO {
 			ps.setString(1, news.getTitle());
 
 			ResultSet resSet = ps.executeQuery();
-			
+
 			if (resSet.next()) {
 
 				ps = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());
@@ -102,7 +106,7 @@ public class NewsDB implements NewsDAO {
 
 			} else {
 
-				throw new DAOException("News whith title:" + news.getTitle() + " not exist.");
+				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_NOT);
 			}
 
 		} catch (SQLException e) {
@@ -132,7 +136,7 @@ public class NewsDB implements NewsDAO {
 				ps.executeUpdate();
 			} else {
 
-				throw new DAOException("News whith title:" + newsTitle + " not exist.");
+				throw new DAOException(ANSWER_BEGIN + newsTitle + ANSWER_END_NOT);
 			}
 
 		} catch (SQLException e) {
@@ -146,8 +150,8 @@ public class NewsDB implements NewsDAO {
 	public List<News> choose(News news) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
-			
-			String  sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + news.getStyle() + " ORDER BY date DESC";
+
+			String sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + news.getStyle() + NewsSQL.SQL_ORDER_BY_DATE.getSQL();
 
 			PreparedStatement ps = con.prepareStatement(sql);
 

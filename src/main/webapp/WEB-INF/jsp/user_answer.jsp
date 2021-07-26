@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	import="by.http.news.bean.User" pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,6 +9,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <link href="CSS/userPageStyle.css" rel="stylesheet" type="text/css">
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="localization.local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
+
+<fmt:message bundle="${loc}" key="local.loctextuseranswer.name.login" var="login_txt" />
+<fmt:message bundle="${loc}" key="local.loctextuseranswer.name.success" var="success_txt" />
+<fmt:message bundle="${loc}" key="local.loctextuseranswer.name.failed" var="failed_txt" />
 
 </head>
 <body>
@@ -26,7 +38,7 @@
 		
 			<c:if test="${param.action.toLowerCase() != 'loggedout'}">
 			
-				<font color="red">Failed</font>
+				<font color="red">${failed_txt}</font>
 				<br/> <br/>
 			
 			</c:if>
@@ -42,10 +54,10 @@
 		
 		<c:if test="${sessionScope.user != null && param.message == null }">
 		
-			<font color="#ff8000">Success</font>
+			<font color="#ff8000">${success_txt}</font>
 			<br/><br/>
 		
-			login: <c:out value="${sessionScope.user.getLogin()}"></c:out>
+			${login_txt}: <c:out value="${sessionScope.user.getLogin()}"></c:out>
 			<br/><br/>
 		
 		</c:if>
@@ -54,7 +66,7 @@
 		
 			<form action="Controller" method="post">
 			<input type="hidden" name="command" value="user_tools"/>
-			<button class="user" type="submit" name="action" value="userAction">User tools</button>
+			<button class="user" type="submit" name="action" value="userAction">${user_tools}</button>
 			</form>
 			<br/>
 		
@@ -64,7 +76,7 @@
 		
 			<form action="Controller" method="post">
 			<input type="hidden" name="command" value="news_tools"/>
-			<button class="user" type="submit" name="action" value="newsAction">News tools</button>
+			<button class="user" type="submit" name="action" value="newsAction">${news_button}</button>
 			</form>
 			<br/>
 		
@@ -74,7 +86,7 @@
 
 		<form action="Controller" method="post">
 
-			<button type="submit" name="command" value="main">Main Page</button>
+			<button type="submit" name="command" value="main">${main_button}</button>
 
 		</form>
 

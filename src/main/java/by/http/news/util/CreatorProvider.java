@@ -15,7 +15,7 @@ public class CreatorProvider {
 
 	private final static CreatorProvider INSTANCE = new CreatorProvider();
 
-	private final Creator<User, UserData> userCreator = new UserCreator();
+	private final Creator<User, ResultSet> userCreator = new UserCreator();
 
 	private final Creator<UserData, HttpServletRequest> userDataCreator = new UserDataCreator();
 
@@ -32,7 +32,7 @@ public class CreatorProvider {
 		return INSTANCE;
 	}
 
-	public Creator<User, UserData> getUserCreator() {
+	public Creator<User, ResultSet> getUserCreator() {
 
 		return userCreator;
 	}

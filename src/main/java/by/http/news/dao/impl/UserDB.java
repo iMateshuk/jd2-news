@@ -18,7 +18,7 @@ import by.http.news.util.UtilException;
 
 public class UserDB implements UserDAO {
 
-	private static final Creator<User, UserData> CREATOR = CreatorProvider.getCreatorProvider().getUserCreator();
+	private static final Creator<User, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getUserCreator();
 
 	private static final String DRIVER = "org.gjt.mm.mysql.Driver";
 
@@ -27,6 +27,11 @@ public class UserDB implements UserDAO {
 	private final static String PASSWORD = "localPassw0rd";
 
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
+	
+	private final static String ANSWER_BEGIN = "User login:";
+	private final static String ANSWER_END = " exist.";
+	private final static String ANSWER_END_NOT = " not exist.";
+	private final static String ANSWER_CHECK_DATA = "Check you data!";
 
 	{
 
@@ -59,7 +64,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException e) {
 
-			throw new DAOException("Maybe user exist, check you data.", e);
+			throw new DAOException(ANSWER_BEGIN + userData.getLogin() + ANSWER_END, e);
 		}
 
 	}
@@ -105,7 +110,7 @@ public class UserDB implements UserDAO {
 				ps.executeUpdate();
 			} else {
 				
-				throw new DAOException("User login:" + userLogin + " not exist.");
+				throw new DAOException(ANSWER_BEGIN + userLogin + ANSWER_END_NOT);
 			}
 
 		} catch (SQLException e) {
@@ -128,16 +133,17 @@ public class UserDB implements UserDAO {
 
 			if (rs.next() && rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL())
 					.equals(Generator.genStringHash(userData.getPassword()))) {
+				/*
+				 * userData.setAge(rs.getString(UserSQL.SQL_COLLUM_LABEL_AGE.getSQL()));
+				 * userData.setRole(rs.getString(UserSQL.SQL_COLLUM_LABEL_ROLE.getSQL()));
+				 */
 
-				userData.setAge(rs.getString(UserSQL.SQL_COLLUM_LABEL_AGE.getSQL()));
-				userData.setRole(rs.getString(UserSQL.SQL_COLLUM_LABEL_ROLE.getSQL()));
-
-				return CREATOR.create(userData);
+				return CREATOR.create(rs);
 			}
 
 		} catch (SQLException | UtilException e) {
 
-			throw new DAOException("Check you data!", e);
+			throw new DAOException(ANSWER_CHECK_DATA, e);
 		}
 
 		throw new DAOException(TRHOW_USER_INCORRECT);

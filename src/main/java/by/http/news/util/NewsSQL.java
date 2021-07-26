@@ -13,7 +13,9 @@ public enum NewsSQL {
 	SQL_SELECT_CHOOSE("SELECT * FROM news WHERE title LIKE ? AND style "),
 
 	SQL_COLLUM_LABEL_ID("id"),
-	SQL_COLLUM_LABEL_TITLE("title");
+	SQL_COLLUM_LABEL_TITLE("title"),
+	
+	SQL_ORDER_BY_DATE(" ORDER BY date DESC");
 	
 	private String string;
 

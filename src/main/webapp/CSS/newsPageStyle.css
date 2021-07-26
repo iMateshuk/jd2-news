@@ -24,3 +24,11 @@ em {
 	color: #008080;
 	font-style : bold;
 }
+
+.ru, .en{
+	float:right;margin:0 5px;
+}
+
+button.local {
+	font-size: 10px;
+}

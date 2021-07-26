@@ -16,9 +16,9 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
-<fmt:message bundle="${loc}" key="local.message" var="message" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
+
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.logged_out" var="logged_out" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_tools" />

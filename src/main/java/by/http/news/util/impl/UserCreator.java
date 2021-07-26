@@ -1,9 +1,10 @@
 package by.http.news.util.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import by.http.news.bean.User;
-import by.http.news.bean.UserData;
 import by.http.news.bean.User.UserBuilder;
 import by.http.news.util.Creator;
 import by.http.news.util.WorkWithObjectField;
@@ -13,26 +14,27 @@ import by.http.news.util.Generator;
 import by.http.news.util.UserField;
 import by.http.news.util.UtilException;
 
-public class UserCreator implements Creator<User, UserData> {
+public class UserCreator implements Creator<User, ResultSet> {
 
 	private Map<CombineEnum, String> fieldsData;
-	
-	private static final String EMPTY = "";
 
 	@Override
-	public User create(UserData object) throws UtilException {
+	public User create(ResultSet object) throws UtilException {
 
 		fieldsDataGetMap();
 		
-		fieldsData.forEach((k,v) -> {
+		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+			
+			CombineEnum key = fields.getKey();
+
 			try {
 				
-				fieldsData.put(k, WorkWithObjectField.methodGet(object, k.toString()));
-			} catch (UtilException ignore) {
-				
-				fieldsData.put(k, EMPTY);
+				fieldsData.replace(key, object.getString(key.toString().toLowerCase()));
+			} catch (SQLException e) {
+
+				throw new UtilException(e.getMessage(), e);
 			}
-		});
+		}
 		
 		return createUser();
 	}

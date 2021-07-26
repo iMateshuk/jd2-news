@@ -32,10 +32,12 @@ public class NewsCreator implements Creator<News, ResultSet> {
 		fieldsDataGetMap();
 
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+			
+			CombineEnum key = fields.getKey();
 
 			try {
 				
-				fieldsData.replace(fields.getKey(), object.getString(fields.getKey().toString().toLowerCase()));
+				fieldsData.replace(key, object.getString(key.toString().toLowerCase()));
 			} catch (SQLException e) {
 
 				throw new UtilException(e.getMessage(), e);

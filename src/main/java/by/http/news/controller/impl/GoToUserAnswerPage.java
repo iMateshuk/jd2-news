@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import by.http.news.controller.Command;
 import by.http.news.controller.CommandName;
+import by.http.news.util.Local;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ public class GoToUserAnswerPage implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Local.setLocal(request);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
