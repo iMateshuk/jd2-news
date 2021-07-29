@@ -4,11 +4,18 @@ public class CheckField {
 
 	private static final String AGE_STRING = "18";
 	
+	private static final String IS_EMPTY = " is empty";
+	private static final String ILLEGAL_VALUE = ": find illegal value in: ";
+	private static final String NOT_NUMBER = " is not are number ";
+	private static final String LENGHT_MORE = " lenght must be more then ";
+	private static final String LENGHT_LESS = " lenght must be less then ";
+	private static final String DENY_STYLE = ": forbidden style for users younger ";
+	
 	public static void checkKVN(String key, String value) throws UtilException {
 
 		if (checkKVN(value)) {
 
-			throw new UtilException(key + " is empty");
+			throw new UtilException(key + IS_EMPTY);
 		}
 	}
 	
@@ -21,7 +28,7 @@ public class CheckField {
 
 		if (value.matches(expression)) {
 
-			throw new UtilException(key + ": find illegal value in: " + value);
+			throw new UtilException(key + ILLEGAL_VALUE + value);
 		}
 
 	}
@@ -30,7 +37,7 @@ public class CheckField {
 
 		if (!value.matches(expression)) {
 
-			throw new UtilException(key + ": find illegal value in: " + value);
+			throw new UtilException(key + ILLEGAL_VALUE + value);
 		}
 
 	}
@@ -44,7 +51,7 @@ public class CheckField {
 			
 		} catch (NumberFormatException | NullPointerException  e) {
 			
-			throw new UtilException(key + " is not are number " + age);
+			throw new UtilException(key + NOT_NUMBER + age);
 
 		}
 		
@@ -55,7 +62,7 @@ public class CheckField {
 
 		if (value.length() < lenght) {
 
-			throw new UtilException(key + " lenght must be more then " + lenght);
+			throw new UtilException(key + LENGHT_MORE + lenght);
 		}
 
 	}
@@ -64,7 +71,7 @@ public class CheckField {
 
 		if (value.length() > lenght) {
 
-			throw new UtilException(key + " lenght must be less then " + lenght);
+			throw new UtilException(key + LENGHT_LESS + lenght);
 		}
 
 	}
@@ -73,7 +80,7 @@ public class CheckField {
 
 		if (value.equals("adult") && age.compareTo(AGE_STRING) < 0) {
 
-			throw new UtilException(value + ": forbidden style for users younger " + AGE_STRING);
+			throw new UtilException(value + DENY_STYLE + AGE_STRING);
 		}
 
 	}

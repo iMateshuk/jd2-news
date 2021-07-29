@@ -20,15 +20,10 @@ import by.http.news.util.WorkWithObjectField;
 public class NewsServiceImpl implements NewsService {
 
 	private static final DAOProvider provider = DAOProvider.getInstance();
-
 	private static final NewsDAO newsDAO = provider.getNewsDAO();
-
-	//private static final String STYLE_NOT_ADULT = "NOT IN ('adult')";
-	//private static final String STYLE_LIKE = "%";
 
 	private static final String EXP_BODY = ".*(fuck you)+.*";
 	private static final String EXP_TITLE = ".*\\*+.*";
-	//private static final String EXP_STYLE_LIKE = "^" + STYLE_LIKE + ".*" + STYLE_LIKE + "$";
 
 	private static final String EMPTY = "";
 
@@ -120,8 +115,6 @@ public class NewsServiceImpl implements NewsService {
 
 			value = news.getStyle();
 			
-			System.out.println(value);
-
 			if (!CheckField.checkKVN(value)) {
 
 				CheckField.checkVA(value, user.getAge());
@@ -131,8 +124,6 @@ public class NewsServiceImpl implements NewsService {
 				news.setStyle(EMPTY);
 			}
 			
-			System.out.println( news.getStyle());
-
 			return newsDAO.choose(news);
 
 		} catch (DAOException | UtilException e) {

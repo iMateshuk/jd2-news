@@ -57,7 +57,6 @@ public class GoToMainPage implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-
 			request.setAttribute("message", e.getMessage());
 		}
 

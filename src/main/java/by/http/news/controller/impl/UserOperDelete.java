@@ -53,9 +53,8 @@ public class UserOperDelete implements Command {
 					+ " delete success!&action=" + commandUserDelete);
 
 		} catch (ServiceException e) {
-			// TODO: handle exception
-			LogWriter.writeLog(e);
 
+			LogWriter.writeLog(e);
 			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action="
 					+ commandUserDelete);
 			

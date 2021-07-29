@@ -8,7 +8,6 @@ public enum NewsField implements CombineEnum {
 	public void getDescription() {
 		
 		System.out.println(getClass().getName());
-		
 	}
 
 }

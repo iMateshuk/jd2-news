@@ -8,7 +8,7 @@ public class WorkWithObjectField {
 
 	private static final String START_SET = "set";
 	private static final String START_GET = "get";
-	private static final String VALUE_EMPTY = "";
+	private static final String EMPTY = "";
 	private static final String REGEX_RETURN_TYPE = ".*\\.String$";
 
 	public static void value(Object object) throws UtilException {
@@ -24,7 +24,7 @@ public class WorkWithObjectField {
 			try {
 
 				value = field.get(object);
-				System.out.println("val: " + value);
+				System.out.println(value);
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 
@@ -39,7 +39,7 @@ public class WorkWithObjectField {
 		Method[] methods = object.getClass().getMethods();
 
 		String methodName;
-		String value = VALUE_EMPTY; 
+		String value = EMPTY; 
 		nameMatch = START_GET + nameMatch;
 
 		for (Method method : methods) {
@@ -52,11 +52,8 @@ public class WorkWithObjectField {
 				try {
 
 					value = (String) method.invoke(object);
-
 					break;
 					
-					//System.out.println("method: " + method.invoke(object));
-
 				} catch (IllegalAccessException | InvocationTargetException e) {
 
 					throw new UtilException(e.getMessage(), e);

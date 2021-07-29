@@ -57,18 +57,15 @@ public class UserRegistration implements Command {
 
 				redirect = "Controller?command=" + commandAnswer + "&message=" + userData.getLogin() + " " + commandReg
 						+ " success!&action=" + commandReg;
-
 			} else {
 
 				redirect = "Controller?command=" + commandAutho + "&message=" + userData.getLogin() + " " + commandReg
 						+ " success!";
-
 			}
 
 		} catch (ServiceException | UtilException e) {
 
 			LogWriter.writeLog(e);
-
 			redirect = "Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandReg;
 
 		}

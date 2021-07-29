@@ -48,7 +48,6 @@ public class NewsOperUpdate implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-
 			response.sendRedirect(
 					"Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandUpdate);
 

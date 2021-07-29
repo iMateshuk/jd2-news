@@ -8,11 +8,12 @@ public enum Path {
 	private String string;
 
 	Path(String string) {
+		
 		this.string = string;
-
 	}
 
 	public String getPath() {
+		
 		return string;
 	}
 

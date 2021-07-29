@@ -7,6 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 public class CheckSession {
+	
+	private static final String USER = "user";
+	private static final String USER_TIME_OUT = "User session time out.";
+	private static final String USER_NOT_LOGGED = "User not logged in.";
+	private static final String USER_RIGHTS ="Not enough rights.";
 
 	public static void validate(HttpServletRequest request) throws IOException, UtilException {
 
@@ -14,25 +19,25 @@ public class CheckSession {
 
 		if (session == null) {
 
-			throw new UtilException("User session time out.");
+			throw new UtilException(USER_TIME_OUT);
 		}
 
-		User user = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute(USER);
 
 		if (user == null) {
 
-			throw new UtilException("User not logged in.");
+			throw new UtilException(USER_NOT_LOGGED);
 		}
 
 	}
 
 	public static void validateRoleUser(HttpServletRequest request) throws IOException, UtilException {
 		
-		User user = (User) request.getSession(false).getAttribute("user");
+		User user = (User) request.getSession(false).getAttribute(USER);
 		
-		if (user.getRole().equals("user")) {
+		if (user.getRole().equals(USER)) {
 
-			throw new UtilException("Not enough rights.");
+			throw new UtilException(USER_RIGHTS);
 		}
 
 	}

@@ -6,7 +6,7 @@ public enum UserField implements CombineEnum {
 
 	@Override
 	public void getDescription() {
-		// TODO Auto-generated method stub
+
 		System.out.println(getClass().getName());
 	}
 

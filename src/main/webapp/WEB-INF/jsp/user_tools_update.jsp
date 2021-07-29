@@ -22,6 +22,7 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
 
 <fmt:message bundle="${loc}" key="local.loctext.name.login" var="login_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.name" var="name_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.password" var="password_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.email" var="email_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.required" var="required_txt" />
@@ -29,8 +30,9 @@
 <fmt:message bundle="${loc}" key="local.loctext.name.role" var="role_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.admin" var="admin_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.editor" var="editor_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.user" var="user_text" />
 
-<fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.header" var="name_text" />
+<fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.header" var="header_txt" />
 
 
 </head>
@@ -60,7 +62,7 @@
 
 		<div id='wrapper'>
 
-			<h1>${name_text}</h1>
+			<h1>${header_txt}</h1>
 
 			<form action="Controller" method="post">
 

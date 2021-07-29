@@ -16,7 +16,6 @@ public class FieldMapCreator {
 		for (CombineEnum field : fields) {
 
 			fieldsData.put(field, EMPTY);
-
 		}
 
 		return fieldsData;

@@ -52,12 +52,9 @@ public class UserCreator implements Creator<User, ResultSet> {
 	
 	private User createUser(Map<CombineEnum, String> fieldsData) throws UtilException {
 
-		//UserBuilder userBuilder = new User.UserBuilder(fieldsData.get(UserField.LOGIN), fieldsData.get(UserField.ROLE));
 		UserBuilder userBuilder = new User.UserBuilder();
 		
-		
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
-			
 			
 			WorkWithObjectField.methodSet(userBuilder, fields.getKey().toString(), fields.getValue());
 		}

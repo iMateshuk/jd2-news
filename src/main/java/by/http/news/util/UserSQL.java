@@ -18,10 +18,12 @@ public enum UserSQL {
 	private String string;
 
 	UserSQL (String string) {
+		
 		this.string = string;
 	}
 
 	public String getSQL() {
+		
 		return string;
 	}
 

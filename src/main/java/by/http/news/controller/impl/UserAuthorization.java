@@ -49,7 +49,6 @@ public class UserAuthorization implements Command {
 			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + user.getLogin() + " "
 					+ " already logged in!&action=" + commandAutho);
 			return;
-
 		}
 
 		try {
@@ -67,7 +66,6 @@ public class UserAuthorization implements Command {
 		} catch (ServiceException | UtilException e) {
 
 			LogWriter.writeLog(e);
-
 			response.sendRedirect(
 					"Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandAutho);
 

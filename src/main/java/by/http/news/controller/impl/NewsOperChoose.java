@@ -45,7 +45,6 @@ public class NewsOperChoose implements Command {
 			request.getSession(false).setAttribute(SESSION_NEWS_SEARCH, null);
 		}
 
-		
 		try {
 
 			CheckSession.validate(request);
