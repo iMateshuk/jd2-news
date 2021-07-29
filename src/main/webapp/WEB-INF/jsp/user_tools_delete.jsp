@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,20 +16,15 @@
 
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
+
 <fmt:message bundle="${loc}" key="local.locbutton.name.send" var="send_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
 
-<fmt:message bundle="${loc}" key="local.loctext.name.name" var="name_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.login" var="login_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.password" var="password_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.email" var="email_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.required" var="required_txt" />
 
-<fmt:message bundle="${loc}" key="local.loctext.name.role" var="role_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.admin" var="admin_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.editor" var="editor_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.user" var="user_text" />
+<fmt:message bundle="${loc}" key="local.loctextusertoolsdelete.name.header" var="user_text" />
 
 </head>
 <body>
@@ -42,7 +37,7 @@
 
 				<form action="Controller" method="post">
 					<input type="hidden" name="local" value="ru" />
-					<button class="local" type="submit" name="command" value="user_force" />${ru_button}</button>
+					<button class="local" type="submit" name="command" value="user_tools_delete" />${ru_button}</button>
 				</form>
 			</div>
 
@@ -50,7 +45,7 @@
 
 				<form action="Controller" method="post">
 					<input type="hidden" name="local" value="en" />
-					<button class="local" type="submit" name="command" value="user_force" />${en_button}</button>
+					<button class="local" type="submit" name="command" value="user_tools_delete" />${en_button}</button>
 				</form>
 			</div>
 		</div>
@@ -58,49 +53,18 @@
 
 		<div id='wrapper'>
 
-			<h1>User ${fn:replace(action, 'user_', '')}</h1>
+			<h1>${user_text}</h1>
 
 			<form action="Controller" method="post">
 
-				${login_text}<em>*</em>: <br /> <input type="text" name="login"
-					value="" /> <br />
-
-				<c:if test="${action == 'user_password'}">
-					${password_text}<em>*</em>:
-					<br />
-					<input type="password" name="password" value="" />
-					<br />
-				</c:if>
-
-				<c:if test="${action != 'user_delete' && action != 'user_password'}">
-	
-				${name_text}<em>*</em>:
+				${login_text}<em>*</em>: 
+				<br /> 
+					<input type="text" name="login" value="" />
 				<br />
-					<input type="text" name="name" value="" />
-					<br />
-			
-				${email_text}<em>*</em>:
-				<br />
-					<input type="text" name="email" value="" />
-					<br />
-
-					<c:if test="${user != null && user.getRole() == 'admin'}">
-			
-					${role_text}:
-					<br />
-						<input type="radio" name="role" value="admin" />${admin_text}
-					<input type="radio" name="role" value="editor" />${editor_text}
-					<input type="radio" name="role" value="user" />${user_text}
-					<br />
-						<br />
-
-					</c:if>
-
-				</c:if>
 
 				<em> * - ${required_txt} </em> <br /> <br />
 
-				<button type="submit" name="command" value="${action}">${send_button}</button>
+				<button type="submit" name="command" value="user_delete">${send_button}</button>
 
 			</form>
 

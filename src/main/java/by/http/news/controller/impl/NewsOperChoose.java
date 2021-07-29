@@ -15,14 +15,13 @@ import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
-import by.http.news.util.View;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class NewsOperChoose implements Command {
-	
+
 	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static Creator<News, HttpServletRequest> CREATOR = CreatorProvider.getCreatorProvider()
@@ -35,28 +34,41 @@ public class NewsOperChoose implements Command {
 
 	final static String PATH = "/WEB-INF/jsp/" + commandMain + ".jsp";
 
+	private final static String SESSION_NEWS_SEARCH = "searchNews";
+	private final static String CLEAN = "clean";
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		if (request.getParameter(CLEAN) != null) {
+
+			request.getSession(false).setAttribute(SESSION_NEWS_SEARCH, null);
+		}
+
 		
 		try {
 
 			CheckSession.validate(request);
-			
+
 			User user = (User) request.getSession(false).getAttribute("user");
 
-			News news = CREATOR.create(request);
+			News news = (News) request.getSession(false).getAttribute(SESSION_NEWS_SEARCH);
 
-			View.print(news);
+			if (news == null) {
+
+				news = CREATOR.create(request);
+			}
 
 			List<News> newses = newsServices.choose(news, user);
-			
-			View.print(newses);
-			
+
 			request.setAttribute("newses", newses);
+
+			if (!newses.isEmpty()) {
+				
+				request.getSession(false).setAttribute("searchNews", news);
+			}
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
-
-			//response.sendRedirect("Controller?command=" + commandAnswer + "&action=" + commandChoose);
 
 		} catch (ServiceException e) {
 
@@ -69,7 +81,7 @@ public class NewsOperChoose implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
 		}
-		
+
 	}
 
 }

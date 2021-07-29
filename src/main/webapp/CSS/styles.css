@@ -5,10 +5,16 @@ body {
 	background-color: rgb(185, 179, 175);
 }
 
+pre{
+	font-family: sans-serif, serif;
+}
+
 .header {
 	display: inline-block;
 	width: 100%;
 	border-bottom: 1px solid black;
+	
+	vertical-align: middle;
 }
 
 h1 {
@@ -27,16 +33,20 @@ h2 {
 	text-align: center;
 }
 
-.ru, .en{
-	float:right;margin:0 5px;
+.en_ru{
+	float:right;margin:0;;
 }
 
 .headerLeft {
-	float: left;
+	float: left;margin:0;
 }
 
 .headerRight {
-	float: right;
+	float: right; margin:0;
+}
+
+.clean{
+	float:right;margin:0;
 }
 
 button.user {

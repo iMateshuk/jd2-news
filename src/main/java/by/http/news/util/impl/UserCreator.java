@@ -16,12 +16,10 @@ import by.http.news.util.UtilException;
 
 public class UserCreator implements Creator<User, ResultSet> {
 
-	private Map<CombineEnum, String> fieldsData;
-
 	@Override
 	public User create(ResultSet object) throws UtilException {
-
-		fieldsDataGetMap();
+		
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 		
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
 			
@@ -36,23 +34,23 @@ public class UserCreator implements Creator<User, ResultSet> {
 			}
 		}
 		
-		return createUser();
+		return createUser(fieldsData);
 	}
 
 	@Override
 	public User create() throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
-		return generate();
+		return generate(fieldsData);
 	}
 	
-	private void fieldsDataGetMap() {
+	private Map<CombineEnum, String> fieldsDataGetMap() {
 
-		fieldsData = FieldMapCreator.create(UserField.class.getEnumConstants());
+		return FieldMapCreator.create(UserField.class.getEnumConstants());
 	}
 	
-	private User createUser() throws UtilException {
+	private User createUser(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		//UserBuilder userBuilder = new User.UserBuilder(fieldsData.get(UserField.LOGIN), fieldsData.get(UserField.ROLE));
 		UserBuilder userBuilder = new User.UserBuilder();
@@ -68,14 +66,14 @@ public class UserCreator implements Creator<User, ResultSet> {
 
 	}
 
-	private User generate() throws UtilException {
+	private User generate(Map<CombineEnum, String> fieldsData) throws UtilException {
 		
 		fieldsData.forEach((k,v) -> fieldsData.put(k, Generator.genString((int) (Math.random() * 10 + 1))));
 
 		fieldsData.put(UserField.ROLE, "user");
 		fieldsData.put(UserField.AGE, Generator.genNumber(2));
 
-		return createUser();
+		return createUser(fieldsData);
 	}
 
 }

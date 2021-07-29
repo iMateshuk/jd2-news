@@ -19,7 +19,6 @@ public class LoggedOut implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 		User user = (User) request.getSession().getAttribute("user");
 

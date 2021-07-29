@@ -15,14 +15,36 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class GoToMainPage implements Command {
 
 	final static String PATH = "/WEB-INF/jsp/" + CommandName.MAIN.toString().toLowerCase() + ".jsp";
 	private final static NewsService newsService = ServiceProvider.getInstance().getNewsService();
+	
+	private final static String CommandChoose = CommandName.NEWS_CHOOSE.toString().toLowerCase();
+
+	private final static String CLEAN = "clean";
+	private final static String SESSION_NEWS_SEARCH = "searchNews";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		Local.setLocal(request);
+		
+		HttpSession session = request.getSession(false);
+
+		if (request.getParameter(CLEAN) != null) {
+
+			session.setAttribute(SESSION_NEWS_SEARCH, null);
+		}
+
+		if (session.getAttribute(SESSION_NEWS_SEARCH) != null) {
+			
+			response.sendRedirect("Controller?command=" + CommandChoose);
+			return;
+
+		}
 
 		List<News> newses = null;
 
@@ -38,9 +60,7 @@ public class GoToMainPage implements Command {
 
 			request.setAttribute("message", e.getMessage());
 		}
-		
-		Local.setLocal(request);
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 

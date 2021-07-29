@@ -10,20 +10,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToNewsForcePage implements Command{
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.NEWS_FORCE.toString().toLowerCase() + ".jsp";
-	
-	private static final String COMMAND_REQUEST_PARAM = "action";
+public class GoToNewsDeletePage implements Command {
+
+	final static String PATH = "/WEB-INF/jsp/" + CommandName.NEWS_TOOLS_DELETE.toString().toLowerCase() + ".jsp";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Local.setLocal(request);
-		
-		request.setAttribute("action", request.getParameter(COMMAND_REQUEST_PARAM));
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
+
 	}
 
 }

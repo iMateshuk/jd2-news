@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpSession;
 public class Local {
 
 	private final static String LOCAL = "local";
-	private final static String LOCAL_EN = "en";
+	private final static String LOCAL_DEF = "en";
 
 	public static void setLocal(HttpServletRequest request) {
 
@@ -14,7 +14,7 @@ public class Local {
 
 		if (session.getAttribute(LOCAL) == null) {
 
-			session.setAttribute(LOCAL, LOCAL_EN);
+			session.setAttribute(LOCAL, LOCAL_DEF);
 		}
 
 		if (request.getParameter(LOCAL) != null

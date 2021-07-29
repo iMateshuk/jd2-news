@@ -14,7 +14,6 @@ import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
-import by.http.news.util.View;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +31,6 @@ public class UserOperPassword implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 		try {
 
@@ -41,8 +39,6 @@ public class UserOperPassword implements Command {
 			User user = (User) request.getSession().getAttribute("user");
 
 			UserData userData = CREATOR.create(request);
-
-			View.print(userData);
 
 			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals("admin"))) {
 
@@ -57,9 +53,8 @@ public class UserOperPassword implements Command {
 					+ " success change pass!&action=" + commandUserPass);
 
 		} catch (ServiceException e) {
-			// TODO: handle exception
-			LogWriter.writeLog(e);
 
+			LogWriter.writeLog(e);
 			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action="
 					+ commandUserPass);
 			

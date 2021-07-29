@@ -15,27 +15,20 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 
-	private Map<CombineEnum, String> fieldsData;
-
-	private void fieldsDataGetMap() {
-
-		fieldsData = FieldMapCreator.create(UserDataField.class.getEnumConstants());
-	}
-
 	@Override
 	public UserData create(HttpServletRequest object) throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
 		for (Map.Entry<CombineEnum, String> entry : fieldsData.entrySet()) {
 
 			entry.setValue(object.getParameter(entry.getKey().toString().toLowerCase()));
 		}
 
-		return createUserData();
+		return createUserData(fieldsData);
 	}
 
-	private UserData createUserData() throws UtilException {
+	private UserData createUserData(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		UserDataBuilder userDataBuilder = new UserData.UserDataBuilder();
 
@@ -56,12 +49,12 @@ public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 	@Override
 	public UserData create() throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
-		return generate();
+		return generate(fieldsData);
 	}
 
-	private UserData generate() throws UtilException {
+	private UserData generate(Map<CombineEnum, String> fieldsData) throws UtilException {
 		
 		fieldsData.forEach((k,v) -> fieldsData.put(k, Generator.genString((int) (Math.random() * 10 + 1))));
 
@@ -71,7 +64,12 @@ public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 		fieldsData.put(UserDataField.EMAIL,
 				"user." + Generator.genString((int) (Math.random() * 10 + 1)) + "@projectnews.by");
 
-		return createUserData();
+		return createUserData(fieldsData);
+	}
+	
+	private Map<CombineEnum, String> fieldsDataGetMap() {
+
+		return FieldMapCreator.create(UserDataField.class.getEnumConstants());
 	}
 
 }

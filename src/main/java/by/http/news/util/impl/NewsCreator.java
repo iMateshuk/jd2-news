@@ -16,27 +16,25 @@ import by.http.news.util.WorkWithObjectField;
 
 public class NewsCreator implements Creator<News, ResultSet> {
 
-	private Map<CombineEnum, String> fieldsData;
-
 	@Override
 	public News create() throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
-		return generate();
+		return generate(fieldsData);
 	}
 
 	@Override
 	public News create(ResultSet object) throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
-			
+
 			CombineEnum key = fields.getKey();
 
 			try {
-				
+
 				fieldsData.replace(key, object.getString(key.toString().toLowerCase()));
 			} catch (SQLException e) {
 
@@ -44,24 +42,24 @@ public class NewsCreator implements Creator<News, ResultSet> {
 			}
 		}
 
-		return createNews();
+		return createNews(fieldsData);
 
 	}
 
-	private void fieldsDataGetMap() {
+	private Map<CombineEnum, String> fieldsDataGetMap() {
 
-		fieldsData = FieldMapCreator.create(NewsField.class.getEnumConstants());
+		return FieldMapCreator.create(NewsField.class.getEnumConstants());
 	}
 
-	private News generate() throws UtilException {
+	private News generate(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		fieldsData.forEach((k, v) -> fieldsData.replace(k, Generator.genString((int) (Math.random() * 10 + 1))));
 
-		return createNews();
+		return createNews(fieldsData);
 
 	}
 
-	private News createNews() throws UtilException {
+	private News createNews(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		NewsBuilder newsBuilder = new News.NewsBuilder();
 

@@ -17,7 +17,7 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
 
-<fmt:message bundle="${loc}" key="local.loctextuserlools.name.header" var="header_txt" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="header_txt" />
 <fmt:message bundle="${loc}" key="local.loctextuserlools.name.registration" var="reg_bt" />
 <fmt:message bundle="${loc}" key="local.loctextuserlools.name.authorization" var="autho_bt" />
 <fmt:message bundle="${loc}" key="local.loctextuserlools.name.update" var="update_bt" />
@@ -58,8 +58,7 @@
 
 				<form action="Controller" method="post">
 
-					<input type="hidden" name="command" value="registration" />
-					<button type="submit" name="action" value="registration">${reg_bt}</button>
+					<button type="submit" name="command" value="registration">${reg_bt}</button>
 
 				</form>
 
@@ -78,22 +77,20 @@
 
 			<form action="Controller" method="post">
 
-				<input type="hidden" name="command" value="user_force" />
-
 				<c:if test="${user != null}">
 
-					<button type="submit" name="action" value="user_update">${update_bt}</button>
+					<button type="submit" name="command" value="user_tools_update">${update_bt}</button>
 					<br />
 					<br />
 
-					<button type="submit" name="action" value="user_password">${pass_button}</button>
+					<button type="submit" name="command" value="user_tools_password">${pass_button}</button>
 					<br />
 					<br />
 				</c:if>
 
 				<c:if test="${user != null && user.getRole() == 'admin'}">
 
-					<button type="submit" name="action" value="user_delete">${del_button}</button>
+					<button type="submit" name="command" value="user_tools_delete">${del_button}</button>
 					<br />
 				</c:if>
 			</form>
@@ -101,7 +98,7 @@
 
 			<form action="Controller" method="post">
 
-				<button type="submit" name="command" value="index">${main_button}</button>
+				<button type="submit" name="command" value="main">${main_button}</button>
 
 			</form>
 

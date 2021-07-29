@@ -18,8 +18,8 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
 
 <fmt:message bundle="${loc}" key="local.loctextuseranswer.name.login" var="login_txt" />
-<fmt:message bundle="${loc}" key="local.loctextuseranswer.name.success" var="success_txt" />
-<fmt:message bundle="${loc}" key="local.loctextuseranswer.name.failed" var="failed_txt" />
+<fmt:message bundle="${loc}" key="local.loctextanswer.name.success" var="success_txt" />
+<fmt:message bundle="${loc}" key="local.loctextanswer.name.failed" var="failed_txt" />
 
 </head>
 <body>

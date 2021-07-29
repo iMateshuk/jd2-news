@@ -22,6 +22,7 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.logged_out" var="logged_out" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_tools" />
+<fmt:message bundle="${loc}" key="local.locbuttonmain.name.clean" var="clean_btn" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.news" var="news_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.title" var="title_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.info" var="info_text" />
@@ -32,19 +33,14 @@
 
 	<div class="locale">
 
-		<div class="en">
+		<div class="en_ru">
 
 			<form action="Controller" method="post">
-				<input type="hidden" name="local" value="ru" />
-				<button type="submit" name="command" value="main" />${ru_button}</button>
-			</form>
-		</div>
+				<input type="hidden" name="command" value="main" />
 
-		<div class="ru">
-
-			<form action="Controller" method="post">
-				<input type="hidden" name="local" value="en" />
-				<button type="submit" name="command" value="main" />${en_button}</button>
+				<button type="submit" name="local" value="en" />${en_button}</button>
+				
+				<button type="submit" name="local" value="ru" />${ru_button}</button>
 			</form>
 		</div>
 
@@ -70,19 +66,29 @@
 		
 			</c:if>
 			
-			<%-- <c:if test="${user == null || user.getRole() == 'admin'}"> --%>
-	
 				<button class="user" type="submit" name="command" value="user_tools">${user_tools}</button>
 	
-			<%-- </c:if> --%>
-			
-			<c:if test="${user != null }"> <!-- && user.getRole() != 'user' -->
+			<c:if test="${user != null }">
 	
 				<button class="news" type="submit" name="command" value="news_tools">${news_tools}</button>
 	
 			</c:if>
 		
 		</form><br/>
+		
+		<div class="clean">
+		<form action="Controller" method="post">
+		
+			<c:if test="${searchNews != null && not empty newses}">
+			
+				<input type="hidden" name="command" value="main" />
+				<button class="user" type="submit" name="clean" value="clean">${clean_btn}</button>
+				<br/>
+		
+			</c:if>
+		
+		</form>
+		</div>
 
 		</div>
 
@@ -108,7 +114,7 @@
 
 				<i>${title_text}:</i> <strong> <c:out value="${news.getTitle()}" /> </strong>
 				<button type="button" class="collapsible"> <c:out value="${news.getBrief()}" /> ... </button>
-				<div class="content"> <p> <c:out value="${news.getBody()}" /> </p> </div>
+				<div class="content"> <pre class="pre"><c:out value="${news.getBody()}" /></pre> </div>
 			
 			</c:forEach>
 	

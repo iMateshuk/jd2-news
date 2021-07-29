@@ -10,15 +10,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class UnknownCommand implements Command {
+public class GoToUserPasswordPage implements Command {
 	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.UNKNOWN_COMMAND.toString().toLowerCase() + ".jsp";
+	final static String PATH = "/WEB-INF/jsp/" + CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase() + ".jsp";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		Local.setLocal(request);
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 

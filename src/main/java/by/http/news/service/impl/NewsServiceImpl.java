@@ -23,8 +23,14 @@ public class NewsServiceImpl implements NewsService {
 
 	private static final NewsDAO newsDAO = provider.getNewsDAO();
 
-	private static final String EXP_BODY = ".*fuck you.*";
-	private static final String EXP_STAR = ".*\\*+.*";
+	//private static final String STYLE_NOT_ADULT = "NOT IN ('adult')";
+	//private static final String STYLE_LIKE = "%";
+
+	private static final String EXP_BODY = ".*(fuck you)+.*";
+	private static final String EXP_TITLE = ".*\\*+.*";
+	//private static final String EXP_STYLE_LIKE = "^" + STYLE_LIKE + ".*" + STYLE_LIKE + "$";
+
+	private static final String EMPTY = "";
 
 	@Override
 	public void add(News news) throws ServiceException {
@@ -38,7 +44,7 @@ public class NewsServiceImpl implements NewsService {
 			newsDAO.add(news);
 
 		} catch (DAOException | UtilException e) {
-			
+
 			throw new ServiceException(e.getMessage(), e);
 		}
 
@@ -105,22 +111,27 @@ public class NewsServiceImpl implements NewsService {
 
 				CheckField.checkKVLMin(key, value, 2);
 
-				CheckField.checkKVE(key, value, EXP_STAR);
+				CheckField.checkKVE(key, value, EXP_TITLE);
 
-				news.setTitle("%" + value + "%");
+			} else {
+
+				news.setTitle(EMPTY);
 			}
-			
+
 			value = news.getStyle();
 			
+			System.out.println(value);
+
 			if (!CheckField.checkKVN(value)) {
-				
+
 				CheckField.checkVA(value, user.getAge());
-				
-				news.setStyle("IN ('" +  value + "')");
+			
 			} else {
-				
-				news.setStyle("NOT IN ('adult')");
+
+				news.setStyle(EMPTY);
 			}
+			
+			System.out.println( news.getStyle());
 
 			return newsDAO.choose(news);
 
@@ -141,7 +152,7 @@ public class NewsServiceImpl implements NewsService {
 				fieldsData.put(k, WorkWithObjectField.methodGet(news, k.toString()));
 			} catch (UtilException ignore) {
 
-				fieldsData.put(k, "");
+				fieldsData.put(k, EMPTY);
 			}
 		});
 

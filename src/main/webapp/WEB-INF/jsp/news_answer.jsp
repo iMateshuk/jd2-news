@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	import="by.http.news.bean.User" pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -8,6 +9,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <link href="CSS/newsPageStyle.css" rel="stylesheet" type="text/css">
+
+<fmt:setLocale value="${sessionScope.local}" />
+<fmt:setBundle basename="localization.local" var="loc" />
+
+<fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
+
+<fmt:message bundle="${loc}" key="local.loctextanswer.name.success" var="success_txt" />
+<fmt:message bundle="${loc}" key="local.loctextanswer.name.failed" var="failed_txt" />
 
 </head>
 <body>
@@ -24,7 +35,7 @@
 
 			<c:if test="${param.message != null}">
 
-				<font color="red">Failed</font>
+				<font color="red">${failed_txt}</font>
 				<br />
 				<br />
 
@@ -32,48 +43,31 @@
 				<br />
 				<br />
 			</c:if>
-
+			
 			<c:if test="${param.message == null}">
 
-				<font color="#ff8000">Success</font>
+				<font color="#ff8000">${success_txt}</font>
 				<br />
 				<br />
 			</c:if>
 
-
-
-			<c:if
-				test="${sessionScope.user != null && sessionScope.user.getRole() == 'admin'}">
-
-				<form action="Controller" method="post">
-					<input type="hidden" name="command" value="user_tools" />
-					<button class="user" type="submit" name="action" value="userAction">User tools</button>
-				</form>
-				<br />
-
-			</c:if>
-
-			<%-- <c:if test="${sessionScope.user != null && sessionScope.user.getRole() != 'user'}"> --%>
-
-				<form action="Controller" method="post">
-					<input type="hidden" name="command" value="user_tools"/>
-					<button class="user" type="submit" name="action" value="userAction">User tools</button>
-				</form>
-				<br/>
-				
-				<form action="Controller" method="post">
-					<input type="hidden" name="command" value="news_tools" />
-					<button class="user" type="submit" name="action" value="newsAction">News tools</button>
-				</form>
-				<br />
-
-			<%-- </c:if> --%>
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="user_tools"/>
+				<button class="user" type="submit" name="action" value="userAction">${user_tools}</button>
+			</form>
+			<br/>
+			
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="news_tools" />
+				<button class="user" type="submit" name="action" value="newsAction">${news_button}</button>
+			</form>
+			<br />
 
 		</div>
 
 		<form action="Controller" method="post">
 
-			<button type="submit" name="command" value="main">Main Page</button>
+			<button type="submit" name="command" value="main">${main_button}</button>
 
 		</form>
 

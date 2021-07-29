@@ -14,27 +14,20 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class NewsDataCreator implements Creator<News, HttpServletRequest> {
 
-	private Map<CombineEnum, String> fieldsData;
-
-	private void fieldsDataGetMap() {
-
-		fieldsData = FieldMapCreator.create(NewsField.class.getEnumConstants());
-	}
-
 	@Override
 	public News create(HttpServletRequest object) throws UtilException {
 
-		fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
 
 		for (Map.Entry<CombineEnum, String> entry : fieldsData.entrySet()) {
 
 			entry.setValue(object.getParameter(entry.getKey().toString().toLowerCase()));
 		}
 
-		return createNewsData();
+		return createNewsData(fieldsData);
 	}
 
-	private News createNewsData() throws UtilException {
+	private News createNewsData(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		NewsBuilder newsBuilder = new NewsBuilder();
 
@@ -42,15 +35,19 @@ public class NewsDataCreator implements Creator<News, HttpServletRequest> {
 
 			WorkWithObjectField.methodSet(newsBuilder, fields.getKey().toString(), fields.getValue());
 		}
-		
-		return newsBuilder.builder();
 
+		return newsBuilder.builder();
+	}
+
+	private Map<CombineEnum, String> fieldsDataGetMap() {
+
+		return FieldMapCreator.create(NewsField.class.getEnumConstants());
 	}
 
 	@Override
 	public News create() {
 
-		//fieldsDataGetMap();
+		// fieldsDataGetMap();
 		return null;
 	}
 

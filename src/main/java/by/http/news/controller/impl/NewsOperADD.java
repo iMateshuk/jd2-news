@@ -13,7 +13,6 @@ import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
-import by.http.news.util.View;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +32,6 @@ public class NewsOperADD implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 		try {
 
@@ -44,17 +42,15 @@ public class NewsOperADD implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
 		}
-
+		
 		try {
 
 			CheckSession.validateRoleUser(request);
 
 			News news = CREATOR.create(request);
 
-			View.print(news);
-
 			newsServices.add(news);
-
+			
 			response.sendRedirect("Controller?command=" + commandAnswer + "&action=" + commandADD);
 
 		} catch (ServiceException | UtilException e) {

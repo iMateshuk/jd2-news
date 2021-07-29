@@ -13,7 +13,6 @@ import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
-import by.http.news.util.View;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,8 +40,6 @@ public class NewsOperUpdate implements Command {
 			CheckSession.validateRoleUser(request);
 
 			News news = CREATOR.create(request);
-
-			View.print(news);
 
 			newsServices.update(news);
 

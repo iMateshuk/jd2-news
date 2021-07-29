@@ -13,7 +13,6 @@ import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
-import by.http.news.util.View;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,11 +56,7 @@ public class UserAuthorization implements Command {
 			
 			UserData userData = CREATOR.create(request);
 
-			View.print(userData);
-
 			user = userService.authorization(userData);
-
-			View.print(user);
 
 			session = request.getSession(true);
 

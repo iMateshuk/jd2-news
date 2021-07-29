@@ -27,7 +27,7 @@ public class UserDB implements UserDAO {
 	private final static String PASSWORD = "localPassw0rd";
 
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
-	
+
 	private final static String ANSWER_BEGIN = "User login:";
 	private final static String ANSWER_END = " exist.";
 	private final static String ANSWER_END_NOT = " not exist.";
@@ -94,24 +94,23 @@ public class UserDB implements UserDAO {
 	public void delete(UserData userData) throws DAOException {
 
 		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
-			
-			String userLogin =  userData.getLogin();
+
+			String userLogin = userData.getLogin();
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
 
 			ps.setString(1, userLogin);
 
-			if (ps.executeQuery().next()) {
+			if (!ps.executeQuery().next()) {
 
-				ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
-
-				ps.setString(1, userLogin);
-
-				ps.executeUpdate();
-			} else {
-				
 				throw new DAOException(ANSWER_BEGIN + userLogin + ANSWER_END_NOT);
 			}
+
+			ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
+
+			ps.setString(1, userLogin);
+
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 
@@ -131,22 +130,23 @@ public class UserDB implements UserDAO {
 
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next() && rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL())
-					.equals(Generator.genStringHash(userData.getPassword()))) {
-				/*
-				 * userData.setAge(rs.getString(UserSQL.SQL_COLLUM_LABEL_AGE.getSQL()));
-				 * userData.setRole(rs.getString(UserSQL.SQL_COLLUM_LABEL_ROLE.getSQL()));
-				 */
+			if (!(rs.next() && rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL())
+					.equals(Generator.genStringHash(userData.getPassword())))) {
 
-				return CREATOR.create(rs);
+				throw new DAOException(TRHOW_USER_INCORRECT);
 			}
 
-		} catch (SQLException | UtilException e) {
+			return CREATOR.create(rs);
+
+		} catch (SQLException e) {
 
 			throw new DAOException(ANSWER_CHECK_DATA, e);
+
+		} catch (UtilException e) {
+
+			throw new DAOException(e.getMessage(), e);
 		}
 
-		throw new DAOException(TRHOW_USER_INCORRECT);
 	}
 
 	@Override
