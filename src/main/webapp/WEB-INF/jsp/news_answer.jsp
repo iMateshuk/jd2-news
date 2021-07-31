@@ -53,8 +53,10 @@
 
 			<c:if test="${param.action != null}">
 
-				<c:out value="${param.action.toUpperCase()}"></c:out>
-				<br />
+				<fmt:message bundle="${loc}" key="local.loctextnewsanswer.name.${param.action}" var="answer" />
+		
+			<c:out value="${answer.toUpperCase()}"></c:out>
+			<br/>
 			</c:if>
 
 			<c:if test="${param.message != null}">
