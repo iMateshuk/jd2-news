@@ -29,26 +29,29 @@
 </head>
 <body>
 
+<c:set var="url" value="user_tools_delete" scope="session"  />
+
 	<div class="locale">
 
 		<div class="locale">
 
 			<div class="en">
 
-				<form action="Controller" method="post">
-					<input type="hidden" name="local" value="ru" />
-					<button class="local" type="submit" name="command" value="user_tools_delete" />${ru_button}</button>
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="en"/>
+					<input class="local" type="submit" value="${en_button}"/>
 				</form>
 			</div>
 
 			<div class="ru">
 
-				<form action="Controller" method="post">
-					<input type="hidden" name="local" value="en" />
-					<button class="local" type="submit" name="command" value="user_tools_delete" />${en_button}</button>
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="ru"/>
+					<input class="local" type="submit" value="${ru_button}"/>
 				</form>
 			</div>
 		</div>
+	</div>
 		<br /> <br />
 
 		<div id='wrapper'>

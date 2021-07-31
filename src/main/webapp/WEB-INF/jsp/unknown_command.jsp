@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	import="by.http.news.bean.User" import="by.http.news.bean.News"
@@ -19,6 +20,32 @@
 
 </head>
 <body>
+
+<c:set var="url" value="unknown_command" scope="session"  />
+
+<div class="locale">
+
+		<div class="locale">
+
+			<div class="en">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="en"/>
+					<input class="local" type="submit" value="${en_button}"/>
+				</form>
+			</div>
+
+			<div class="ru">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="ru"/>
+					<input class="local" type="submit" value="${ru_button}"/>
+				</form>
+			</div>
+		</div>
+	</div>
+		
+		<br /> <br />
 
 	<h2>${header_txt}!</h2>
 	

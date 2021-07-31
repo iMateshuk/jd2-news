@@ -12,6 +12,8 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
+<fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
 
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
@@ -23,6 +25,30 @@
 
 </head>
 <body>
+
+<c:set var="url" value="user_answer" scope="session"  />
+
+<%-- 		<div class="locale">
+
+			<div class="en">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="en"/>
+					<input class="local" type="submit" value="${en_button}"/>
+				</form>
+			</div>
+
+			<div class="ru">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="ru"/>
+					<input class="local" type="submit" value="${ru_button}"/>
+				</form>
+			</div>
+		</div>
+	</div> --%>
+		
+		<br /> <br />
 
 	<div id='wrapper'>
 

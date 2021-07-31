@@ -9,7 +9,6 @@ import by.http.news.controller.CommandName;
 import by.http.news.service.NewsService;
 import by.http.news.service.ServiceException;
 import by.http.news.service.ServiceProvider;
-import by.http.news.util.Local;
 import by.http.news.util.LogWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -18,22 +17,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class GoToMainPage implements Command {
+	
+	private static String COMMAND = CommandName.MAIN.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.MAIN.toString().toLowerCase() + ".jsp";
+	private final static String PATH = "/WEB-INF/jsp/" + COMMAND + ".jsp";
 	private final static NewsService newsService = ServiceProvider.getInstance().getNewsService();
 	
 	private final static String CommandChoose = CommandName.NEWS_CHOOSE.toString().toLowerCase();
 
 	private final static String CLEAN = "clean";
 	private final static String SESSION_NEWS_SEARCH = "searchNews";
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Local.setLocal(request);
-		
 		HttpSession session = request.getSession(false);
-
+		
 		if (request.getParameter(CLEAN) != null) {
 
 			session.setAttribute(SESSION_NEWS_SEARCH, null);

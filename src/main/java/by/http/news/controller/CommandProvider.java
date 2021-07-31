@@ -6,6 +6,7 @@ import java.util.Map;
 import by.http.news.controller.impl.GoToUserAnswerPage;
 import by.http.news.controller.impl.GoToUserDeletePage;
 import by.http.news.controller.impl.GoToUserPasswordPage;
+import by.http.news.controller.impl.ChangeLocal;
 import by.http.news.controller.impl.GoToAuthorizationPage;
 import by.http.news.controller.impl.GoToMainPage;
 import by.http.news.controller.impl.GoToNewsAddPage;
@@ -65,6 +66,8 @@ public class CommandProvider {
 		commands.put(CommandName.NEWS_ANSWER, new GoToNewsAnswerPage());
 		
 		commands.put(CommandName.UNKNOWN_COMMAND, new UnknownCommand());
+		
+		commands.put(CommandName.CHANGE_LOCAL, new ChangeLocal());
 		
 	}
 

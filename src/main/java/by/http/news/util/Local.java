@@ -8,7 +8,7 @@ public class Local {
 	private final static String LOCAL = "local";
 	private final static String LOCAL_DEF = "en";
 
-	public static void setLocal(HttpServletRequest request) {
+	public static void setDef(HttpServletRequest request) {
 
 		HttpSession session = request.getSession(true);
 
@@ -16,12 +16,20 @@ public class Local {
 
 			session.setAttribute(LOCAL, LOCAL_DEF);
 		}
-
-		if (request.getParameter(LOCAL) != null
-				&& !((String) session.getAttribute(LOCAL)).equals(request.getParameter(LOCAL))) {
-
-			session.setAttribute(LOCAL, request.getParameter(LOCAL));
-		}
+	}
+	
+	public static void change(HttpServletRequest request) {
+		
+		request.getSession(true).setAttribute(LOCAL, request.getParameter(LOCAL));
+		
+		/*
+		 * HttpSession session = request.getSession(true);
+		 * 
+		 * if (request.getParameter(LOCAL) != null && !((String)
+		 * session.getAttribute(LOCAL)).equals(request.getParameter(LOCAL))) {
+		 * 
+		 * session.setAttribute(LOCAL, request.getParameter(LOCAL)); }
+		 */
 	}
 
 }

@@ -33,8 +33,8 @@ h2 {
 	text-align: center;
 }
 
-.en_ru{
-	float:right;margin:0;;
+.ru, .en{
+	float:right;margin:0 5px;
 }
 
 .headerLeft {

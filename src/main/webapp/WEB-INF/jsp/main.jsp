@@ -1,5 +1,3 @@
-<%@ page import="org.apache.jasper.tagplugins.jstl.core.If"%>
-<%@ page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -31,19 +29,28 @@
 </head>
 <body>
 
-	<div class="locale">
+<c:set var="url" value="main" scope="session"  />
 
-		<div class="en_ru">
+<div class="locale">
 
-			<form action="Controller" method="post">
-				<input type="hidden" name="command" value="main" />
+		<div class="locale">
 
-				<button type="submit" name="local" value="en" />${en_button}</button>
-				
-				<button type="submit" name="local" value="ru" />${ru_button}</button>
-			</form>
+			<div class="en">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="en"/>
+					<input class="local" type="submit" value="${en_button}"/>
+				</form>
+			</div>
+
+			<div class="ru">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="ru"/>
+					<input class="local" type="submit" value="${ru_button}"/>
+				</form>
+			</div>
 		</div>
-
 	</div>
 
 	<br /><br />
@@ -76,19 +83,17 @@
 		
 		</form><br/>
 		
+		<c:if test="${searchNews != null && not empty newses}">
 		<div class="clean">
-		<form action="Controller" method="post">
-		
-			<c:if test="${searchNews != null && not empty newses}">
-			
+			<form action="Controller" method="post">
+					
 				<input type="hidden" name="command" value="main" />
 				<button class="user" type="submit" name="clean" value="clean">${clean_btn}</button>
 				<br/>
-		
-			</c:if>
-		
-		</form>
+
+			</form>
 		</div>
+		</c:if>
 
 		</div>
 

@@ -23,6 +23,30 @@
 </head>
 <body>
 
+<c:set var="url" value="news_answer" scope="session"  />
+
+<%-- 	<div class="locale">
+
+		<div class="locale">
+
+			<div class="en">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="en"/>
+					<input class="local" type="submit" value="${en_button}"/>
+				</form>
+			</div>
+
+			<div class="ru">
+
+				<form action="Controller?command=change_local" method="post">
+					<input type="hidden" name="local" value="ru"/>
+					<input class="local" type="submit" value="${ru_button}"/>
+				</form>
+			</div>
+		</div>
+	</div> --%>
+
 	<div id='wrapper'>
 
 		<div id="answer">

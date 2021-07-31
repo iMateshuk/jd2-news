@@ -12,7 +12,6 @@ import by.http.news.service.UserService;
 import by.http.news.util.CheckSession;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
-import by.http.news.util.Local;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
 import by.http.news.util.View;
@@ -34,8 +33,6 @@ public class UserOperUpdate implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Local.setLocal(request);
-		
 		try {
 
 			CheckSession.validate(request);
