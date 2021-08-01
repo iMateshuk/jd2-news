@@ -36,7 +36,7 @@
 </head>
 <body>
 
-<c:set var="url" value="registration" scope="session"  />
+<%-- <c:set var="url" value="registration" scope="session"  /> --%>
 
 	<div class="locale">
 

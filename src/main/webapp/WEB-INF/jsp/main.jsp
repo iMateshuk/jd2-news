@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<c:set var="url" value="main" scope="session"  />
+<%-- <c:set var="url" value="main" scope="session"  /> --%>
 
 <div class="locale">
 

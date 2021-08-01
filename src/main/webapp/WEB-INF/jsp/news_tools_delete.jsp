@@ -30,7 +30,7 @@
 </head>
 <body>
 
-<c:set var="url" value="news_tools_delete" scope="session"  />
+<%-- <c:set var="url" value="news_tools_delete" scope="session"  /> --%>
 
 	<div class="locale">
 

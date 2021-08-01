@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<c:set var="url" value="user_tools_delete" scope="session"  />
+<%-- <c:set var="url" value="user_tools_delete" scope="session"  /> --%>
 
 	<div class="locale">
 

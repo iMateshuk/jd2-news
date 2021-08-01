@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<c:set var="url" value="authorization" scope="session"  />
+<%-- <c:set var="url" value="authorization" scope="session"  /> --%>
 
 	<div class="locale">
 

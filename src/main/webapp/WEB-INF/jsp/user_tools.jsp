@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<c:set var="url" value="user_tools" scope="session"  />
+<%-- <c:set var="url" value="user_tools" scope="session"  /> --%>
 
 	<div class="locale">
 

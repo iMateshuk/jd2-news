@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<c:set var="url" value="news_tools_update" scope="session"  />
+<%-- <c:set var="url" value="news_tools_update" scope="session"  /> --%>
 
 	<div class="locale">
 

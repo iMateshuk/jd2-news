@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<c:set var="url" value="user_answer" scope="session"  />
+<%-- <c:set var="url" value="user_answer" scope="session"  /> --%>
 
 <%-- 		<div class="locale">
 

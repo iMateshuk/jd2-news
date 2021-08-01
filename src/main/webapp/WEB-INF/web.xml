@@ -40,16 +40,6 @@
   <filter-mapping>
   	<filter-name>CharsetFilter</filter-name>
   	<url-pattern>/Controller</url-pattern>
-</filter-mapping>
-
-<!-- <filter>
-  	<filter-name>RequestLogging</filter-name>
-  	<filter-class>by.http.news.filter.RequestLogging</filter-class>
- </filter>
-  
-  <filter-mapping>
-  	<filter-name>RequestLogging</filter-name>
-  	<url-pattern>/Controller</url-pattern>
-</filter-mapping> -->
+  </filter-mapping>
   
 </web-app>

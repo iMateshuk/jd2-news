@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<c:set var="url" value="unknown_command" scope="session"  />
+<%-- <c:set var="url" value="unknown_command" scope="session"  /> --%>
 
 <div class="locale">
 
