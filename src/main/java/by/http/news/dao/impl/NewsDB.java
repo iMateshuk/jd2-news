@@ -1,7 +1,6 @@
 package by.http.news.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,10 @@ import java.util.List;
 import by.http.news.bean.News;
 import by.http.news.dao.DAOException;
 import by.http.news.dao.NewsDAO;
+import by.http.news.dao.util.NewsConnectionPool;
+import by.http.news.dao.util.ConnectionPoolException;
+import by.http.news.dao.util.NewsDBParameter;
+import by.http.news.dao.util.NewsDBResourceManager;
 import by.http.news.util.CheckField;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
@@ -22,13 +25,9 @@ import by.http.news.util.UtilException;
 public class NewsDB implements NewsDAO {
 
 	private static final Creator<News, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getNewsCreator();
-
-	private static final String DRIVER = "org.gjt.mm.mysql.Driver";
-
-	private final static String SERVER = "jdbc:mysql://127.0.0.1/mynews?useSSL=false";
-	private final static String USER = "localUser";
-	private final static String PASSWORD = "localPassw0rd";
-
+	
+	private static final NewsDBResourceManager DB_MANAGER = NewsDBResourceManager.getInstance(); 
+	
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final static String ANSWER_BEGIN = "News whith title:";
@@ -41,7 +40,7 @@ public class NewsDB implements NewsDAO {
 
 		try {
 
-			Class.forName(DRIVER);
+			Class.forName(DB_MANAGER.getValue(NewsDBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 
@@ -53,7 +52,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void add(News news) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
@@ -74,7 +73,7 @@ public class NewsDB implements NewsDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX, e);
 		}
@@ -84,7 +83,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void update(News news) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
@@ -108,7 +107,7 @@ public class NewsDB implements NewsDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
@@ -118,7 +117,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void delete(News news) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
 
 			String newsTitle = news.getTitle();
 
@@ -137,7 +136,7 @@ public class NewsDB implements NewsDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
@@ -147,7 +146,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public List<News> choose(News news) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
 
 			String newsStyle = news.getStyle();
 
@@ -165,7 +164,7 @@ public class NewsDB implements NewsDAO {
 
 			return newsCreator(ps.executeQuery());
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
@@ -175,11 +174,11 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public List<News> load() throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
 
 			return newsCreator(con.createStatement().executeQuery(NewsSQL.SQL_SELECT_FOR_LOAD.getSQL()));
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}

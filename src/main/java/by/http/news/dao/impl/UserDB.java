@@ -1,7 +1,6 @@
 package by.http.news.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +9,10 @@ import by.http.news.bean.User;
 import by.http.news.bean.UserData;
 import by.http.news.dao.DAOException;
 import by.http.news.dao.UserDAO;
+import by.http.news.dao.util.ConnectionPoolException;
+import by.http.news.dao.util.UsersConnectionPool;
+import by.http.news.dao.util.UsersDBParameter;
+import by.http.news.dao.util.UsersDBResourceManager;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.Generator;
@@ -20,12 +23,8 @@ public class UserDB implements UserDAO {
 
 	private static final Creator<User, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getUserCreator();
 
-	private static final String DRIVER = "org.gjt.mm.mysql.Driver";
-
-	private final static String SERVER = "jdbc:mysql://127.0.0.1/myusers?useSSL=false";
-	private final static String USER = "localUser";
-	private final static String PASSWORD = "localPassw0rd";
-
+	private static final UsersDBResourceManager DB_MANAGER = new UsersDBResourceManager();
+	
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
 
 	private final static String ANSWER_BEGIN = "User login:";
@@ -37,7 +36,7 @@ public class UserDB implements UserDAO {
 
 		try {
 
-			Class.forName(DRIVER);
+			Class.forName(DB_MANAGER.getValue(UsersDBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 
@@ -49,7 +48,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void registration(UserData userData) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_INSERT_USER.getSQL());
 
@@ -62,7 +61,7 @@ public class UserDB implements UserDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(ANSWER_BEGIN + userData.getLogin() + ANSWER_END, e);
 		}
@@ -72,7 +71,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void update(UserData userData) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_USER.getSQL());
 
@@ -83,7 +82,7 @@ public class UserDB implements UserDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
@@ -93,7 +92,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void delete(UserData userData) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
 			String userLogin = userData.getLogin();
 
@@ -112,7 +111,7 @@ public class UserDB implements UserDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
@@ -122,7 +121,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public User authorization(UserData userData) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
 
@@ -138,7 +137,7 @@ public class UserDB implements UserDAO {
 
 			return CREATOR.create(rs);
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(ANSWER_CHECK_DATA, e);
 
@@ -152,7 +151,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void password(UserData userData) throws DAOException {
 
-		try (Connection con = DriverManager.getConnection(SERVER, USER, PASSWORD)) {
+		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD.getSQL());
 
@@ -161,7 +160,7 @@ public class UserDB implements UserDAO {
 
 			ps.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
 		}
