@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public class UsersDBResourceManager {
 	
-	private static final String DB_FILENAME = "by.http.news.dao.util.db_users";
+	private static final String DB_FILENAME = "properties.db_users";
 	
 	private final static UsersDBResourceManager INSTANCE = new UsersDBResourceManager();
 	
