@@ -26,8 +26,6 @@ public class NewsDB implements NewsDAO {
 
 	private static final Creator<News, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getNewsCreator();
 	
-	private static final NewsDBResourceManager DB_MANAGER = NewsDBResourceManager.getInstance(); 
-	
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final static String ANSWER_BEGIN = "News whith title:";
@@ -40,7 +38,7 @@ public class NewsDB implements NewsDAO {
 
 		try {
 
-			Class.forName(DB_MANAGER.getValue(NewsDBParameter.DB_DRIVER));
+			Class.forName(NewsDBResourceManager.getInstance().getValue(NewsDBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 

@@ -23,8 +23,6 @@ public class UserDB implements UserDAO {
 
 	private static final Creator<User, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getUserCreator();
 
-	private static final UsersDBResourceManager DB_MANAGER = new UsersDBResourceManager();
-	
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
 
 	private final static String ANSWER_BEGIN = "User login:";
@@ -36,7 +34,7 @@ public class UserDB implements UserDAO {
 
 		try {
 
-			Class.forName(DB_MANAGER.getValue(UsersDBParameter.DB_DRIVER));
+			Class.forName(UsersDBResourceManager.getInstance().getValue(UsersDBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 

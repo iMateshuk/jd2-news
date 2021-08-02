@@ -11,6 +11,8 @@ public class UsersDBResourceManager {
 	
 	private ResourceBundle bundle = ResourceBundle.getBundle(DB_FILENAME, Locale.US);
 	
+	private UsersDBResourceManager() {}
+	
 	public static UsersDBResourceManager getInstance() {
 		
 		return INSTANCE;

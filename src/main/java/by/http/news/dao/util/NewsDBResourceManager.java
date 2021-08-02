@@ -11,6 +11,8 @@ public class NewsDBResourceManager {
 	
 	private ResourceBundle bundle = ResourceBundle.getBundle(DB_FILENAME, Locale.US);
 	
+	private NewsDBResourceManager() {}
+	
 	public static NewsDBResourceManager getInstance() {
 		
 		return INSTANCE;
