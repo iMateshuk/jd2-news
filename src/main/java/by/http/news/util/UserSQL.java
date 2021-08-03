@@ -8,6 +8,7 @@ public enum UserSQL {
 	SQL_UPDATE_PASSWORD("UPDATE users SET password=? WHERE login=?"),
 	
 	SQL_SELECT_LOGIN("SELECT * FROM users WHERE login=?"),
+	SQL_SELECT_LOGIN_PASSWORD("SELECT * FROM users WHERE login=? AND password=?"),
 	
 	SQL_DELETE_LOGIN("DELETE FROM users WHERE login=?"),
 

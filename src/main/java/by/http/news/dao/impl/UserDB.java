@@ -121,14 +121,14 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
 
-			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
+			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN_PASSWORD.getSQL());
 
 			ps.setString(1, userData.getLogin());
-
+			ps.setString(2, Generator.genStringHash(userData.getPassword()));
+			
 			ResultSet rs = ps.executeQuery();
 
-			if (!(rs.next() && rs.getString(UserSQL.SQL_COLLUM_LABEL_PASSWORD.getSQL())
-					.equals(Generator.genStringHash(userData.getPassword())))) {
+			if (!rs.next()) {
 
 				throw new DAOException(TRHOW_USER_INCORRECT);
 			}
