@@ -19,6 +19,10 @@ public class UserServiceImpl implements UserService {
 
 	private static final String EXP_SYMBOLS = ".*\\W+.*";
 	private static final String EXP_EMAIL = "[\\w_+-\\.]+@[\\w-\\.]+\\.[a-zA-Z]{2,4}";
+	
+	private static final int FIELD_LENGHT = 3;
+	private static final int AGE_MIN_LENGHT = 1;
+	private static final int AGE_MAX_LENGHT = 3;
 
 	@Override
 	public void registration(UserData userData) throws ServiceException {
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService {
 			
 			CheckField.checkKVN(key, value);
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
-			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 			
 			key = UserDataField.EMAIL.toString();
 			value = userData.getEmail();
@@ -71,7 +75,7 @@ public class UserServiceImpl implements UserService {
 			String key = UserDataField.LOGIN.toString();
 			String value = userData.getLogin();
 			
-			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 
 			userDAO.delete(userData);
@@ -107,10 +111,10 @@ public class UserServiceImpl implements UserService {
 			String key = UserDataField.LOGIN.toString();
 			String value = userData.getLogin();
 
-			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 			
-			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 3);
+			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), FIELD_LENGHT);
 
 			return userDAO.authorization(userData);
 
@@ -129,22 +133,22 @@ public class UserServiceImpl implements UserService {
 			String value = userData.getLogin();
 
 			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 			
 			key = UserDataField.AGE.toString();
 			value = userData.getAge();
 			
 			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, 1);
-			CheckField.checkKVLMax(key, value, 3);
+			CheckField.checkKVLMin(key, value, AGE_MIN_LENGHT);
+			CheckField.checkKVLMax(key, value, AGE_MAX_LENGHT);
 			CheckField.checkKI(key, value);
 			
 			key = UserDataField.PASSWORD.toString();
 			value = userData.getPassword();
 
 			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, 3);
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 
 			value = userData.getEmail();
 			

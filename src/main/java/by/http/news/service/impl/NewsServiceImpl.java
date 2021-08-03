@@ -26,6 +26,9 @@ public class NewsServiceImpl implements NewsService {
 	private static final String EXP_TITLE = ".*\\*+.*";
 
 	private static final String EMPTY = "";
+	
+	private static final int TITLE_LENGHT = 2;
+	private static final int FIELD_LENGHT = 3;
 
 	@Override
 	public void add(News news) throws ServiceException {
@@ -104,7 +107,7 @@ public class NewsServiceImpl implements NewsService {
 
 			if (!CheckField.checkKVN(value)) {
 
-				CheckField.checkKVLMin(key, value, 2);
+				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
 
 				CheckField.checkKVE(key, value, EXP_TITLE);
 
@@ -159,7 +162,7 @@ public class NewsServiceImpl implements NewsService {
 
 				CheckField.checkKVN(key, value);
 
-				CheckField.checkKVLMin(key, value, 3);
+				CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 
 			} catch (UtilException e) {
 
