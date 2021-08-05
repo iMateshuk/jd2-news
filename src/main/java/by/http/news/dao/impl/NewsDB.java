@@ -49,10 +49,12 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public void add(News news) throws DAOException {
+		
+		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
-			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
+			ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
 			ps.setString(1, news.getTitle());
 
@@ -60,6 +62,8 @@ public class NewsDB implements NewsDAO {
 
 				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX);
 			}
+			
+			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_INSERT_NEWS.getSQL());
 
@@ -74,16 +78,27 @@ public class NewsDB implements NewsDAO {
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX, e);
+		} finally {
+			
+			try {
+				
+				ps.close();
+			} catch (SQLException e) {
+				
+				throw new DAOException(e.getMessage(), e);
+			}
 		}
 
 	}
 
 	@Override
 	public void update(News news) throws DAOException {
+		
+		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
-			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
+			ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
 			ps.setString(1, news.getTitle());
 
@@ -93,6 +108,8 @@ public class NewsDB implements NewsDAO {
 
 				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_NOT);
 			}
+			
+			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());
 
@@ -108,18 +125,29 @@ public class NewsDB implements NewsDAO {
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
+		} finally {
+			
+			try {
+				
+				ps.close();
+			} catch (SQLException e) {
+				
+				throw new DAOException(e.getMessage(), e);
+			}
 		}
 
 	}
 
 	@Override
 	public void delete(News news) throws DAOException {
+		
+		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			String newsTitle = news.getTitle();
 
-			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
+			ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
 			ps.setString(1, newsTitle);
 
@@ -127,6 +155,8 @@ public class NewsDB implements NewsDAO {
 
 				throw new DAOException(ANSWER_BEGIN + newsTitle + ANSWER_END_NOT);
 			}
+			
+			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_DELETE_NEWS_TITLE.getSQL());
 
@@ -137,21 +167,29 @@ public class NewsDB implements NewsDAO {
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
+		} finally {
+
+			try {
+				
+				ps.close();
+			} catch (SQLException e) {
+				
+				throw new DAOException(e.getMessage(), e);
+			}
 		}
 
 	}
 
 	@Override
 	public List<News> choose(News news) throws DAOException {
+		
+		String newsStyle = news.getStyle();
 
-		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
+		String sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + " " + checkStyle(newsStyle) + " "
+				+ NewsSQL.SQL_ORDER_BY_DATE.getSQL();
 
-			String newsStyle = news.getStyle();
-
-			String sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + " " + checkStyle(newsStyle) + " "
-					+ NewsSQL.SQL_ORDER_BY_DATE.getSQL();
-
-			PreparedStatement ps = con.prepareStatement(sql);
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(sql);) {
 
 			ps.setString(1, STYLE_LIKE + news.getTitle() + STYLE_LIKE);
 			
