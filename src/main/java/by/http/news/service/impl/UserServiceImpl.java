@@ -8,6 +8,7 @@ import by.http.news.dao.UserDAO;
 import by.http.news.service.ServiceException;
 import by.http.news.service.UserService;
 import by.http.news.util.CheckField;
+import by.http.news.util.Generator;
 import by.http.news.util.UserDataField;
 import by.http.news.util.UtilException;
 
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
 	public void registration(UserData userData) throws ServiceException {
 
 		checkField(userData);
+		
+		userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 		try {
 
@@ -93,6 +96,8 @@ public class UserServiceImpl implements UserService {
 		try {
 
 			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 8);
+			
+			userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 			userDAO.password(userData);
 
@@ -115,6 +120,8 @@ public class UserServiceImpl implements UserService {
 			CheckField.checkKVE(key, value, EXP_SYMBOLS);
 			
 			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), FIELD_LENGHT);
+			
+			userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 			return userDAO.authorization(userData);
 

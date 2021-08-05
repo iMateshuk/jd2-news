@@ -15,7 +15,6 @@ import by.http.news.dao.util.DBParameter;
 import by.http.news.dao.util.DBResourceManager;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
-import by.http.news.util.Generator;
 import by.http.news.util.UserSQL;
 import by.http.news.util.UtilException;
 
@@ -52,7 +51,7 @@ public class UserDB implements UserDAO {
 
 			ps.setString(1, userData.getName());
 			ps.setString(2, userData.getLogin());
-			ps.setString(3, Generator.genStringHash(userData.getPassword()));
+			ps.setString(3, userData.getPassword());
 			ps.setString(4, userData.getEmail());
 			ps.setString(5, userData.getRole());
 			ps.setString(6, userData.getAge());
@@ -124,7 +123,7 @@ public class UserDB implements UserDAO {
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN_PASSWORD.getSQL());
 
 			ps.setString(1, userData.getLogin());
-			ps.setString(2, Generator.genStringHash(userData.getPassword()));
+			ps.setString(2, userData.getPassword());
 			
 			ResultSet rs = ps.executeQuery();
 
@@ -153,7 +152,7 @@ public class UserDB implements UserDAO {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD.getSQL());
 
-			ps.setString(1, Generator.genStringHash(userData.getPassword()));
+			ps.setString(1, userData.getPassword());
 			ps.setString(2, userData.getLogin());
 
 			ps.executeUpdate();
