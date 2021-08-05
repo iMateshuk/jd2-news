@@ -9,10 +9,10 @@ import by.http.news.bean.User;
 import by.http.news.bean.UserData;
 import by.http.news.dao.DAOException;
 import by.http.news.dao.UserDAO;
+import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
-import by.http.news.dao.util.UsersConnectionPool;
-import by.http.news.dao.util.UsersDBParameter;
-import by.http.news.dao.util.UsersDBResourceManager;
+import by.http.news.dao.util.DBParameter;
+import by.http.news.dao.util.DBResourceManager;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.Generator;
@@ -34,7 +34,7 @@ public class UserDB implements UserDAO {
 
 		try {
 
-			Class.forName(UsersDBResourceManager.getInstance().getValue(UsersDBParameter.DB_DRIVER));
+			Class.forName(DBResourceManager.getInstance().getValue(DBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 
@@ -46,7 +46,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void registration(UserData userData) throws DAOException {
 
-		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_INSERT_USER.getSQL());
 
@@ -69,7 +69,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void update(UserData userData) throws DAOException {
 
-		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_USER.getSQL());
 
@@ -90,7 +90,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void delete(UserData userData) throws DAOException {
 
-		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			String userLogin = userData.getLogin();
 
@@ -119,7 +119,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public User authorization(UserData userData) throws DAOException {
 
-		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN_PASSWORD.getSQL());
 
@@ -149,7 +149,7 @@ public class UserDB implements UserDAO {
 	@Override
 	public void password(UserData userData) throws DAOException {
 
-		try (Connection con = UsersConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD.getSQL());
 

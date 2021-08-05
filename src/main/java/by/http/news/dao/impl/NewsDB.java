@@ -12,10 +12,10 @@ import java.util.List;
 import by.http.news.bean.News;
 import by.http.news.dao.DAOException;
 import by.http.news.dao.NewsDAO;
-import by.http.news.dao.util.NewsConnectionPool;
+import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
-import by.http.news.dao.util.NewsDBParameter;
-import by.http.news.dao.util.NewsDBResourceManager;
+import by.http.news.dao.util.DBParameter;
+import by.http.news.dao.util.DBResourceManager;
 import by.http.news.util.CheckField;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
@@ -38,7 +38,7 @@ public class NewsDB implements NewsDAO {
 
 		try {
 
-			Class.forName(NewsDBResourceManager.getInstance().getValue(NewsDBParameter.DB_DRIVER));
+			Class.forName(DBResourceManager.getInstance().getValue(DBParameter.DB_DRIVER));
 
 		} catch (ClassNotFoundException e) {
 
@@ -50,7 +50,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void add(News news) throws DAOException {
 
-		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
@@ -81,7 +81,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void update(News news) throws DAOException {
 
-		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID.getSQL());
 
@@ -115,7 +115,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void delete(News news) throws DAOException {
 
-		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			String newsTitle = news.getTitle();
 
@@ -144,7 +144,7 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public List<News> choose(News news) throws DAOException {
 
-		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			String newsStyle = news.getStyle();
 
@@ -171,9 +171,9 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public List<News> load() throws DAOException {
-
-		try (Connection con = NewsConnectionPool.getInstance().takeConnection()) {
-
+		
+		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
+			
 			return newsCreator(con.createStatement().executeQuery(NewsSQL.SQL_SELECT_FOR_LOAD.getSQL()));
 
 		} catch (SQLException | ConnectionPoolException e) {
@@ -191,9 +191,9 @@ public class NewsDB implements NewsDAO {
 	private List<News> newsCreator(ResultSet rs) throws DAOException {
 
 		List<News> newses = new ArrayList<>();
-
+		
 		try {
-
+			
 			while (rs.next()) {
 
 				newses.add(CREATOR.create(rs));

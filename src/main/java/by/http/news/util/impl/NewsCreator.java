@@ -32,7 +32,7 @@ public class NewsCreator implements Creator<News, ResultSet> {
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
 
 			CombineEnum key = fields.getKey();
-
+			
 			try {
 
 				fieldsData.replace(key, object.getString(key.toString().toLowerCase()));

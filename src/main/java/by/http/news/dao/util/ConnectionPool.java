@@ -24,9 +24,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
-public class NewsConnectionPool {
+public class ConnectionPool {
 
-	private final static NewsConnectionPool instance = new NewsConnectionPool();
+	private final static ConnectionPool instance = new ConnectionPool();
 
 	private BlockingQueue<Connection> connectionQueue;
 	private BlockingQueue<Connection> givenAwayConQueue;
@@ -36,17 +36,17 @@ public class NewsConnectionPool {
 	private String password;
 	private int poolSize;
 
-	private NewsConnectionPool() {
+	private ConnectionPool() {
 
-		NewsDBResourceManager dbResourceManager = NewsDBResourceManager.getInstance();
+		DBResourceManager dbResourceManager = DBResourceManager.getInstance();
 
-		this.url = dbResourceManager.getValue(NewsDBParameter.DB_URL);
-		this.user = dbResourceManager.getValue(NewsDBParameter.DB_USER);
-		this.password = dbResourceManager.getValue(NewsDBParameter.DB_PASSWORD);
+		this.url = dbResourceManager.getValue(DBParameter.DB_URL);
+		this.user = dbResourceManager.getValue(DBParameter.DB_USER);
+		this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
 
 		try {
 
-			this.poolSize = Integer.parseInt(dbResourceManager.getValue(NewsDBParameter.DB_POOL_SIZE));
+			this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POOL_SIZE));
 		} catch (NumberFormatException e) {
 
 			poolSize = 5;
@@ -62,7 +62,7 @@ public class NewsConnectionPool {
 		}
 	}
 
-	public static NewsConnectionPool getInstance() {
+	public static ConnectionPool getInstance() {
 
 		return instance;
 	}

@@ -1,8 +1,8 @@
 package by.http.news.dao.util;
 
-public class UsersDBParameter {
+public class DBParameter {
 	
-	private UsersDBParameter() {}
+	private DBParameter() {}
 	
 	public static final String DB_DRIVER = "db.driver";
 	public static final String DB_URL = "db.url";
