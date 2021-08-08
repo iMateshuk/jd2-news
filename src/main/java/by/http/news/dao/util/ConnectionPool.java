@@ -36,6 +36,19 @@ public class ConnectionPool {
 	private String password;
 	private int poolSize;
 
+	{
+
+		try {
+
+			Class.forName(DBResourceManager.getInstance().getValue(DBParameter.DB_DRIVER));
+
+		} catch (ClassNotFoundException e) {
+
+			throw new ExceptionInInitializerError(e);
+		}
+
+	}
+
 	private ConnectionPool() {
 
 		DBResourceManager dbResourceManager = DBResourceManager.getInstance();
@@ -77,7 +90,7 @@ public class ConnectionPool {
 			connectionQueue = new ArrayBlockingQueue<Connection>(poolSize);
 
 			for (int i = 0; i < poolSize; i++) {
-				
+
 				Connection connection = DriverManager.getConnection(url, user, password);
 
 				PooledConnection poledConnection = new PooledConnection(connection);
@@ -122,7 +135,7 @@ public class ConnectionPool {
 
 			throw new ConnectionPoolException("Error connecting to the data source.", e);
 		}
-		
+
 		return connection;
 	}
 

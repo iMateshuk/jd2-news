@@ -14,8 +14,6 @@ import by.http.news.dao.DAOException;
 import by.http.news.dao.NewsDAO;
 import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
-import by.http.news.dao.util.DBParameter;
-import by.http.news.dao.util.DBResourceManager;
 import by.http.news.util.CheckField;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
@@ -33,19 +31,6 @@ public class NewsDB implements NewsDAO {
 	private final static String ANSWER_END_EX = " exist, check you data.";
 
 	private static final String STYLE_LIKE = "%";
-
-	{
-
-		try {
-
-			Class.forName(DBResourceManager.getInstance().getValue(DBParameter.DB_DRIVER));
-
-		} catch (ClassNotFoundException e) {
-
-			throw new ExceptionInInitializerError(e);
-		}
-
-	}
 
 	@Override
 	public void add(News news) throws DAOException {

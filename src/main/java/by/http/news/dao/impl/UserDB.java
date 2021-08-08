@@ -11,8 +11,6 @@ import by.http.news.dao.DAOException;
 import by.http.news.dao.UserDAO;
 import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
-import by.http.news.dao.util.DBParameter;
-import by.http.news.dao.util.DBResourceManager;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.UserSQL;
@@ -28,19 +26,6 @@ public class UserDB implements UserDAO {
 	private final static String ANSWER_END = " exist.";
 	private final static String ANSWER_END_NOT = " not exist.";
 	private final static String ANSWER_CHECK_DATA = "Check you data!";
-
-	{
-
-		try {
-
-			Class.forName(DBResourceManager.getInstance().getValue(DBParameter.DB_DRIVER));
-
-		} catch (ClassNotFoundException e) {
-
-			throw new ExceptionInInitializerError(e);
-		}
-
-	}
 
 	@Override
 	public void registration(UserData userData) throws DAOException {
