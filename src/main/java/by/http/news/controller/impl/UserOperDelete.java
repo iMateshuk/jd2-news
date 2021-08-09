@@ -29,6 +29,21 @@ public class UserOperDelete implements Command {
 	private final static String commandUserDelete = CommandName.USER_DELETE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
+	private final static String ATTRIBUTE_USER = "user";
+	private final static String ROLE_ADMIN = "admin";
+
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION)
+			.concat(commandUserDelete).concat(MESSAGE).concat("Wrong User!");
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserDelete)
+			.concat(MESSAGE).concat("Delete success: ");
+	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserDelete)
+			.concat(MESSAGE);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -36,12 +51,11 @@ public class UserOperDelete implements Command {
 
 			CheckSession.validate(request);
 
-			User user = (User) request.getSession().getAttribute("user");
+			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 
-			if (!user.getRole().equals("admin")) {
+			if (!user.getRole().equals(ROLE_ADMIN)) {
 
-				response.sendRedirect(
-						"Controller?command=" + commandAnswer + "&message=Wrong User!&action=" + commandUserDelete);
+				response.sendRedirect(REDIRECT_SESSION);
 				return;
 			}
 
@@ -49,19 +63,17 @@ public class UserOperDelete implements Command {
 
 			userService.delete(userData);
 
-			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + userData.getLogin()
-					+ " delete success!&action=" + commandUserDelete);
+			response.sendRedirect(REDIRECT.concat(userData.getLogin()));
 
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action="
-					+ commandUserDelete);
-			
+			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
+			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
 		}
 	}
 

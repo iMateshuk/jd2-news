@@ -18,7 +18,7 @@ public class ChangeLocal implements Command{
 
 		Local.change(request);
 		
-		response.sendRedirect(CONTROLLER + (String) request.getSession().getAttribute(URL));
+		response.sendRedirect(CONTROLLER.concat((String) request.getSession().getAttribute(URL)));
 		
 	}
 

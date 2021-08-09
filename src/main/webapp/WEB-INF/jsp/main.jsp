@@ -25,6 +25,7 @@
 <fmt:message bundle="${loc}" key="local.loctextmain.name.title" var="title_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.info" var="info_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.emty" var="empty_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.message" var="message_txt"/>
 
 </head>
 <body>
@@ -119,7 +120,16 @@
 
 				<i>${title_text}:</i> <strong> <c:out value="${news.getTitle()}" /> </strong>
 				<button type="button" class="collapsible"> <c:out value="${news.getBrief()}" /> ... </button>
-				<div class="content"> <pre class="pre"><c:out value="${news.getBody()}" /></pre> </div>
+				
+				<c:if test="${user != null || not empty user}">
+					<div class="content"> <pre class="pre"><c:out value="${news.getBody()}" /></pre> </div>
+					<br/>
+				</c:if>
+				
+				<c:if test="${user == null || empty user}">
+					<div class="content"> <c:out value="${message_txt}" /> </div>
+					<br/>
+				</c:if>
 			
 			</c:forEach>
 	

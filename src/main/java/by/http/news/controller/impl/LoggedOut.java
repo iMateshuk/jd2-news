@@ -11,24 +11,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class LoggedOut implements Command {
 
-	private final static String commandMain = CommandName.MAIN.toString().toLowerCase();
 	private final static String commandAnswer = CommandName.USER_ANSWER.toString().toLowerCase();
 	private final static String commandLoggedOut = CommandName.LOGGEDOUT.toString().toLowerCase();
-
-	final static String PATH = "/WEB-INF/jsp/" + commandMain + ".jsp";
+	
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = " logged out!&action=";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		User user = (User) request.getSession().getAttribute("user");
 
-		String redirect = "Controller?command=" + commandAnswer + "&message=" + user.getLogin() + " "
-				+ " logged out!&action=" + commandLoggedOut;
+		String redirect = COMMAND.concat(commandAnswer).concat(MESSAGE).concat(user.getLogin())
+				.concat(ACTION).concat(commandLoggedOut);
 
 		request.getSession().invalidate();
 
 		response.sendRedirect(redirect);
-
 	}
-
 }

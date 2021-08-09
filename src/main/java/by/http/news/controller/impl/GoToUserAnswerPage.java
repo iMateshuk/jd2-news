@@ -10,12 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToUserAnswerPage implements Command {
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.USER_ANSWER.toString().toLowerCase() + ".jsp";
+
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_ANSWER.toString().toLowerCase()).concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 

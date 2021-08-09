@@ -14,5 +14,7 @@ public interface UserDAO {
 	void password(UserData userData) throws DAOException;
 	
 	User authorization(UserData userData) throws DAOException;
+	
+	UserData loadUserData(User user) throws DAOException;
 
 }

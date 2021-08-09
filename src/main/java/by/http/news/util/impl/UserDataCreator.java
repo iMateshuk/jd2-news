@@ -1,5 +1,7 @@
 package by.http.news.util.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import by.http.news.bean.UserData;
@@ -28,7 +30,35 @@ public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 		return createUserData(fieldsData);
 	}
 
-	private UserData createUserData(Map<CombineEnum, String> fieldsData) throws UtilException {
+	@Override
+	public UserData create() throws UtilException {
+
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
+
+		return generate(fieldsData);
+	}
+
+	public static UserData create(ResultSet object) throws UtilException{
+
+		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
+
+		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+
+			CombineEnum key = fields.getKey();
+
+			try {
+
+				fieldsData.replace(key, object.getString(key.toString().toLowerCase()));
+			} catch (SQLException e) {
+
+				throw new UtilException(e.getMessage(), e);
+			}
+		}
+
+		return createUserData(fieldsData);
+	}
+
+	private static UserData createUserData(Map<CombineEnum, String> fieldsData) throws UtilException {
 
 		UserDataBuilder userDataBuilder = new UserData.UserDataBuilder();
 
@@ -46,17 +76,9 @@ public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 
 	}
 
-	@Override
-	public UserData create() throws UtilException {
-
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
-
-		return generate(fieldsData);
-	}
-
 	private UserData generate(Map<CombineEnum, String> fieldsData) throws UtilException {
-		
-		fieldsData.forEach((k,v) -> fieldsData.put(k, Generator.genString((int) (Math.random() * 10 + 1))));
+
+		fieldsData.forEach((k, v) -> fieldsData.put(k, Generator.genString((int) (Math.random() * 10 + 1))));
 
 		fieldsData.put(UserDataField.PASSWORD, "noPassword");
 		fieldsData.put(UserDataField.ROLE, "user");
@@ -66,8 +88,8 @@ public class UserDataCreator implements Creator<UserData, HttpServletRequest> {
 
 		return createUserData(fieldsData);
 	}
-	
-	private Map<CombineEnum, String> fieldsDataGetMap() {
+
+	private static Map<CombineEnum, String> fieldsDataGetMap() {
 
 		return FieldMapCreator.create(UserDataField.class.getEnumConstants());
 	}

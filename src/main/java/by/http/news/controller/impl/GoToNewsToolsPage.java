@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToNewsToolsPage implements Command{
 	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.NEWS_TOOLS.toString().toLowerCase() + ".jsp";
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS.toString().toLowerCase()).concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

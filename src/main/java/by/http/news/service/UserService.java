@@ -14,5 +14,7 @@ public interface UserService {
 	void password(UserData userData) throws ServiceException;
 	
 	User authorization(UserData userData) throws ServiceException;
+	
+	UserData loadUserData(User user) throws ServiceException;
 
 }

@@ -28,7 +28,14 @@ public class NewsOperADD implements Command {
 	private final static String commandADD = CommandName.NEWS_ADD.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/" + commandAnswer + ".jsp";
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandADD);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
+	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandADD)
+			.concat(MESSAGE);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,9 +47,9 @@ public class NewsOperADD implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
+			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
 		}
-		
+
 		try {
 
 			CheckSession.validateRoleUser(request);
@@ -50,14 +57,13 @@ public class NewsOperADD implements Command {
 			News news = CREATOR.create(request);
 
 			newsServices.add(news);
-			
-			response.sendRedirect("Controller?command=" + commandAnswer + "&action=" + commandADD);
+
+			response.sendRedirect(REDIRECT);
 
 		} catch (ServiceException | UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(
-					"Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandADD);
+			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
 		}
 
 	}

@@ -30,6 +30,21 @@ public class UserOperUpdate implements Command {
 	private final static String commandUserUpdate = CommandName.USER_UPDATE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
+	private final static String ATTRIBUTE_USER = "user";
+	private final static String ROLE_ADMIN = "admin";
+
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION)
+			.concat(commandUserUpdate).concat(MESSAGE).concat("Wrong Login for update!");
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION)
+			.concat(commandUserUpdate).concat(MESSAGE).concat("Update success: ");
+	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserUpdate)
+			.concat(MESSAGE);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -37,39 +52,36 @@ public class UserOperUpdate implements Command {
 
 			CheckSession.validate(request);
 
-			User user = (User) request.getSession().getAttribute("user");
+			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 
 			UserData userData = CREATOR.create(request);
 
-			if (!userData.getRole().equals(user.getRole()) && !user.getRole().equals("admin")) {
+			if (!userData.getRole().equals(user.getRole()) && !user.getRole().equals(ROLE_ADMIN)) {
 
 				userData.setRole(user.getRole());
 			}
 
 			View.print(userData);
 
-			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals("admin"))) {
+			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals(ROLE_ADMIN))) {
 
-				response.sendRedirect("Controller?command=" + commandAnswer + "&message=Wrong Login for update!&action="
-						+ commandUserUpdate);
+				response.sendRedirect(REDIRECT_SESSION);
 				return;
 			}
 
 			userService.update(userData);
 
-			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + userData.getLogin()
-					+ " update success!&action=" + commandUserUpdate);
+			response.sendRedirect(REDIRECT.concat(userData.getLogin()));
 
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action="
-					+ commandUserUpdate);
+			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
 
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
+			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
 		}
 
 	}

@@ -9,16 +9,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToNewsAnswerPage implements Command{
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.NEWS_ANSWER.toString().toLowerCase() + ".jsp";
+public class GoToNewsAnswerPage implements Command {
+
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_ANSWER.toString().toLowerCase()).concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
-		
+
 	}
 
 }

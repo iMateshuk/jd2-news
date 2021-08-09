@@ -10,9 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToAuthorizationPage implements Command {
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.AUTHORIZATION.toString().toLowerCase() + ".jsp";
-	
+
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.AUTHORIZATION.toString().toLowerCase())
+			.concat(".jsp");
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

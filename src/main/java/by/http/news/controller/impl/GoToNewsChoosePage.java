@@ -10,15 +10,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToNewsChoosePage implements Command {
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.NEWS_TOOLS_CHOOSE.toString().toLowerCase() + ".jsp";
+
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS_CHOOSE.toString().toLowerCase())
+			.concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
-		
+
 	}
 
 }

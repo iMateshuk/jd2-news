@@ -29,7 +29,24 @@ public class UserRegistration implements Command {
 	private final static String commandAutho = CommandName.AUTHORIZATION.toString().toLowerCase();
 	private final static String commandReg = CommandName.REGISTRATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/" + commandAnswer + ".jsp";
+	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
+
+	private final static String ATTRIBUTE_USER = "user";
+	private final static String ROLE_ADMIN = "admin";
+
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+			.concat(MESSAGE).concat("User session time out.");
+	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+			.concat(MESSAGE).concat(commandReg).concat(" success for ");
+	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE).concat(commandReg)
+			.concat(" success for ");
+	private final static String REDIRECT = COMMAND.concat(CommandName.INDEX.toString().toLowerCase());
+	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+			.concat(MESSAGE);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,35 +55,34 @@ public class UserRegistration implements Command {
 
 		if (session == null) {
 
-			response.sendRedirect(
-					"Controller?command=" + commandAnswer + "&message=User session time out.&action=" + commandReg);
+			response.sendRedirect(REDIRECT_SESSION);
 			return;
 		}
 
-		String redirect = "Controller?command=" + CommandName.INDEX.toString().toLowerCase();
+		String redirect = REDIRECT;
 
 		try {
-			
+
 			UserData userData = CREATOR.create(request);
 
 			userService.registration(userData);
 
-			User user = (User) request.getSession().getAttribute("user");
+			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 
-			if (user != null && user.getRole().equals("admin")) {
+			if (user != null && user.getRole().equals(ROLE_ADMIN)) {
 
-				redirect = "Controller?command=" + commandAnswer + "&message=" + userData.getLogin() + " " + commandReg
-						+ " success!&action=" + commandReg;
+				redirect = REDIRECT_USER;
 			} else {
 
-				redirect = "Controller?command=" + commandAutho + "&message=" + userData.getLogin() + " " + commandReg
-						+ " success!";
+				redirect = REDIRECT_USER_NEW;
 			}
+
+			redirect = redirect.concat(userData.getLogin());
 
 		} catch (ServiceException | UtilException e) {
 
 			LogWriter.writeLog(e);
-			redirect = "Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandReg;
+			redirect = REDIRECT_EX.concat(e.getMessage());
 
 		}
 

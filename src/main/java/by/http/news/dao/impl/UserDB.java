@@ -11,6 +11,7 @@ import by.http.news.dao.DAOException;
 import by.http.news.dao.UserDAO;
 import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
+import by.http.news.util.BeanCreator;
 import by.http.news.util.Creator;
 import by.http.news.util.CreatorProvider;
 import by.http.news.util.UserSQL;
@@ -41,13 +42,12 @@ public class UserDB implements UserDAO {
 			ps.setString(6, userData.getAge());
 
 			ps.executeUpdate();
-			
+
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(ANSWER_BEGIN + userData.getLogin() + ANSWER_END, e);
 		} finally {
-			
-			
+
 		}
 
 	}
@@ -74,7 +74,7 @@ public class UserDB implements UserDAO {
 
 	@Override
 	public void delete(UserData userData) throws DAOException {
-		
+
 		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
@@ -89,7 +89,7 @@ public class UserDB implements UserDAO {
 
 				throw new DAOException(ANSWER_BEGIN + userLogin + ANSWER_END_NOT);
 			}
-			
+
 			ps.close();
 
 			ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
@@ -101,15 +101,15 @@ public class UserDB implements UserDAO {
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException(e.getMessage(), e);
-			
+
 		} finally {
-			
+
 			try {
-				
+
 				ps.close();
-				
+
 			} catch (SQLException e) {
-				
+
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
@@ -124,7 +124,7 @@ public class UserDB implements UserDAO {
 
 			ps.setString(1, userData.getLogin());
 			ps.setString(2, userData.getPassword());
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			if (!rs.next()) {
@@ -161,6 +161,34 @@ public class UserDB implements UserDAO {
 			throw new DAOException(e.getMessage(), e);
 		}
 
+	}
+
+	@Override
+	public UserData loadUserData(User user) throws DAOException {
+
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL())) {
+			
+			ps.setString(1, user.getLogin());
+			
+			ResultSet rs = ps.executeQuery();
+
+			if (!rs.next()) {
+
+				throw new DAOException(TRHOW_USER_INCORRECT);
+			}
+			
+			UserData userData = BeanCreator.createUserData(rs);
+			
+			userData.setPassword(null);
+			userData.setLogin(null);
+			
+			return userData;
+
+		} catch (Exception e) {
+
+			throw new DAOException(e.getMessage(), e);
+		}
 	}
 
 }

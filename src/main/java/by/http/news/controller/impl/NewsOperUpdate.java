@@ -28,7 +28,16 @@ public class NewsOperUpdate implements Command {
 	private final static String commandUpdate = CommandName.NEWS_UPDATE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/" + commandAnswer + ".jsp";
+	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
+
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUpdate);
+	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUpdate)
+			.concat(MESSAGE);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,18 +52,17 @@ public class NewsOperUpdate implements Command {
 
 			newsServices.update(news);
 
-			response.sendRedirect("Controller?command=" + commandAnswer + "&action=" + commandUpdate);
+			response.sendRedirect(REDIRECT);
 
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(
-					"Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandUpdate);
+			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
 
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
+			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
 		}
 
 	}

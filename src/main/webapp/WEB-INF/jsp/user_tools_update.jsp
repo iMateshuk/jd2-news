@@ -33,6 +33,8 @@
 <fmt:message bundle="${loc}" key="local.loctext.name.user" var="user_text" />
 
 <fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.header" var="header_txt" />
+<fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.onlyname" var="oname_txt" />
+<fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.onlyemail" var="oemail_txt" />
 
 
 </head>
@@ -65,7 +67,22 @@
 
 		<div id='wrapper'>
 
-			<h1>${header_txt}</h1>
+		<h1>${header_txt}</h1>
+		
+			<c:if test="${userData != null && user.getRole() != 'admin'}">
+			
+				<c:if test="${userData.getName() != null && not empty userData.getName()}">
+					<c:out value="${oname_txt} : ${userData.getName()}"></c:out>
+				</c:if>
+				<br />
+				<c:if test="${userData.getEmail() != null && not empty userData.getEmail()}">
+					<c:out value="${oemail_txt} : ${userData.getEmail()}"></c:out>
+				</c:if>
+			
+				<br />
+				<br />
+
+			</c:if>
 
 			<form action="Controller" method="post">
 

@@ -28,7 +28,16 @@ public class NewsOperDelete implements Command {
 	private final static String commandDelete = CommandName.NEWS_DELETE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/" + commandAnswer + ".jsp";
+	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
+
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandDelete);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
+	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandDelete)
+			.concat(MESSAGE);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,9 +49,9 @@ public class NewsOperDelete implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect("Controller?command=" + commandAuth + "&message=" + e.getMessage());
+			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
 		}
-		
+
 		try {
 
 			CheckSession.validateRoleUser(request);
@@ -50,15 +59,14 @@ public class NewsOperDelete implements Command {
 			News news = CREATOR.create(request);
 
 			newsServices.delete(news);
-			
-			response.sendRedirect("Controller?command=" + commandAnswer + "&action=" + commandDelete);
+
+			response.sendRedirect(REDIRECT);
 
 		} catch (ServiceException | UtilException e) {
 
 			LogWriter.writeLog(e);
 
-			response.sendRedirect(
-					"Controller?command=" + commandAnswer + "&message=" + e.getMessage() + "&action=" + commandDelete);
+			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
 		}
 
 	}

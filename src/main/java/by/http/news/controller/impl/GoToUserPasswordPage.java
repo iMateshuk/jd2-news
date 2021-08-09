@@ -10,8 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToUserPasswordPage implements Command {
-	
-	final static String PATH = "/WEB-INF/jsp/" + CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase() + ".jsp";
+
+	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase())
+			.concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

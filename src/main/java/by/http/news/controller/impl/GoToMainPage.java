@@ -17,30 +17,35 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class GoToMainPage implements Command {
-	
+
 	private static String COMMAND = CommandName.MAIN.toString().toLowerCase();
 
-	private final static String PATH = "/WEB-INF/jsp/" + COMMAND + ".jsp";
+	private final static String PATH = "/WEB-INF/jsp/".concat(COMMAND).concat(".jsp");
 	private final static NewsService newsService = ServiceProvider.getInstance().getNewsService();
-	
+
 	private final static String CommandChoose = CommandName.NEWS_CHOOSE.toString().toLowerCase();
 
 	private final static String CLEAN = "clean";
 	private final static String SESSION_NEWS_SEARCH = "searchNews";
 	
+	private final static String ATTRIBUTE_NEWSES = "newses";
+	private final static String ATTRIBUTE_MESSAGE = "message";
+
+	private final static String REDIRECT = "Controller?command=".concat(CommandChoose);
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-		
+
 		if (request.getParameter(CLEAN) != null) {
 
 			session.setAttribute(SESSION_NEWS_SEARCH, null);
 		}
 
 		if (session.getAttribute(SESSION_NEWS_SEARCH) != null) {
-			
-			response.sendRedirect("Controller?command=" + CommandChoose);
+
+			response.sendRedirect(REDIRECT);
 			return;
 
 		}
@@ -51,12 +56,12 @@ public class GoToMainPage implements Command {
 
 			newses = newsService.load();
 
-			request.setAttribute("newses", newses);
+			request.setAttribute(ATTRIBUTE_NEWSES, newses);
 
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			request.setAttribute("message", e.getMessage());
+			request.setAttribute(ATTRIBUTE_MESSAGE, e.getMessage());
 		}
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
