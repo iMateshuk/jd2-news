@@ -11,8 +11,6 @@ public class FieldMapCreator {
 
 		Map<CombineEnum, String> fieldsData = new HashMap<>();
 
-		fieldsData.clear();
-
 		for (CombineEnum field : fields) {
 
 			fieldsData.put(field, EMPTY);

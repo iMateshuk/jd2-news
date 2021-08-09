@@ -13,115 +13,54 @@ import by.http.news.bean.UserData.UserDataBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class BeanCreator {
-	
-	private final static String USER_ROLE = "user"; 
+
+	private final static String USER_ROLE = "user";
 
 	public static User createUser(ResultSet rs) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = createDataWithRS(
+				FieldMapCreator.create(UserField.class.getEnumConstants()), rs);
 
-		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+		UserBuilder userBuilder = new User.UserBuilder();
 
-			CombineEnum key = fields.getKey();
+		createBeanBuilder(fieldsData, userBuilder);
 
-			try {
-
-				fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
-			} catch (SQLException e) {
-
-				throw new UtilException(e.getMessage(), e);
-			}
-		}
-
-		return createUser(fieldsData);
+		return userBuilder.build();
 	}
-	
+
 	public static News createNews(HttpServletRequest request) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = createDataWithRQ(
+				FieldMapCreator.create(NewsField.class.getEnumConstants()),	request);
 
-		for (Map.Entry<CombineEnum, String> entry : fieldsData.entrySet()) {
+		NewsBuilder newsBuilder = new News.NewsBuilder();
 
-			entry.setValue(request.getParameter(entry.getKey().toString().toLowerCase()));
-		}
+		createBeanBuilder(fieldsData, newsBuilder);
 
-		return createNews(fieldsData);
+		return newsBuilder.builder();
+
 	}
-	
+
 	public static News createNews(ResultSet rs) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
+		Map<CombineEnum, String> fieldsData = createDataWithRS(
+				FieldMapCreator.create(NewsField.class.getEnumConstants()), rs);
 
-		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+		NewsBuilder newsBuilder = new News.NewsBuilder();
 
-			CombineEnum key = fields.getKey();
-			
-			try {
+		createBeanBuilder(fieldsData, newsBuilder);
 
-				fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
-			} catch (SQLException e) {
-
-				throw new UtilException(e.getMessage(), e);
-			}
-		}
-
-		return createNews(fieldsData);
-
+		return newsBuilder.builder();
 	}
 
 	public static UserData createUserData(HttpServletRequest request) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
-
-		for (Map.Entry<CombineEnum, String> entry : fieldsData.entrySet()) {
-
-			entry.setValue(request.getParameter(entry.getKey().toString().toLowerCase()));
-		}
-
-		return createUserData(fieldsData);
-	}
-
-	public static UserData createUserData(ResultSet rs) throws UtilException {
-
-		Map<CombineEnum, String> fieldsData = fieldsDataGetMap();
-
-		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
-
-			CombineEnum key = fields.getKey();
-
-			try {
-
-				fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
-			} catch (SQLException e) {
-
-				throw new UtilException(e.getMessage(), e);
-			}
-		}
-
-		return createUserData(fieldsData);
-	}
-	
-	private static User createUser(Map<CombineEnum, String> fieldsData) throws UtilException {
-
-		UserBuilder userBuilder = new User.UserBuilder();
-
-		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
-
-			WorkWithObjectField.methodSet(userBuilder, fields.getKey().toString(), fields.getValue());
-		}
-
-		return userBuilder.build();
-
-	}
-	
-	private static UserData createUserData(Map<CombineEnum, String> fieldsData) throws UtilException {
+		Map<CombineEnum, String> fieldsData = createDataWithRQ(
+				FieldMapCreator.create(UserDataField.class.getEnumConstants()), request);
 
 		UserDataBuilder userDataBuilder = new UserData.UserDataBuilder();
 
-		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
-
-			WorkWithObjectField.methodSet(userDataBuilder, fields.getKey().toString(), fields.getValue());
-		}
+		createBeanBuilder(fieldsData, userDataBuilder);
 
 		if (fieldsData.get(UserDataField.ROLE) == null || fieldsData.get(UserDataField.ROLE).isEmpty()) {
 
@@ -129,25 +68,57 @@ public class BeanCreator {
 		}
 
 		return userDataBuilder.build();
-
 	}
-	
-	private static News createNews(Map<CombineEnum, String> fieldsData) throws UtilException {
 
-		NewsBuilder newsBuilder = new News.NewsBuilder();
+	public static UserData createUserData(ResultSet rs) throws UtilException {
+
+		Map<CombineEnum, String> fieldsData = createDataWithRS(
+				FieldMapCreator.create(UserDataField.class.getEnumConstants()), rs);
+
+		UserDataBuilder userDataBuilder = new UserData.UserDataBuilder();
+
+		createBeanBuilder(fieldsData, userDataBuilder);
+
+		return userDataBuilder.build();
+	}
+
+	private static Map<CombineEnum, String> createDataWithRS(Map<CombineEnum, String> fieldsData, ResultSet rs)
+			throws UtilException {
 
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
 
-			WorkWithObjectField.methodSet(newsBuilder, fields.getKey().toString(), fields.getValue());
+			CombineEnum key = fields.getKey();
+
+			try {
+
+				fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
+			} catch (SQLException e) {
+
+				throw new UtilException(e.getMessage(), e);
+			}
 		}
 
-		return newsBuilder.builder();
-
+		return fieldsData;
 	}
-	
-	private static Map<CombineEnum, String> fieldsDataGetMap() {
 
-		return FieldMapCreator.create(UserDataField.class.getEnumConstants());
+	private static Map<CombineEnum, String> createDataWithRQ(Map<CombineEnum, String> fieldsData,
+			HttpServletRequest request) {
+
+		for (Map.Entry<CombineEnum, String> entry : fieldsData.entrySet()) {
+
+			entry.setValue(request.getParameter(entry.getKey().toString().toLowerCase()));
+		}
+
+		return fieldsData;
+	}
+
+	private static void createBeanBuilder(Map<CombineEnum, String> fieldsData, Object object) throws UtilException {
+
+		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
+
+			WorkWithObjectField.methodSet(object, fields.getKey().toString(), fields.getValue());
+		}
+
 	}
 
 }

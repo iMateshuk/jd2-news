@@ -12,14 +12,10 @@ import by.http.news.dao.UserDAO;
 import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
 import by.http.news.util.BeanCreator;
-import by.http.news.util.Creator;
-import by.http.news.util.CreatorProvider;
 import by.http.news.util.UserSQL;
 import by.http.news.util.UtilException;
 
 public class UserDB implements UserDAO {
-
-	private static final Creator<User, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getUserCreator();
 
 	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
 
@@ -132,7 +128,7 @@ public class UserDB implements UserDAO {
 				throw new DAOException(TRHOW_USER_INCORRECT);
 			}
 
-			return CREATOR.create(rs);
+			return BeanCreator.createUser(rs);
 
 		} catch (SQLException | ConnectionPoolException e) {
 

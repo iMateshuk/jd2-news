@@ -9,8 +9,7 @@ import by.http.news.controller.CommandName;
 import by.http.news.service.ServiceException;
 import by.http.news.service.ServiceProvider;
 import by.http.news.service.UserService;
-import by.http.news.util.Creator;
-import by.http.news.util.CreatorProvider;
+import by.http.news.util.BeanCreator;
 import by.http.news.util.LogWriter;
 import by.http.news.util.UtilException;
 import jakarta.servlet.ServletException;
@@ -21,9 +20,6 @@ import jakarta.servlet.http.HttpSession;
 public class UserAuthorization implements Command {
 
 	private final static UserService userService = ServiceProvider.getInstance().getUserService();
-
-	private final static Creator<UserData, HttpServletRequest> CREATOR = CreatorProvider.getCreatorProvider()
-			.getUserDataCreator();
 
 	private final static String commandAnswer = CommandName.USER_ANSWER.toString().toLowerCase();
 	private final static String commandAutho = CommandName.AUTHORIZATION.toString().toLowerCase();
@@ -65,7 +61,7 @@ public class UserAuthorization implements Command {
 
 		try {
 
-			UserData userData = CREATOR.create(request);
+			UserData userData = BeanCreator.createUserData(request);
 
 			user = userService.authorization(userData);
 

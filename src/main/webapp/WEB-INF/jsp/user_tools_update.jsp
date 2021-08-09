@@ -73,17 +73,18 @@
 			
 				<c:if test="${userData.getName() != null && not empty userData.getName()}">
 					<c:out value="${oname_txt} : ${userData.getName()}"></c:out>
+					<br />
 				</c:if>
-				<br />
+				
 				<c:if test="${userData.getEmail() != null && not empty userData.getEmail()}">
 					<c:out value="${oemail_txt} : ${userData.getEmail()}"></c:out>
+					<br />
 				</c:if>
-			
-				<br />
+				
 				<br />
 
 			</c:if>
-
+			
 			<form action="Controller" method="post">
 
 				${login_text}<em>*</em>: <br /> <input type="text" name="login"
@@ -92,7 +93,7 @@
 				${name_text}<em>*</em>:
 				<br />
 					<input type="text" name="name" value="" />
-					<br />
+				<br />
 			
 				${email_text}<em>*</em>:
 				<br />

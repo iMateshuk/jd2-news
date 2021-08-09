@@ -14,16 +14,13 @@ import by.http.news.dao.DAOException;
 import by.http.news.dao.NewsDAO;
 import by.http.news.dao.util.ConnectionPool;
 import by.http.news.dao.util.ConnectionPoolException;
+import by.http.news.util.BeanCreator;
 import by.http.news.util.CheckField;
-import by.http.news.util.Creator;
-import by.http.news.util.CreatorProvider;
 import by.http.news.util.NewsSQL;
 import by.http.news.util.UtilException;
 
 public class NewsDB implements NewsDAO {
 
-	private static final Creator<News, ResultSet> CREATOR = CreatorProvider.getCreatorProvider().getNewsCreator();
-	
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final static String ANSWER_BEGIN = "News whith title:";
@@ -218,8 +215,8 @@ public class NewsDB implements NewsDAO {
 		try {
 			
 			while (rs.next()) {
-
-				newses.add(CREATOR.create(rs));
+				
+				newses.add(BeanCreator.createNews(rs));
 			}
 
 		} catch (SQLException | UtilException e) {
