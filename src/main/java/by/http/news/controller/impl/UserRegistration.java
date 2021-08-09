@@ -79,7 +79,6 @@ public class UserRegistration implements Command {
 
 			LogWriter.writeLog(e);
 			redirect = REDIRECT_EX.concat(e.getMessage());
-
 		}
 
 		response.sendRedirect(redirect);
