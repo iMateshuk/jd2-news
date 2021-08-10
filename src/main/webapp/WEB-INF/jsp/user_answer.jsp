@@ -76,7 +76,7 @@
 		
 		<c:if test="${param.message != null}">
 		
-			<c:out value="${param.message}"></c:out>
+			<c:out value="${param.message} : ${param.newuser}"></c:out>
 			<br/><br/>
 		</c:if>
 		

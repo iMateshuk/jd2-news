@@ -59,7 +59,7 @@
 
 			<font color=green> <c:if test="${param.message != null}">
 
-					<c:out value="${param.message}" />
+					<c:out value="${param.message} : ${param.newuser}" />
 					<br />
 					<br />
 				</c:if>

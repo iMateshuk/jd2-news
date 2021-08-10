@@ -17,13 +17,6 @@ import by.http.news.util.UtilException;
 
 public class UserDB implements UserDAO {
 
-	private final static String TRHOW_USER_INCORRECT = "Wrong user data!";
-
-	private final static String ANSWER_BEGIN = "User login:";
-	private final static String ANSWER_END = " exist.";
-	private final static String ANSWER_END_NOT = " not exist.";
-	private final static String ANSWER_CHECK_DATA = "Check you data!";
-
 	@Override
 	public void registration(UserData userData) throws DAOException {
 
@@ -41,7 +34,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(ANSWER_BEGIN.concat(userData.getLogin()).concat(ANSWER_END), e);
+			throw new DAOException("userdaoregistration", e);
 		}
 
 	}
@@ -61,7 +54,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(e.getMessage(), e);
+			throw new DAOException("userdaoupdate", e);
 		}
 
 	}
@@ -69,43 +62,33 @@ public class UserDB implements UserDAO {
 	@Override
 	public void delete(UserData userData) throws DAOException {
 
-		PreparedStatement ps = null;
-
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
-			String userLogin = userData.getLogin();
+			try (PreparedStatement psFirst = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
+					PreparedStatement psSecond = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());) {
 
-			ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
+				String userLogin = userData.getLogin();
 
-			ps.setString(1, userLogin);
+				psFirst.setString(1, userLogin);
 
-			if (!ps.executeQuery().next()) {
+				psSecond.setString(1, userLogin);
 
-				throw new DAOException(ANSWER_BEGIN.concat(userLogin).concat(ANSWER_END_NOT));
-			}
+				if (!psFirst.executeQuery().next()) {
 
-			ps.close();
+					throw new DAOException("userdaodeletepsf");
+				}
 
-			ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());
-
-			ps.setString(1, userLogin);
-
-			ps.executeUpdate();
-
-		} catch (SQLException | ConnectionPoolException e) {
-
-			throw new DAOException(e.getMessage(), e);
-
-		} finally {
-
-			try {
-
-				ps.close();
+				psSecond.executeUpdate();
 
 			} catch (SQLException e) {
 
-				throw new DAOException(e.getMessage(), e);
+				throw new DAOException("userdaodeletepss", e);
 			}
+
+		} catch (SQLException | ConnectionPoolException e) {
+
+			throw new DAOException("userdaodeletecon", e);
+
 		}
 
 	}
@@ -123,14 +106,14 @@ public class UserDB implements UserDAO {
 
 			if (!rs.next()) {
 
-				throw new DAOException(TRHOW_USER_INCORRECT);
+				throw new DAOException("userdaoauthorizationrs");
 			}
 
 			return BeanCreator.createUser(rs);
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(ANSWER_CHECK_DATA, e);
+			throw new DAOException("userdaoauthorization", e);
 
 		} catch (UtilException e) {
 
@@ -152,7 +135,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(e.getMessage(), e);
+			throw new DAOException("userdaopassword", e);
 		}
 
 	}
@@ -169,7 +152,7 @@ public class UserDB implements UserDAO {
 
 			if (!rs.next()) {
 
-				throw new DAOException(TRHOW_USER_INCORRECT);
+				throw new DAOException("userdaoloaduserdatars");
 			}
 
 			return new UserData.UserDataBuilder().setEmail(rs.getString(UserSQL.SQL_COLLUM_LABEL_EMAIL.getSQL()))
@@ -177,7 +160,7 @@ public class UserDB implements UserDAO {
 
 		} catch (Exception e) {
 
-			throw new DAOException(e.getMessage(), e);
+			throw new DAOException("userdaoloaduserdata", e);
 		}
 	}
 

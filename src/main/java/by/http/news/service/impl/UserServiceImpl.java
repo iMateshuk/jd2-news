@@ -28,15 +28,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void registration(UserData userData) throws ServiceException {
 
-		checkField(userData);
-
-		userData.setPassword(Generator.genStringHash(userData.getPassword()));
-
 		try {
+
+			checkField(userData);
+
+			userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 			userDAO.registration(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -145,48 +145,41 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	private void checkField(UserData userData) throws ServiceException {
+	private void checkField(UserData userData) throws UtilException {
 
-		try {
+		String key = UserDataField.LOGIN.toString();
+		String value = userData.getLogin();
 
-			String key = UserDataField.LOGIN.toString();
-			String value = userData.getLogin();
+		CheckField.checkKVN(key, value);
+		CheckField.checkKVLMin(key, value, FIELD_LENGHT);
+		CheckField.checkKVE(key, value, EXP_SYMBOLS);
 
-			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+		key = UserDataField.AGE.toString();
+		value = userData.getAge();
 
-			key = UserDataField.AGE.toString();
-			value = userData.getAge();
+		CheckField.checkKVN(key, value);
+		CheckField.checkKVLMin(key, value, AGE_MIN_LENGHT);
+		CheckField.checkKVLMax(key, value, AGE_MAX_LENGHT);
+		CheckField.checkKI(key, value);
 
-			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, AGE_MIN_LENGHT);
-			CheckField.checkKVLMax(key, value, AGE_MAX_LENGHT);
-			CheckField.checkKI(key, value);
+		key = UserDataField.PASSWORD.toString();
+		value = userData.getPassword();
 
-			key = UserDataField.PASSWORD.toString();
-			value = userData.getPassword();
+		CheckField.checkKVN(key, value);
+		CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 
-			CheckField.checkKVN(key, value);
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
+		value = userData.getEmail();
 
-			value = userData.getEmail();
+		if (!CheckField.checkKVN(value)) {
 
-			if (!CheckField.checkKVN(value)) {
+			CheckField.checkKVEnot(UserDataField.EMAIL.toString(), value, EXP_EMAIL);
+		}
 
-				CheckField.checkKVEnot(UserDataField.EMAIL.toString(), value, EXP_EMAIL);
-			}
+		value = userData.getName();
 
-			value = userData.getName();
+		if (!CheckField.checkKVN(value)) {
 
-			if (!CheckField.checkKVN(value)) {
-
-				CheckField.checkKVE(UserDataField.NAME.toString(), value, EXP_SYMBOLS);
-			}
-
-		} catch (UtilException e) {
-
-			throw new ServiceException(e.getMessage(), e);
+			CheckField.checkKVE(UserDataField.NAME.toString(), value, EXP_SYMBOLS);
 		}
 
 	}

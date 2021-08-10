@@ -73,6 +73,7 @@ public class NewsOperChoose implements Command {
 
 				request.getSession(false).setAttribute(ATTRIBUTE_SEARCH_NEWS, news);
 			}
+			
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
 

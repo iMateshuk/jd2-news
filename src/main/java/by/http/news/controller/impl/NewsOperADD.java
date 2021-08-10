@@ -44,6 +44,7 @@ public class NewsOperADD implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			return;
 		}
 
 		try {

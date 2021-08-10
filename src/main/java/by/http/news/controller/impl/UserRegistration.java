@@ -33,13 +33,14 @@ public class UserRegistration implements Command {
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
 	private final static String ACTION = "&action=";
+	private final static String NEW_USER = "&newuser=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
-			.concat(MESSAGE).concat("User session time out.");
+			.concat(MESSAGE).concat("usersessiontimeout");
 	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
-			.concat(MESSAGE).concat(commandReg).concat(" success for ");
-	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE).concat(commandReg)
-			.concat(" success for ");
+			.concat(MESSAGE).concat("registrationsuccess");
+	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE)
+			.concat("registrationsuccess");
 	private final static String REDIRECT = COMMAND.concat(CommandName.INDEX.toString().toLowerCase());
 	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
 			.concat(MESSAGE);
@@ -73,7 +74,7 @@ public class UserRegistration implements Command {
 				redirect = REDIRECT_USER_NEW;
 			}
 
-			redirect = redirect.concat(userData.getLogin());
+			redirect = redirect.concat(NEW_USER).concat(userData.getLogin());
 
 		} catch (ServiceException | UtilException e) {
 

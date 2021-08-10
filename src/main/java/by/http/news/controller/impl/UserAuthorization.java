@@ -33,9 +33,9 @@ public class UserAuthorization implements Command {
 	private final static String ACTION = "&action=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAutho).concat(ACTION).concat(commandAutho)
-			.concat(MESSAGE).concat("User session time out.");
+			.concat(MESSAGE).concat("usersessiontimeout");
 	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
-			.concat(MESSAGE).concat("Already logged in: ");
+			.concat(MESSAGE).concat("userloggedin");
 	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho);
 	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
 			.concat(MESSAGE);
@@ -55,7 +55,7 @@ public class UserAuthorization implements Command {
 
 		if (user != null) {
 
-			response.sendRedirect(REDIRECT_USER.concat(user.getLogin()));
+			response.sendRedirect(REDIRECT_USER);
 			return;
 		}
 

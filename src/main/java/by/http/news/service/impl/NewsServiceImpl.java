@@ -26,16 +26,16 @@ public class NewsServiceImpl implements NewsService {
 	private static final String EXP_TITLE = ".*\\*+.*";
 
 	private static final String EMPTY = "";
-	
+
 	private static final int TITLE_LENGHT = 2;
 	private static final int FIELD_LENGHT = 3;
 
 	@Override
 	public void add(News news) throws ServiceException {
 
-		checkField(news);
-
 		try {
+			
+			checkField(news);
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
@@ -51,9 +51,9 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public void update(News news) throws ServiceException {
 
-		checkField(news);
-
 		try {
+			
+			checkField(news);
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
@@ -117,16 +117,16 @@ public class NewsServiceImpl implements NewsService {
 			}
 
 			value = news.getStyle();
-			
+
 			if (!CheckField.checkKVN(value)) {
 
 				CheckField.checkVA(value, user.getAge());
-			
+
 			} else {
 
 				news.setStyle(EMPTY);
 			}
-			
+
 			return newsDAO.choose(news);
 
 		} catch (DAOException | UtilException e) {
@@ -136,7 +136,7 @@ public class NewsServiceImpl implements NewsService {
 		}
 	}
 
-	private void checkField(News news) throws ServiceException {
+	private void checkField(News news) throws UtilException {
 
 		Map<CombineEnum, String> fieldsData = FieldMapCreator.create(NewsField.class.getEnumConstants());
 
@@ -158,16 +158,9 @@ public class NewsServiceImpl implements NewsService {
 			key = fields.getKey().toString();
 			value = fields.getValue();
 
-			try {
+			CheckField.checkKVN(key, value);
 
-				CheckField.checkKVN(key, value);
-
-				CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-
-			} catch (UtilException e) {
-
-				throw new ServiceException(e.getMessage(), e);
-			}
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
 
 		}
 
