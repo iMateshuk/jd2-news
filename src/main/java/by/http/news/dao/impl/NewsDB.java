@@ -31,7 +31,7 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public void add(News news) throws DAOException {
-		
+
 		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
@@ -42,9 +42,9 @@ public class NewsDB implements NewsDAO {
 
 			if (ps.executeQuery().next()) {
 
-				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX);
+				throw new DAOException(ANSWER_BEGIN.concat(news.getTitle()).concat(ANSWER_END_EX));
 			}
-			
+
 			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_INSERT_NEWS.getSQL());
@@ -59,14 +59,14 @@ public class NewsDB implements NewsDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_EX, e);
+			throw new DAOException(ANSWER_BEGIN.concat(news.getTitle()).concat(ANSWER_END_EX), e);
 		} finally {
-			
+
 			try {
-				
+
 				ps.close();
 			} catch (SQLException e) {
-				
+
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
@@ -75,7 +75,7 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public void update(News news) throws DAOException {
-		
+
 		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
@@ -84,13 +84,13 @@ public class NewsDB implements NewsDAO {
 
 			ps.setString(1, news.getTitle());
 
-			ResultSet resSet = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-			if (!resSet.next()) {
+			if (!rs.next()) {
 
-				throw new DAOException(ANSWER_BEGIN + news.getTitle() + ANSWER_END_NOT);
+				throw new DAOException(ANSWER_BEGIN.concat(news.getTitle()).concat(ANSWER_END_NOT));
 			}
-			
+
 			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());
@@ -100,7 +100,7 @@ public class NewsDB implements NewsDAO {
 			ps.setString(3, news.getBody());
 			ps.setString(4, news.getStyle());
 			ps.setString(5, SDF.format(new Date()));
-			ps.setString(6, resSet.getString(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
+			ps.setString(6, rs.getString(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
 
 			ps.executeUpdate();
 
@@ -108,12 +108,12 @@ public class NewsDB implements NewsDAO {
 
 			throw new DAOException(e.getMessage(), e);
 		} finally {
-			
+
 			try {
-				
+
 				ps.close();
 			} catch (SQLException e) {
-				
+
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
@@ -122,7 +122,7 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public void delete(News news) throws DAOException {
-		
+
 		PreparedStatement ps = null;
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
@@ -135,9 +135,9 @@ public class NewsDB implements NewsDAO {
 
 			if (!ps.executeQuery().next()) {
 
-				throw new DAOException(ANSWER_BEGIN + newsTitle + ANSWER_END_NOT);
+				throw new DAOException(ANSWER_BEGIN.concat(newsTitle).concat(ANSWER_END_NOT));
 			}
-			
+
 			ps.close();
 
 			ps = con.prepareStatement(NewsSQL.SQL_DELETE_NEWS_TITLE.getSQL());
@@ -152,10 +152,10 @@ public class NewsDB implements NewsDAO {
 		} finally {
 
 			try {
-				
+
 				ps.close();
 			} catch (SQLException e) {
-				
+
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
@@ -164,19 +164,19 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public List<News> choose(News news) throws DAOException {
-		
+
 		String newsStyle = news.getStyle();
 
-		String sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL() + " " + checkStyle(newsStyle) + " "
-				+ NewsSQL.SQL_ORDER_BY_DATE.getSQL();
+		String sql = NewsSQL.SQL_SELECT_CHOOSE.getSQL().concat(checkStyle(newsStyle)).concat(" ")
+				.concat(NewsSQL.SQL_ORDER_BY_DATE.getSQL());
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(sql);) {
 
-			ps.setString(1, STYLE_LIKE + news.getTitle() + STYLE_LIKE);
-			
+			ps.setString(1, STYLE_LIKE.concat(news.getTitle()).concat(STYLE_LIKE));
+
 			if (!CheckField.checkKVN(newsStyle)) {
-				
+
 				ps.setString(2, newsStyle);
 			}
 
@@ -191,9 +191,9 @@ public class NewsDB implements NewsDAO {
 
 	@Override
 	public List<News> load() throws DAOException {
-		
+
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
-			
+
 			return newsCreator(con.createStatement().executeQuery(NewsSQL.SQL_SELECT_FOR_LOAD.getSQL()));
 
 		} catch (SQLException | ConnectionPoolException e) {
@@ -211,11 +211,11 @@ public class NewsDB implements NewsDAO {
 	private List<News> newsCreator(ResultSet rs) throws DAOException {
 
 		List<News> newses = new ArrayList<>();
-		
+
 		try {
-			
+
 			while (rs.next()) {
-				
+
 				newses.add(BeanCreator.createNews(rs));
 			}
 

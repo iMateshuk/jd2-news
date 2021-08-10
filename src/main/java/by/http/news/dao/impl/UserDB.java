@@ -41,9 +41,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException(ANSWER_BEGIN + userData.getLogin() + ANSWER_END, e);
-		} finally {
-
+			throw new DAOException(ANSWER_BEGIN.concat(userData.getLogin()).concat(ANSWER_END), e);
 		}
 
 	}
@@ -83,7 +81,7 @@ public class UserDB implements UserDAO {
 
 			if (!ps.executeQuery().next()) {
 
-				throw new DAOException(ANSWER_BEGIN + userLogin + ANSWER_END_NOT);
+				throw new DAOException(ANSWER_BEGIN.concat(userLogin).concat(ANSWER_END_NOT));
 			}
 
 			ps.close();
@@ -163,23 +161,19 @@ public class UserDB implements UserDAO {
 	public UserData loadUserData(User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL())) {
-			
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_NAME_EMAIL.getSQL())) {
+
 			ps.setString(1, user.getLogin());
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			if (!rs.next()) {
 
 				throw new DAOException(TRHOW_USER_INCORRECT);
 			}
-			
-			UserData userData = BeanCreator.createUserData(rs);
-			
-			userData.setPassword(null);
-			userData.setLogin(null);
-			
-			return userData;
+
+			return new UserData.UserDataBuilder().setEmail(rs.getString(UserSQL.SQL_COLLUM_LABEL_EMAIL.getSQL()))
+					.setName(rs.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build();
 
 		} catch (Exception e) {
 
