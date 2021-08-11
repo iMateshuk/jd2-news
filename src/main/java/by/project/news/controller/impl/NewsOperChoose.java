@@ -35,13 +35,13 @@ public class NewsOperChoose implements Command {
 	private final static String USER = "user";
 	private final static String ATTRIBUTE_NEWSES = "newses";
 	private final static String ATTRIBUTE_SEARCH_NEWS = "searchNews";
-	
+
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
 	private final static String ACTION = "&action=";
 
-	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandChoose).concat(MESSAGE);
+	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandChoose)
+			.concat(MESSAGE);
 	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
 
 	@Override
@@ -55,6 +55,14 @@ public class NewsOperChoose implements Command {
 		try {
 
 			CheckSession.validate(request);
+
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+		}
+
+		try {
 
 			User user = (User) request.getSession(false).getAttribute(USER);
 
@@ -73,7 +81,7 @@ public class NewsOperChoose implements Command {
 
 				request.getSession(false).setAttribute(ATTRIBUTE_SEARCH_NEWS, news);
 			}
-			
+
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
 
@@ -85,7 +93,7 @@ public class NewsOperChoose implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 
 	}

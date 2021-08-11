@@ -33,9 +33,9 @@ public class UserOperDelete implements Command {
 	private final static String ACTION = "&action=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandUserDelete).concat(MESSAGE).concat("Wrong User!");
+			.concat(commandUserDelete).concat(MESSAGE);
 	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserDelete)
-			.concat(MESSAGE).concat("Delete success: ");
+			.concat(MESSAGE);
 	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserDelete)
 			.concat(MESSAGE);
 	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
@@ -47,11 +47,19 @@ public class UserOperDelete implements Command {
 
 			CheckSession.validate(request);
 
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+		}
+		
+		try {
+
 			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 
 			if (!user.getRole().equals(ROLE_ADMIN)) {
 
-				response.sendRedirect(REDIRECT_SESSION);
+				response.sendRedirect(REDIRECT_SESSION.concat("wronguserlogin"));
 				return;
 			}
 
@@ -59,7 +67,7 @@ public class UserOperDelete implements Command {
 
 			userService.delete(userData);
 
-			response.sendRedirect(REDIRECT.concat(userData.getLogin()));
+			response.sendRedirect(REDIRECT.concat("userdeletesuccess"));
 
 		} catch (ServiceException e) {
 
@@ -69,7 +77,7 @@ public class UserOperDelete implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 	}
 

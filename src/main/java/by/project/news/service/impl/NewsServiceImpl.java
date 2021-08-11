@@ -34,16 +34,20 @@ public class NewsServiceImpl implements NewsService {
 	public void add(News news) throws ServiceException {
 
 		try {
-			
+
 			checkField(news);
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
 			newsDAO.add(news);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -52,16 +56,20 @@ public class NewsServiceImpl implements NewsService {
 	public void update(News news) throws ServiceException {
 
 		try {
-			
+
 			checkField(news);
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
 			newsDAO.update(news);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -75,9 +83,13 @@ public class NewsServiceImpl implements NewsService {
 
 			newsDAO.delete(news);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -129,10 +141,13 @@ public class NewsServiceImpl implements NewsService {
 
 			return newsDAO.choose(news);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
 
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 	}
 

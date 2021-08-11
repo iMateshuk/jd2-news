@@ -34,9 +34,9 @@ public class UserOperUpdate implements Command {
 	private final static String ACTION = "&action=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandUserUpdate).concat(MESSAGE).concat("Wrong Login for update!");
+			.concat(commandUserUpdate).concat(MESSAGE);
 	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandUserUpdate).concat(MESSAGE).concat("Update success: ");
+			.concat(commandUserUpdate).concat(MESSAGE);
 	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserUpdate)
 			.concat(MESSAGE);
 	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
@@ -47,6 +47,15 @@ public class UserOperUpdate implements Command {
 		try {
 
 			CheckSession.validate(request);
+
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+		}
+		
+		try {
+
 
 			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 
@@ -61,13 +70,13 @@ public class UserOperUpdate implements Command {
 
 			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals(ROLE_ADMIN))) {
 
-				response.sendRedirect(REDIRECT_SESSION);
+				response.sendRedirect(REDIRECT_SESSION.concat("wronguserlogin"));
 				return;
 			}
 
 			userService.update(userData);
 
-			response.sendRedirect(REDIRECT.concat(userData.getLogin()));
+			response.sendRedirect(REDIRECT.concat("userdatasuccess"));
 
 		} catch (ServiceException e) {
 
@@ -77,7 +86,7 @@ public class UserOperUpdate implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 
 	}

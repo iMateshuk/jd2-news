@@ -45,12 +45,20 @@ public class NewsOperDelete implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
 
 		try {
 
 			CheckSession.validateRoleUser(request);
+
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("userwrongrole"));
+		}
+
+		try {
 
 			News news = BeanCreator.createNews(request);
 
@@ -58,11 +66,16 @@ public class NewsOperDelete implements Command {
 
 			response.sendRedirect(REDIRECT);
 
-		} catch (ServiceException | UtilException e) {
+		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
 
 			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
+
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 
 	}

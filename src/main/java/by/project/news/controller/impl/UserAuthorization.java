@@ -33,9 +33,9 @@ public class UserAuthorization implements Command {
 	private final static String ACTION = "&action=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAutho).concat(ACTION).concat(commandAutho)
-			.concat(MESSAGE).concat("usersessiontimeout");
+			.concat(MESSAGE);
 	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
-			.concat(MESSAGE).concat("userloggedin");
+			.concat(MESSAGE);
 	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho);
 	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
 			.concat(MESSAGE);
@@ -47,7 +47,7 @@ public class UserAuthorization implements Command {
 
 		if (session == null) {
 
-			response.sendRedirect(REDIRECT_SESSION);
+			response.sendRedirect(REDIRECT_SESSION.concat("usersessiontimeout"));
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class UserAuthorization implements Command {
 
 		if (user != null) {
 
-			response.sendRedirect(REDIRECT_USER);
+			response.sendRedirect(REDIRECT_USER.concat("userloggedin"));
 			return;
 		}
 
@@ -71,11 +71,15 @@ public class UserAuthorization implements Command {
 
 			response.sendRedirect(REDIRECT);
 
-		} catch (ServiceException | UtilException e) {
+		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
 
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_EX.concat("commonerror"));
 		}
 
 	}

@@ -36,11 +36,10 @@ public class UserRegistration implements Command {
 	private final static String NEW_USER = "&newuser=";
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
-			.concat(MESSAGE).concat("usersessiontimeout");
+			.concat(MESSAGE);
 	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
-			.concat(MESSAGE).concat("registrationsuccess");
-	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE)
-			.concat("registrationsuccess");
+			.concat(MESSAGE);
+	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE);
 	private final static String REDIRECT = COMMAND.concat(CommandName.INDEX.toString().toLowerCase());
 	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
 			.concat(MESSAGE);
@@ -52,7 +51,7 @@ public class UserRegistration implements Command {
 
 		if (session == null) {
 
-			response.sendRedirect(REDIRECT_SESSION);
+			response.sendRedirect(REDIRECT_SESSION.concat("usersessiontimeout"));
 			return;
 		}
 
@@ -68,16 +67,20 @@ public class UserRegistration implements Command {
 
 			if (user != null && user.getRole().equals(ROLE_ADMIN)) {
 
-				redirect = REDIRECT_USER;
+				redirect = REDIRECT_USER.concat("registrationsuccess");
 			} else {
 
-				redirect = REDIRECT_USER_NEW.concat(NEW_USER).concat(userData.getLogin());
+				redirect = REDIRECT_USER_NEW.concat("registrationsuccess").concat(NEW_USER).concat(userData.getLogin());
 			}
 
-		} catch (ServiceException | UtilException e) {
+		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
 			redirect = REDIRECT_EX.concat(e.getMessage());
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_EX.concat("commonerror"));
 		}
 
 		response.sendRedirect(redirect);

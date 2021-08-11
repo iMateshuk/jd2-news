@@ -59,7 +59,7 @@ public class GoToUserUpdatePage implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 
 	}

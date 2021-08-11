@@ -38,11 +38,29 @@ public class NewsOperUpdate implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		
 		try {
 
 			CheckSession.validate(request);
 
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+		}
+		
+		
+		try {
+
 			CheckSession.validateRoleUser(request);
+
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("userwrongrole"));
+		}
+		
+		try {
 
 			News news = BeanCreator.createNews(request);
 
@@ -58,7 +76,7 @@ public class NewsOperUpdate implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_UE.concat("commonerror"));
 		}
 
 	}

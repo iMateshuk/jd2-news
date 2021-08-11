@@ -36,9 +36,13 @@ public class UserServiceImpl implements UserService {
 
 			userDAO.registration(userData);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -63,9 +67,13 @@ public class UserServiceImpl implements UserService {
 
 			userDAO.update(userData);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -83,9 +91,13 @@ public class UserServiceImpl implements UserService {
 
 			userDAO.delete(userData);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -101,9 +113,13 @@ public class UserServiceImpl implements UserService {
 
 			userDAO.password(userData);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -125,9 +141,13 @@ public class UserServiceImpl implements UserService {
 
 			return userDAO.authorization(userData);
 
-		} catch (DAOException | UtilException e) {
+		} catch (DAOException e) {
 
 			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
 		}
 
 	}
