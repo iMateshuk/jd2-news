@@ -1,8 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	import="by.http.news.bean.User" import="by.http.news.bean.News" 
-	import="java.util.List" pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -13,7 +12,7 @@
 <link href="CSS/styles.css" rel="stylesheet" type="text/css">
 
 <fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="localization.local" var="loc" />
+<fmt:setBundle basename="resources.localization.local" var="loc" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
 
@@ -102,15 +101,9 @@
 
 	<div id="body">
 	
-		<c:if test="${newses == null}">
+		<c:if test="${newses == null || empty newses}">
 
 			<p class="info"> ${info_text} <strong>${news_text}</strong> !!! </p>
-	
-		</c:if>
-		
-		<c:if test="${empty newses}">
-
-			<p class="info"> ${empty_text} <strong>${news_text}</strong> !!!</p>
 	
 		</c:if>
 	

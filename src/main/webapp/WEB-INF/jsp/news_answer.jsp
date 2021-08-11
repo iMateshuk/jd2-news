@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	import="by.http.news.bean.User" pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,7 @@
 <link href="CSS/newsPageStyle.css" rel="stylesheet" type="text/css">
 
 <fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="localization.local" var="loc" />
+<fmt:setBundle basename="resources.localization.local" var="loc" />
 
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="news_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.user_tools" var="user_tools" />
@@ -64,8 +64,10 @@
 				<font color="red">${failed_txt}</font>
 				<br />
 				<br />
-
-				<c:out value="${param.message}"></c:out>
+				
+				<fmt:message bundle="${loc}" key="local.loctextdaonewserror.name.${param.message}" var="message" />
+		
+				<c:out value="${message}"></c:out>
 				<br />
 				<br />
 			</c:if>

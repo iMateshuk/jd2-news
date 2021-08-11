@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://JAVA.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://JAVA.sun.com/xml/ns/javaee" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+	id="WebApp_ID" version="3.0">
   <display-name>news</display-name>
   <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -15,7 +18,7 @@
     <url-pattern>/Controller</url-pattern>
   </servlet-mapping> -->
   
-  <listener>
+<!--   <listener>
   	<listener-class>
   		by.http.news.listener.ControllerListener
   	</listener-class>
@@ -25,9 +28,9 @@
   	<listener-class>
   		by.http.news.listener.SessionListener
   	</listener-class>
-  </listener>
+  </listener> -->
   
-  <filter>
+<!--   <filter>
   	<display-name>CharsetFilter</display-name>
   	<filter-name>CharsetFilter</filter-name>
   	<filter-class>by.http.news.filter.CharsetFilter</filter-class>
@@ -40,6 +43,6 @@
   <filter-mapping>
   	<filter-name>CharsetFilter</filter-name>
   	<url-pattern>/Controller</url-pattern>
-  </filter-mapping>
+  </filter-mapping> -->
   
 </web-app>

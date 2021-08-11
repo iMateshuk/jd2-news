@@ -11,7 +11,7 @@
 <link href="CSS/userPageStyle.css" rel="stylesheet" type="text/css">
 
 <fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="localization.local" var="loc" />
+<fmt:setBundle basename="resources.localization.local" var="loc" />
 
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
@@ -58,11 +58,13 @@
 			<h1 id="user_action">${header_text}</h1>
 
 			<font color=green> <c:if test="${param.message != null}">
+			
+				<fmt:message bundle="${loc}" key="local.loctextdaousererror.name.${param.message}" var="message" />
 
-					<c:out value="${param.message} : ${param.newuser}" />
-					<br />
-					<br />
-				</c:if>
+				<c:out value="${message} : ${param.newuser}" />
+				<br />
+				<br />
+			</c:if>
 
 			</font>
 

@@ -12,7 +12,7 @@
 <link href="CSS/newsPageStyle.css" rel="stylesheet" type="text/css">
 
 <fmt:setLocale value="${sessionScope.local}" />
-<fmt:setBundle basename="localization.local" var="loc" />
+<fmt:setBundle basename="resources.localization.local" var="loc" />
 
 <fmt:message bundle="${loc}" key="local.locbutton.name.ru" var="ru_button" />
 <fmt:message bundle="${loc}" key="local.locbutton.name.en" var="en_button" />
