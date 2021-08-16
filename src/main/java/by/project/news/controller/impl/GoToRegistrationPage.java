@@ -12,10 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class GoToRegistrationPage implements Command {
 
 	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.REGISTRATION.toString().toLowerCase()).concat(".jsp");
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 

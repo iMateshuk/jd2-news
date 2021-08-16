@@ -12,6 +12,7 @@ import by.project.news.controller.impl.GoToNewsChoosePage;
 import by.project.news.controller.impl.GoToNewsDeletePage;
 import by.project.news.controller.impl.GoToNewsToolsPage;
 import by.project.news.controller.impl.GoToNewsUpdatePage;
+import by.project.news.controller.impl.GoToNewsViewPage;
 import by.project.news.controller.impl.GoToRegistrationPage;
 import by.project.news.controller.impl.GoToUserAnswerPage;
 import by.project.news.controller.impl.GoToUserDeletePage;
@@ -64,6 +65,7 @@ public class CommandProvider {
 		commands.put(CommandName.NEWS_DELETE, new NewsOperDelete());
 		commands.put(CommandName.NEWS_CHOOSE, new NewsOperChoose());
 		commands.put(CommandName.NEWS_ANSWER, new GoToNewsAnswerPage());
+		commands.put(CommandName.NEWS_VIEW, new GoToNewsViewPage());
 		
 		commands.put(CommandName.UNKNOWN_COMMAND, new UnknownCommand());
 		

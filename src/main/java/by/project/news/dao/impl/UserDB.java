@@ -64,7 +64,7 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
-			try (PreparedStatement psFirst = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN.getSQL());
+			try (PreparedStatement psFirst = con.prepareStatement(UserSQL.SQL_SELECT_ALL_W_LOGIN.getSQL());
 					PreparedStatement psSecond = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());) {
 
 				String userLogin = userData.getLogin();
@@ -97,7 +97,7 @@ public class UserDB implements UserDAO {
 	public User authorization(UserData userData) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_LOGIN_PASSWORD.getSQL());) {
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_ALL_W_LOGIN__A_PASSWORD.getSQL());) {
 
 			ps.setString(1, userData.getLogin());
 			ps.setString(2, userData.getPassword());
@@ -144,7 +144,7 @@ public class UserDB implements UserDAO {
 	public UserData loadUserData(User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_NAME_EMAIL.getSQL())) {
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_NAME_EMAIL_W_LOGIN.getSQL())) {
 
 			ps.setString(1, user.getLogin());
 

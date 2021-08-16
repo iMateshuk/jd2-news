@@ -2,7 +2,7 @@ package by.project.news.controller.impl;
 
 import java.io.IOException;
 
-import by.project.news.bean.News;
+import by.project.news.bean.User;
 import by.project.news.controller.Command;
 import by.project.news.controller.CommandName;
 import by.project.news.service.NewsService;
@@ -23,6 +23,8 @@ public class NewsOperADD implements Command {
 	private final static String commandAnswer = CommandName.NEWS_ANSWER.toString().toLowerCase();
 	private final static String commandADD = CommandName.NEWS_ADD.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
+
+	private static final String USER = "user";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -51,9 +53,7 @@ public class NewsOperADD implements Command {
 
 			CheckSession.validateRoleUser(request);
 
-			News news = BeanCreator.createNews(request);
-
-			newsServices.add(news);
+			newsServices.add(BeanCreator.createNews(request), (User) request.getSession(false).getAttribute(USER));
 
 			response.sendRedirect(REDIRECT);
 

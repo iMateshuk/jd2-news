@@ -12,7 +12,7 @@ public class ChangeLocal implements Command{
 	
 	final static String CONTROLLER = "Controller?command=";
 	final static String URL = "url";
-
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -18,6 +18,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class NewsOperChoose implements Command {
 
@@ -47,9 +48,11 @@ public class NewsOperChoose implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+		
 		if (request.getParameter(CLEAN) != null) {
 
-			request.getSession(false).setAttribute(SESSION_NEWS_SEARCH, null);
+			session.setAttribute(SESSION_NEWS_SEARCH, null);
 		}
 
 		try {
@@ -79,7 +82,7 @@ public class NewsOperChoose implements Command {
 
 			if (!newses.isEmpty()) {
 
-				request.getSession(false).setAttribute(ATTRIBUTE_SEARCH_NEWS, news);
+				session.setAttribute(ATTRIBUTE_SEARCH_NEWS, news);
 			}
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);

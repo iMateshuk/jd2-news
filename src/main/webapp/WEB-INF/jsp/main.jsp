@@ -23,8 +23,9 @@
 <fmt:message bundle="${loc}" key="local.loctextmain.name.news" var="news_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.title" var="title_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.info" var="info_text" />
-<fmt:message bundle="${loc}" key="local.loctextmain.name.emty" var="empty_text" />
+<fmt:message bundle="${loc}" key="local.loctextmain.name.empty" var="empty_text" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.message" var="message_txt"/>
+<fmt:message bundle="${loc}" key="local.loctextmain.name.gotonews" var="gotonews_text" />
 
 </head>
 <body>
@@ -115,7 +116,12 @@
 				<button type="button" class="collapsible"> <c:out value="${news.getBrief()}" /> ... </button>
 				
 				<c:if test="${user != null || not empty user}">
-					<div class="content"> <pre class="pre"><c:out value="${news.getBody()}" /></pre> </div>
+					<div class="content">
+						<pre class="pre"><c:out value="${news.getBody()}" /></pre>
+						<a href="Controller?command=news_view&title=${news.getTitle()}">
+							<c:out value="${gotonews_text} : ${news.getTitle()}" />
+						</a>
+					</div>
 					<br/>
 				</c:if>
 				

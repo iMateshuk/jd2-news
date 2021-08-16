@@ -26,14 +26,18 @@ public class GoToUserUpdatePage implements Command {
 	private final static String commandAnswer = CommandName.USER_ANSWER.toString().toLowerCase();
 	private final static String commandUserUpdate = CommandName.USER_UPDATE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
-	
+
 	private final static String ROLE_ADMIN = "admin";
 	private final static String ATTRIBUTE_USER_DATA = "userData";
 
-	private final static String REDIRECT_SE = "Controller?command=".concat(commandAnswer).concat("&action=")
-			.concat(commandUserUpdate).concat("&message=");
-	private final static String REDIRECT_UE = "Controller?command=".concat(commandAuth).concat("&message=");
-	
+	private final static String COMMAND = "Controller?command=";
+	private final static String MESSAGE = "&message=";
+	private final static String ACTION = "&action=";
+
+	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserUpdate)
+			.concat(MESSAGE);
+	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

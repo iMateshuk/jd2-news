@@ -31,7 +31,7 @@ public class NewsServiceImpl implements NewsService {
 	private static final int FIELD_LENGHT = 3;
 
 	@Override
-	public void add(News news) throws ServiceException {
+	public void add(News news, User user) throws ServiceException {
 
 		try {
 
@@ -39,7 +39,7 @@ public class NewsServiceImpl implements NewsService {
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
-			newsDAO.add(news);
+			newsDAO.add(news, user);
 
 		} catch (DAOException e) {
 
@@ -53,7 +53,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public void update(News news) throws ServiceException {
+	public void update(News news, User user) throws ServiceException {
 
 		try {
 
@@ -61,7 +61,7 @@ public class NewsServiceImpl implements NewsService {
 
 			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
 
-			newsDAO.update(news);
+			newsDAO.update(news, user);
 
 		} catch (DAOException e) {
 
@@ -149,6 +149,34 @@ public class NewsServiceImpl implements NewsService {
 
 			throw new ServiceException("commonerror", e);
 		}
+	}
+
+	@Override
+	public News choose(News news) throws ServiceException {
+
+		String key = NewsField.TITLE.toString();
+		String value = news.getTitle();
+		
+		try {
+
+			if (!CheckField.checkKVN(value)) {
+
+				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
+
+				CheckField.checkKVE(key, value, EXP_TITLE);
+			}
+
+			return newsDAO.chooseNewsByTitle(news);
+
+		} catch (DAOException e) {
+
+			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
+		}
+
 	}
 
 	private void checkField(News news) throws UtilException {

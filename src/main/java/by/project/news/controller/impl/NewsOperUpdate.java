@@ -2,7 +2,7 @@ package by.project.news.controller.impl;
 
 import java.io.IOException;
 
-import by.project.news.bean.News;
+import by.project.news.bean.User;
 import by.project.news.controller.Command;
 import by.project.news.controller.CommandName;
 import by.project.news.service.NewsService;
@@ -24,7 +24,7 @@ public class NewsOperUpdate implements Command {
 	private final static String commandUpdate = CommandName.NEWS_UPDATE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
+	private static final String USER = "user";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -38,7 +38,6 @@ public class NewsOperUpdate implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
 		try {
 
 			CheckSession.validate(request);
@@ -48,8 +47,7 @@ public class NewsOperUpdate implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
-		
-		
+
 		try {
 
 			CheckSession.validateRoleUser(request);
@@ -59,12 +57,10 @@ public class NewsOperUpdate implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("userwrongrole"));
 		}
-		
+
 		try {
 
-			News news = BeanCreator.createNews(request);
-
-			newsServices.update(news);
+			newsServices.update(BeanCreator.createNews(request), (User) request.getSession(false).getAttribute(USER));
 
 			response.sendRedirect(REDIRECT);
 

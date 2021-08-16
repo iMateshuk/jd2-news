@@ -27,7 +27,9 @@ public class GoToMainPage implements Command {
 
 	private final static String CLEAN = "clean";
 	private final static String SESSION_NEWS_SEARCH = "searchNews";
-	
+
+	private final static String PARAM_TITLE = "title";
+
 	private final static String ATTRIBUTE_NEWSES = "newses";
 	private final static String ATTRIBUTE_MESSAGE = "message";
 
@@ -47,7 +49,11 @@ public class GoToMainPage implements Command {
 
 			response.sendRedirect(REDIRECT);
 			return;
+		}
 
+		if (session.getAttribute(PARAM_TITLE) != null) {
+
+			session.setAttribute(PARAM_TITLE, null);
 		}
 
 		List<News> newses = null;

@@ -42,14 +42,14 @@ public class BeanCreator {
 	}
 
 	public static News createNews(ResultSet rs) throws UtilException {
-
+		
 		Map<CombineEnum, String> fieldsData = createDataWithRS(
 				FieldMapCreator.create(NewsField.class.getEnumConstants()), rs);
-
+		
 		NewsBuilder newsBuilder = new News.NewsBuilder();
 
 		createBeanBuilder(fieldsData, newsBuilder);
-
+		
 		return newsBuilder.builder();
 	}
 
