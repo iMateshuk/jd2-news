@@ -14,7 +14,6 @@ import by.project.news.dao.UserDAO;
 import by.project.news.dao.util.ConnectionPool;
 import by.project.news.dao.util.ConnectionPoolException;
 import by.project.news.util.BeanCreator;
-import by.project.news.util.SgnSQL;
 import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
@@ -171,41 +170,20 @@ public class UserDB implements UserDAO {
 	public List<UserData> loadSgnAuthor(User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement psUser = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
-				PreparedStatement psSgnTable = con.prepareStatement(SgnSQL.SQL_SELECT_NUID_W_UID.getSQL());
-				PreparedStatement psUsr = con.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID.getSQL());) {
+				PreparedStatement ps = con
+						.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID_COMPLEX_LOGIN.getSQL());) {
 
-			psUser.setString(1, user.getLogin());
+			ps.setString(1, user.getLogin());
 
-			ResultSet rsUser = psUser.executeQuery();
-
-			if (!rsUser.next()) {
-
-				throw new DAOException("userdaoloadsgndatapsu");
-			}
-
-			psSgnTable.setInt(1, rsUser.getInt(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-
-			ResultSet rsSgn = psSgnTable.executeQuery();
-
-			ResultSet rsUsr = null;
+			ResultSet rs = ps.executeQuery();
 
 			List<UserData> usersData = new ArrayList<>();
 
-			while (rsSgn.next()) {
+			while (rs.next()) {
 
-				psUsr.setInt(1, rsSgn.getInt(SgnSQL.SQL_COLLUM_LABEL_N_U_ID.getSQL()));
-
-				rsUsr = psUsr.executeQuery();
-
-				if (!rsUsr.next()) {
-
-					throw new DAOException("userdaoloadsgndatapsus");
-				}
-
-				usersData.add(new UserData.UserDataBuilder()
-						.setLogin(rsUsr.getString(UserSQL.SQL_COLLUM_LABEL_LOGIN.getSQL()))
-						.setName(rsUsr.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build());
+				usersData.add(
+						new UserData.UserDataBuilder().setLogin(rs.getString(UserSQL.SQL_COLLUM_LABEL_LOGIN.getSQL()))
+								.setName(rs.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build());
 			}
 
 			return usersData;
