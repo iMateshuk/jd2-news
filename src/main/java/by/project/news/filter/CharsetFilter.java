@@ -8,9 +8,8 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 
-@WebFilter("/CharsetFilter")
+/*@WebFilter("/CharsetFilter")*/
 public class CharsetFilter implements Filter {
 
 	private String encoding;

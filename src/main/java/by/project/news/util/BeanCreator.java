@@ -37,7 +37,7 @@ public class BeanCreator {
 
 		createBeanBuilder(fieldsData, newsBuilder);
 
-		return newsBuilder.builder();
+		return newsBuilder.build();
 
 	}
 
@@ -50,7 +50,7 @@ public class BeanCreator {
 
 		createBeanBuilder(fieldsData, newsBuilder);
 		
-		return newsBuilder.builder();
+		return newsBuilder.build();
 	}
 
 	public static UserData createUserData(HttpServletRequest request) throws UtilException {

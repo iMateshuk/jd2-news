@@ -156,7 +156,7 @@ public class NewsServiceImpl implements NewsService {
 
 		String key = NewsField.TITLE.toString();
 		String value = news.getTitle();
-		
+
 		try {
 
 			if (!CheckField.checkKVN(value)) {
@@ -167,6 +167,34 @@ public class NewsServiceImpl implements NewsService {
 			}
 
 			return newsDAO.chooseNewsByTitle(news);
+
+		} catch (DAOException e) {
+
+			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
+		}
+
+	}
+
+	@Override
+	public void sgnAuthor(News news, User user) throws ServiceException {
+
+		String key = NewsField.TITLE.toString();
+		String value = news.getTitle();
+
+		try {
+
+			if (!CheckField.checkKVN(value)) {
+
+				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
+
+				CheckField.checkKVE(key, value, EXP_TITLE);
+			}
+
+			newsDAO.sgnAuthor(news, user);
 
 		} catch (DAOException e) {
 

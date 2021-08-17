@@ -20,7 +20,7 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.news_tools" var="header_txt" />
 <fmt:message bundle="${loc}" key="local.loctextmain.name.title" var="title_text" />
 
-<fmt:message bundle="${loc}" key="local.locbuttonnewsview.name.sgn" var="sgn_button" />
+<fmt:message bundle="${loc}" key="local.locbuttonnewsview.name.sgn" var="sgnauthor_button" />
 
 </head>
 <body>
@@ -60,8 +60,9 @@
 					</h1>
 				
 					<pre class="pre"><c:out value="${news.getBody()}" /></pre>
-
-					<button type="submit" name="command" value="news_author_sgn">${sgn_button}</button>
+					
+					<input type="hidden" name="title" value="${news.getTitle()}">
+					<button type="submit" name="command" value="news_sgnauthor">${sgnauthor_button}</button>
 				</c:if>
 
 				<br />

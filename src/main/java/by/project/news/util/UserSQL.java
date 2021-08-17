@@ -10,6 +10,7 @@ public enum UserSQL {
 	SQL_SELECT_ID_W_LOGIN("SELECT id FROM mynews.users WHERE login=?"),
 	SQL_SELECT_ALL_W_LOGIN("SELECT * FROM mynews.users WHERE login=?"),
 	SQL_SELECT_NAME_EMAIL_W_LOGIN("SELECT name,email FROM mynews.users WHERE login=?"),
+	SQL_SELECT_NAME_LOGIN_W_ID("SELECT name, login FROM mynews.users WHERE id=?"),
 	SQL_SELECT_ALL_W_LOGIN__A_PASSWORD("SELECT * FROM mynews.users WHERE login=? AND password=?"),
 	
 	SQL_DELETE_LOGIN("DELETE FROM mynews.users WHERE login=?"),
@@ -17,6 +18,7 @@ public enum UserSQL {
 
 	SQL_COLLUM_LABEL_ID("id"),
 	SQL_COLLUM_LABEL_NAME("name"),
+	SQL_COLLUM_LABEL_LOGIN("login"),
 	SQL_COLLUM_LABEL_EMAIL("email"),
 	SQL_COLLUM_LABEL_PASSWORD("password"),
 	SQL_COLLUM_LABEL_AGE("age"),

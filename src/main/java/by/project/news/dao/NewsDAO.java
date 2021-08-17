@@ -14,6 +14,8 @@ public interface NewsDAO {
 	
 	void delete(News news) throws DAOException;
 	
+	void sgnAuthor(News news, User user) throws DAOException;
+	
 	List<News> choose(News news) throws DAOException;
 	
 	News chooseNewsByTitle(News news) throws DAOException;

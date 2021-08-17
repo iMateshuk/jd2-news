@@ -18,6 +18,7 @@ import by.project.news.dao.util.ConnectionPoolException;
 import by.project.news.util.BeanCreator;
 import by.project.news.util.CheckField;
 import by.project.news.util.NewsSQL;
+import by.project.news.util.SgnSQL;
 import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
@@ -76,11 +77,11 @@ public class NewsDB implements NewsDAO {
 					PreparedStatement psSecond = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());) {
 
 				psUsersId.setString(1, user.getLogin());
-				
+
 				String title = news.getTitle();
-				
+
 				psFirst.setString(2, title);
-				
+
 				psSecond.setString(1, title);
 				psSecond.setString(2, news.getBrief());
 				psSecond.setString(3, news.getBody());
@@ -93,11 +94,11 @@ public class NewsDB implements NewsDAO {
 
 					throw new DAOException("newsupdatepsu");
 				}
-				
+
 				psFirst.setString(1, rsUser.getString(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-				
+
 				ResultSet rs = psFirst.executeQuery();
-				
+
 				if (!rs.next()) {
 
 					throw new DAOException("newsupdatepsf");
@@ -125,17 +126,21 @@ public class NewsDB implements NewsDAO {
 		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
 
 			try (PreparedStatement psFirst = con.prepareStatement(NewsSQL.SQL_SELECT_TITLE_ID_W_TITLE.getSQL());
-					PreparedStatement psSecond = con.prepareStatement(NewsSQL.SQL_DELETE_NEWS_TITLE.getSQL());) {
+					PreparedStatement psSecond = con.prepareStatement(NewsSQL.SQL_DELETE_NEWS_ID.getSQL());) {
 
 				String newsTitle = news.getTitle();
 
 				psFirst.setString(1, newsTitle);
+				
+				ResultSet rs = psFirst.executeQuery();
 
-				if (!psFirst.executeQuery().next()) {
+				if (!rs.next()) {
 
 					throw new DAOException("newsdaodeletepsf");
 				}
-
+				
+				psSecond.setInt(1, rs.getInt(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
+				
 				psSecond.executeUpdate();
 
 			} catch (SQLException e) {
@@ -211,6 +216,37 @@ public class NewsDB implements NewsDAO {
 		} catch (SQLException | ConnectionPoolException | UtilException e) {
 
 			throw new DAOException("newsdaochoosetitle", e);
+		}
+
+	}
+
+	@Override
+	public void sgnAuthor(News news, User user) throws DAOException {
+
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement psUser = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
+				PreparedStatement psFirst = con.prepareStatement(NewsSQL.SQL_SELECT_UID_W_TITLE.getSQL());
+				PreparedStatement psSecond = con.prepareStatement(SgnSQL.SQL_INSERT_SGN_AUTHOR.getSQL());) {
+
+			psUser.setString(1, user.getLogin());
+			psFirst.setString(1, news.getTitle());
+			
+			ResultSet rsUser = psUser.executeQuery();
+			ResultSet rsNews = psFirst.executeQuery();
+
+			if (!rsUser.next() & !rsNews.next()) {
+
+				throw new DAOException("newsdaosgnauthorps");
+			}
+
+			psSecond.setInt(1, rsUser.getInt(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
+			psSecond.setInt(2, rsNews.getInt(NewsSQL.SQL_COLLUM_LABEL_U_ID.getSQL()));
+
+			psSecond.executeUpdate();
+
+		} catch (SQLException | ConnectionPoolException e) {
+
+			throw new DAOException("newsdaosgnauthor", e);
 		}
 
 	}

@@ -14,6 +14,8 @@ public interface NewsService {
 	
 	void delete(News news) throws ServiceException;
 	
+	void sgnAuthor(News news, User user) throws ServiceException;
+	
 	List<News> choose(News news, User user) throws ServiceException;
 	
 	List<News> load() throws ServiceException;

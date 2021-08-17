@@ -10,6 +10,7 @@ import by.project.news.controller.impl.GoToNewsAddPage;
 import by.project.news.controller.impl.GoToNewsAnswerPage;
 import by.project.news.controller.impl.GoToNewsChoosePage;
 import by.project.news.controller.impl.GoToNewsDeletePage;
+import by.project.news.controller.impl.GoToNewsSgnPage;
 import by.project.news.controller.impl.GoToNewsToolsPage;
 import by.project.news.controller.impl.GoToNewsUpdatePage;
 import by.project.news.controller.impl.GoToNewsViewPage;
@@ -23,6 +24,7 @@ import by.project.news.controller.impl.LoggedOut;
 import by.project.news.controller.impl.NewsOperADD;
 import by.project.news.controller.impl.NewsOperChoose;
 import by.project.news.controller.impl.NewsOperDelete;
+import by.project.news.controller.impl.NewsOperSgnAuthor;
 import by.project.news.controller.impl.NewsOperUpdate;
 import by.project.news.controller.impl.UnknownCommand;
 import by.project.news.controller.impl.UserAuthorization;
@@ -66,6 +68,8 @@ public class CommandProvider {
 		commands.put(CommandName.NEWS_CHOOSE, new NewsOperChoose());
 		commands.put(CommandName.NEWS_ANSWER, new GoToNewsAnswerPage());
 		commands.put(CommandName.NEWS_VIEW, new GoToNewsViewPage());
+		commands.put(CommandName.NEWS_SGNAUTHOR, new NewsOperSgnAuthor());
+		commands.put(CommandName.NEWS_TOOLS_SGN, new GoToNewsSgnPage());
 		
 		commands.put(CommandName.UNKNOWN_COMMAND, new UnknownCommand());
 		

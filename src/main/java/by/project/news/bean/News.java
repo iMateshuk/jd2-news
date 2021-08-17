@@ -119,7 +119,7 @@ public class News implements Serializable {
 			return this;
 		}
 
-		public News builder() {
+		public News build() {
 
 			return new News(this);
 		}

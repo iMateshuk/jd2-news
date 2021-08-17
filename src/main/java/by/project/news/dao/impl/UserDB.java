@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import by.project.news.bean.User;
 import by.project.news.bean.UserData;
@@ -12,6 +14,7 @@ import by.project.news.dao.UserDAO;
 import by.project.news.dao.util.ConnectionPool;
 import by.project.news.dao.util.ConnectionPoolException;
 import by.project.news.util.BeanCreator;
+import by.project.news.util.SgnSQL;
 import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
@@ -162,6 +165,56 @@ public class UserDB implements UserDAO {
 
 			throw new DAOException("userdaoloaduserdata", e);
 		}
+	}
+
+	@Override
+	public List<UserData> loadSgnAuthor(User user) throws DAOException {
+
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement psUser = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
+				PreparedStatement psSgnTable = con.prepareStatement(SgnSQL.SQL_SELECT_NUID_W_UID.getSQL());
+				PreparedStatement psUsr = con.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID.getSQL());) {
+
+			psUser.setString(1, user.getLogin());
+
+			ResultSet rsUser = psUser.executeQuery();
+
+			if (!rsUser.next()) {
+
+				throw new DAOException("userdaoloadsgndatapsu");
+			}
+
+			psSgnTable.setInt(1, rsUser.getInt(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
+
+			ResultSet rsSgn = psSgnTable.executeQuery();
+
+			ResultSet rsUsr = null;
+
+			List<UserData> usersData = new ArrayList<>();
+
+			while (rsSgn.next()) {
+
+				psUsr.setInt(1, rsSgn.getInt(SgnSQL.SQL_COLLUM_LABEL_N_U_ID.getSQL()));
+
+				rsUsr = psUsr.executeQuery();
+
+				if (!rsUsr.next()) {
+
+					throw new DAOException("userdaoloadsgndatapsus");
+				}
+
+				usersData.add(new UserData.UserDataBuilder()
+						.setLogin(rsUsr.getString(UserSQL.SQL_COLLUM_LABEL_LOGIN.getSQL()))
+						.setName(rsUsr.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build());
+			}
+
+			return usersData;
+
+		} catch (SQLException | ConnectionPoolException e) {
+
+			throw new DAOException("userdaoloadsgndata", e);
+		}
+
 	}
 
 }

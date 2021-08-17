@@ -1,5 +1,7 @@
 package by.project.news.service.impl;
 
+import java.util.List;
+
 import by.project.news.bean.User;
 import by.project.news.bean.UserData;
 import by.project.news.dao.DAOException;
@@ -10,6 +12,7 @@ import by.project.news.service.UserService;
 import by.project.news.util.CheckField;
 import by.project.news.util.Generator;
 import by.project.news.util.UserDataField;
+import by.project.news.util.UserField;
 import by.project.news.util.UtilException;
 
 public class UserServiceImpl implements UserService {
@@ -163,6 +166,30 @@ public class UserServiceImpl implements UserService {
 
 			throw new ServiceException(e.getMessage(), e);
 		}
+	}
+
+	@Override
+	public List<UserData> loadSgnAuthor(User user) throws ServiceException {
+
+		try {
+
+			String key = UserField.LOGIN.toString();
+			String value = user.getLogin();
+
+			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
+			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+
+			return userDAO.loadSgnAuthor(user);
+
+		} catch (DAOException e) {
+
+			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
+		}
+
 	}
 
 	private void checkField(UserData userData) throws UtilException {

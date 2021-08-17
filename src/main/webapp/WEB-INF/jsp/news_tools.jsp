@@ -22,6 +22,7 @@
 <fmt:message bundle="${loc}" key="local.loctextnewstools.name.update" var="update_txt" />
 <fmt:message bundle="${loc}" key="local.loctextnewstools.name.delete" var="delete_txt" />
 <fmt:message bundle="${loc}" key="local.loctextnewstools.name.choose" var="choose_txt" />
+<fmt:message bundle="${loc}" key="local.loctextnewstools.name.sgn" var="sgn_txt" />
 
 </head>
 <body>
@@ -77,6 +78,9 @@
 				</c:if>
 
 				<button type="submit" name="command" value="news_tools_choose">${choose_txt}</button>
+				<br />
+				<br />
+				<button type="submit" name="command" value="news_tools_sgn">${sgn_txt}</button>
 
 				<br />
 				<br />
