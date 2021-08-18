@@ -19,7 +19,6 @@ import by.project.news.util.BeanCreator;
 import by.project.news.util.CheckField;
 import by.project.news.util.NewsSQL;
 import by.project.news.util.SgnSQL;
-import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
 public class NewsDB implements NewsDAO {
@@ -31,33 +30,19 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void add(News news, User user) throws DAOException {
 
-		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_INSERT_NEWS_W_LOGIN.getSQL());) {
 
-			try (PreparedStatement psFirst = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
-					PreparedStatement psSecond = con.prepareStatement(NewsSQL.SQL_INSERT_NEWS.getSQL());) {
+			ps.setString(1, news.getTitle());
+			ps.setString(2, news.getBrief());
+			ps.setString(3, news.getBody());
+			ps.setString(4, news.getStyle());
+			ps.setString(5, SDF.format(new Date()));
+			ps.setString(6, user.getLogin());
 
-				psFirst.setString(1, user.getLogin());
+			if (ps.executeUpdate() != 1) {
 
-				psSecond.setString(1, news.getTitle());
-				psSecond.setString(2, news.getBrief());
-				psSecond.setString(3, news.getBody());
-				psSecond.setString(4, news.getStyle());
-				psSecond.setString(5, SDF.format(new Date()));
-
-				ResultSet rs = psFirst.executeQuery();
-
-				if (!rs.next()) {
-
-					throw new DAOException("newsdaoaddpsf");
-				}
-
-				psSecond.setString(6, rs.getString(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-
-				psSecond.executeUpdate();
-
-			} catch (SQLException e) {
-
-				throw new DAOException("newsdaoaddpss", e);
+				throw new DAOException("newsdaoaddpss");
 			}
 
 		} catch (SQLException | ConnectionPoolException e) {
@@ -70,47 +55,19 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public void update(News news, User user) throws DAOException {
 
-		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS_W_TITLE.getSQL());) {
 
-			try (PreparedStatement psUsersId = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
-					PreparedStatement psFirst = con.prepareStatement(NewsSQL.SQL_SELECT_NEWS_ID_W_UID_A_TITLE.getSQL());
-					PreparedStatement psSecond = con.prepareStatement(NewsSQL.SQL_UPDATE_NEWS.getSQL());) {
+			ps.setString(1, news.getTitle());
+			ps.setString(2, news.getBrief());
+			ps.setString(3, news.getBody());
+			ps.setString(4, news.getStyle());
+			ps.setString(5, SDF.format(new Date()));
+			ps.setString(6, user.getLogin());
 
-				psUsersId.setString(1, user.getLogin());
+			if (ps.executeUpdate() != 1) {
 
-				String title = news.getTitle();
-
-				psFirst.setString(2, title);
-
-				psSecond.setString(1, title);
-				psSecond.setString(2, news.getBrief());
-				psSecond.setString(3, news.getBody());
-				psSecond.setString(4, news.getStyle());
-				psSecond.setString(5, SDF.format(new Date()));
-
-				ResultSet rsUser = psUsersId.executeQuery();
-
-				if (!rsUser.next()) {
-
-					throw new DAOException("newsupdatepsu");
-				}
-
-				psFirst.setString(1, rsUser.getString(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-
-				ResultSet rs = psFirst.executeQuery();
-
-				if (!rs.next()) {
-
-					throw new DAOException("newsupdatepsf");
-				}
-
-				psSecond.setString(6, rs.getString(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-
-				psSecond.executeUpdate();
-
-			} catch (SQLException e) {
-
-				throw new DAOException("newsupdatepss", e);
+				throw new DAOException("newsupdatepss");
 			}
 
 		} catch (SQLException | ConnectionPoolException e) {
@@ -131,16 +88,16 @@ public class NewsDB implements NewsDAO {
 				String newsTitle = news.getTitle();
 
 				psFirst.setString(1, newsTitle);
-				
+
 				ResultSet rs = psFirst.executeQuery();
 
 				if (!rs.next()) {
 
 					throw new DAOException("newsdaodeletepsf");
 				}
-				
+
 				psSecond.setInt(1, rs.getInt(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-				
+
 				psSecond.executeUpdate();
 
 			} catch (SQLException e) {
@@ -224,25 +181,15 @@ public class NewsDB implements NewsDAO {
 	public void sgnAuthor(News news, User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement psUser = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN.getSQL());
-				PreparedStatement psFirst = con.prepareStatement(NewsSQL.SQL_SELECT_UID_W_TITLE.getSQL());
-				PreparedStatement psSecond = con.prepareStatement(SgnSQL.SQL_INSERT_SGN_AUTHOR.getSQL());) {
+				PreparedStatement ps = con.prepareStatement(SgnSQL.SQL_INSERT_SGN_AUTHOR_W_LOGIN_TITLE.getSQL());) {
 
-			psUser.setString(1, user.getLogin());
-			psFirst.setString(1, news.getTitle());
-			
-			ResultSet rsUser = psUser.executeQuery();
-			ResultSet rsNews = psFirst.executeQuery();
+			ps.setString(1, user.getLogin());
+			ps.setString(2, news.getTitle());
 
-			if (!rsUser.next() & !rsNews.next()) {
-
+			if (ps.executeUpdate() != 1) {
+				
 				throw new DAOException("newsdaosgnauthorps");
 			}
-
-			psSecond.setInt(1, rsUser.getInt(UserSQL.SQL_COLLUM_LABEL_ID.getSQL()));
-			psSecond.setInt(2, rsNews.getInt(NewsSQL.SQL_COLLUM_LABEL_U_ID.getSQL()));
-
-			psSecond.executeUpdate();
 
 		} catch (SQLException | ConnectionPoolException e) {
 

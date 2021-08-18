@@ -64,28 +64,15 @@ public class UserDB implements UserDAO {
 	@Override
 	public void delete(UserData userData) throws DAOException {
 
-		try (Connection con = ConnectionPool.getInstance().takeConnection()) {
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());) {
 
-			try (PreparedStatement psFirst = con.prepareStatement(UserSQL.SQL_SELECT_ALL_W_LOGIN.getSQL());
-					PreparedStatement psSecond = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());) {
+				ps.setString(1, userData.getLogin());
 
-				String userLogin = userData.getLogin();
-
-				psFirst.setString(1, userLogin);
-
-				psSecond.setString(1, userLogin);
-
-				if (!psFirst.executeQuery().next()) {
+				if (ps.executeUpdate() != 1) {
 
 					throw new DAOException("userdaodeletepsf");
 				}
-
-				psSecond.executeUpdate();
-
-			} catch (SQLException e) {
-
-				throw new DAOException("userdaodeletepss", e);
-			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
@@ -133,7 +120,10 @@ public class UserDB implements UserDAO {
 			ps.setString(1, userData.getPassword());
 			ps.setString(2, userData.getLogin());
 
-			ps.executeUpdate();
+			if (ps.executeUpdate() != 1) {
+				
+				throw new DAOException("userdaopassword");
+			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
@@ -171,7 +161,7 @@ public class UserDB implements UserDAO {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con
-						.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID_COMPLEX_LOGIN.getSQL());) {
+						.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID_S_LOGIN.getSQL());) {
 
 			ps.setString(1, user.getLogin());
 

@@ -2,9 +2,11 @@ package by.project.news.util;
 
 public enum NewsSQL {
 
-	SQL_INSERT_NEWS("INSERT INTO mynews.news(title,brief,body,style,date, u_id) VALUES(?,?,?,?,?,?)"),
+	SQL_INSERT_NEWS("INSERT INTO mynews.news(title,brief,body,style,date,u_id) VALUES(?,?,?,?,?,?)"),
+	SQL_INSERT_NEWS_W_LOGIN("INSERT INTO mynews.news(title,brief,body,style,date,u_id) VALUES(?,?,?,?,?,(select id from mynews.users where login=?))"),
 	
-	SQL_UPDATE_NEWS("UPDATE mynews.news SET title=?, brief=?, body=?, style=?, date=? WHERE id=?"),
+	SQL_UPDATE_NEWS("UPDATE mynews.news SET brief=?, body=?, style=?, date=? WHERE id=?"),
+	SQL_UPDATE_NEWS_W_TITLE("UPDATE mynews.news AS n, (select id from mynews.news where title=?) AS s SET brief=?, body=?, style=?, date=? WHERE n.id=s.id AND n.u_id=(select id from mynews.users where login=?)"),
 
 	SQL_ORDER_BY_DATE("ORDER BY date DESC"),
 
@@ -20,7 +22,7 @@ public enum NewsSQL {
 
 	SQL_SELECT_ALL("SELECT * FROM mynews.news"),
 	SQL_SELECT_NEWS_ID_W_UID_A_TITLE(
-			"SELECT n.id FROM mynews.news n JOIN mynews.users u ON u.id = n.u_id WHERE u_id =? AND title=?"),
+			"SELECT n.id FROM mynews.news n JOIN mynews.users u ON u.id = n.u_id WHERE u_id=? AND title=?"),
 	SQL_SELECT_TITLE_ID_W_TITLE("SELECT title, id FROM mynews.news WHERE title=?"),
 	SQL_SELECT_UID_W_TITLE("SELECT u_id FROM mynews.news WHERE title=?"),
 	SQL_SELECT_ALL_W_TITLE_A_STYLE("SELECT * FROM mynews.news WHERE title=? AND style=?"),

@@ -12,7 +12,7 @@ public enum UserSQL {
 	SQL_SELECT_NAME_EMAIL_W_LOGIN("SELECT name,email FROM mynews.users WHERE login=?"),
 	SQL_SELECT_NAME_LOGIN_W_ID("SELECT name, login FROM mynews.users WHERE id=?"),
 	SQL_SELECT_ALL_W_LOGIN__A_PASSWORD("SELECT * FROM mynews.users WHERE login=? AND password=?"),
-	SQL_SELECT_NAME_LOGIN_W_ID_COMPLEX_LOGIN("SELECT login, name FROM mynews.users WHERE id IN (SELECT n_u_id FROM mynews.sgnauthor WHERE u_id IN (SELECT id FROM mynews.users WHERE login=?))"),
+	SQL_SELECT_NAME_LOGIN_W_ID_S_LOGIN("SELECT login, name FROM mynews.users WHERE id IN (SELECT n_u_id FROM mynews.sgnauthor WHERE u_id IN (SELECT id FROM mynews.users WHERE login=?))"),
 	
 	SQL_DELETE_LOGIN("DELETE FROM mynews.users WHERE login=?"),
 
