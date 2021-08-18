@@ -5,6 +5,7 @@ import java.util.Map;
 
 import by.project.news.bean.News;
 import by.project.news.bean.User;
+import by.project.news.bean.UserData;
 import by.project.news.dao.DAOException;
 import by.project.news.dao.DAOProvider;
 import by.project.news.dao.NewsDAO;
@@ -14,6 +15,7 @@ import by.project.news.util.CheckField;
 import by.project.news.util.CombineEnum;
 import by.project.news.util.FieldMapCreator;
 import by.project.news.util.NewsField;
+import by.project.news.util.UserDataField;
 import by.project.news.util.UtilException;
 import by.project.news.util.WorkWithObjectField;
 
@@ -29,6 +31,7 @@ public class NewsServiceImpl implements NewsService {
 
 	private static final int TITLE_LENGHT = 2;
 	private static final int FIELD_LENGHT = 3;
+	private static final int AUTHOR_LOGIN_LENGHT = 3;
 
 	@Override
 	public void add(News news, User user) throws ServiceException {
@@ -205,6 +208,43 @@ public class NewsServiceImpl implements NewsService {
 			throw new ServiceException("commonerror", e);
 		}
 
+	}
+
+	@Override
+	public void unsgnAuthor(UserData author, User user) throws ServiceException {
+
+		String key = UserDataField.LOGIN.toString();
+		String value = author.getLogin();
+
+		try {
+
+			CheckField.checkKVN(key, value);
+
+			CheckField.checkKVLMin(key, value, AUTHOR_LOGIN_LENGHT);
+
+			newsDAO.unsgnAuthor(author, user);
+
+		} catch (DAOException e) {
+
+			throw new ServiceException(e.getMessage(), e);
+
+		} catch (UtilException e) {
+
+			throw new ServiceException("commonerror", e);
+		}
+
+	}
+	
+	@Override
+	public List<News> sgnAuthorView(User user) throws ServiceException {
+
+		try {
+			
+			return newsDAO.sgnAuthorView(user);
+		} catch (DAOException e) {
+			
+			throw new ServiceException(e.getMessage(), e);
+		}
 	}
 
 	private void checkField(News news) throws UtilException {

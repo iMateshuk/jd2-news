@@ -11,6 +11,7 @@ import java.util.List;
 
 import by.project.news.bean.News;
 import by.project.news.bean.User;
+import by.project.news.bean.UserData;
 import by.project.news.dao.DAOException;
 import by.project.news.dao.NewsDAO;
 import by.project.news.dao.util.ConnectionPool;
@@ -19,6 +20,7 @@ import by.project.news.util.BeanCreator;
 import by.project.news.util.CheckField;
 import by.project.news.util.NewsSQL;
 import by.project.news.util.SgnSQL;
+import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
 public class NewsDB implements NewsDAO {
@@ -96,7 +98,7 @@ public class NewsDB implements NewsDAO {
 					throw new DAOException("newsdaodeletepsf");
 				}
 
-				psSecond.setInt(1, rs.getInt(NewsSQL.SQL_COLLUM_LABEL_ID.getSQL()));
+				psSecond.setInt(1, rs.getInt(NewsSQL.SQL_COLUM_LABEL_ID.getSQL()));
 
 				psSecond.executeUpdate();
 
@@ -115,9 +117,9 @@ public class NewsDB implements NewsDAO {
 	@Override
 	public List<News> choose(News news) throws DAOException {
 
-		String newsStyle = news.getStyle();
+		final String newsStyle = news.getStyle();
 
-		String sql = NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_CONCAT.getSQL().concat(checkStyle(newsStyle)).concat(" ")
+		final String sql = NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_CONCAT.getSQL().concat(checkStyle(newsStyle)).concat(" ")
 				.concat(NewsSQL.SQL_ORDER_BY_DATE.getSQL());
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
@@ -181,19 +183,73 @@ public class NewsDB implements NewsDAO {
 	public void sgnAuthor(News news, User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(SgnSQL.SQL_INSERT_SGN_AUTHOR_W_LOGIN_TITLE.getSQL());) {
+				PreparedStatement ps = con.prepareStatement(SgnSQL.SQL_INSERT_W_LOGIN_TITLE.getSQL());) {
 
 			ps.setString(1, user.getLogin());
 			ps.setString(2, news.getTitle());
 
 			if (ps.executeUpdate() != 1) {
-				
+
 				throw new DAOException("newsdaosgnauthorps");
 			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException("newsdaosgnauthor", e);
+		}
+
+	}
+
+	@Override
+	public void unsgnAuthor(UserData author, User user) throws DAOException {
+
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement psIds = con.prepareStatement(UserSQL.SQL_SELECT_ID_W_LOGIN_U_LOGIN.getSQL());
+				PreparedStatement psUnsgn = con.prepareStatement(SgnSQL.SQL_DELETE_W_UID_A_NUID.getSQL());) {
+
+			psIds.setString(1, user.getLogin());
+			psIds.setString(2, author.getLogin());
+
+			ResultSet rs = psIds.executeQuery();
+
+			int count = 1;
+
+			while (rs.next()) {
+
+				psUnsgn.setInt(count, rs.getInt(UserSQL.SQL_COLUM_LABEL_ID.getSQL()));
+				count++;
+			}
+
+			System.out.println(psUnsgn);
+
+			if (psUnsgn.executeUpdate() != 1) {
+
+				throw new DAOException("newsdaounsgnauthorps");
+			}
+
+		} catch (SQLException | ConnectionPoolException e) {
+
+			throw new DAOException("newsdaounsgnauthor", e);
+		}
+
+	}
+
+	@Override
+	public List<News> sgnAuthorView(User user) throws DAOException {
+
+		final String sql = CheckField.checkA(user.getAge()) ? NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN_NO_ADULT.getSQL()
+				: NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN.getSQL();
+
+		try (Connection con = ConnectionPool.getInstance().takeConnection();
+				PreparedStatement ps = con.prepareStatement(sql);) {
+
+			ps.setString(1, user.getLogin());
+
+			return newsCreator(ps.executeQuery());
+
+		} catch (SQLException | ConnectionPoolException | UtilException e) {
+
+			throw new DAOException("newsdaosgnauthorview", e);
 		}
 
 	}

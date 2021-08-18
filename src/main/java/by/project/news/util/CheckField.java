@@ -84,5 +84,11 @@ public class CheckField {
 		}
 
 	}
+	
+	public static boolean checkA(String age) {
+
+		return age.compareTo(AGE_STRING) < 0;
+
+	}
 
 }

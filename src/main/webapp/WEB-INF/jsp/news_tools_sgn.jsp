@@ -79,10 +79,10 @@
 					<br /> <br />
 					${login_text} :	<input type="text" name="login" value="" />
 					<br /> <br />
-					<button type="submit" name="command" value="news_tools_sgn_del">${del_btn}</button>
+					<button type="submit" name="command" value="news_tools_unsgn">${del_btn}</button>
 					<br /> <br />
 					
-					<button type="submit" name="command" value="news_tools_sgn_view">${sgn_btn}</button>
+					<button type="submit" name="command" value="news_tools_sgnview">${sgn_btn}</button>
 					<br /> <br />
 				</c:if>
 

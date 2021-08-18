@@ -147,8 +147,8 @@ public class UserDB implements UserDAO {
 				throw new DAOException("userdaoloaduserdatars");
 			}
 
-			return new UserData.UserDataBuilder().setEmail(rs.getString(UserSQL.SQL_COLLUM_LABEL_EMAIL.getSQL()))
-					.setName(rs.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build();
+			return new UserData.UserDataBuilder().setEmail(rs.getString(UserSQL.SQL_COLUM_LABEL_EMAIL.getSQL()))
+					.setName(rs.getString(UserSQL.SQL_COLUM_LABEL_NAME.getSQL())).build();
 
 		} catch (SQLException | ConnectionPoolException e) {
 
@@ -172,8 +172,8 @@ public class UserDB implements UserDAO {
 			while (rs.next()) {
 
 				usersData.add(
-						new UserData.UserDataBuilder().setLogin(rs.getString(UserSQL.SQL_COLLUM_LABEL_LOGIN.getSQL()))
-								.setName(rs.getString(UserSQL.SQL_COLLUM_LABEL_NAME.getSQL())).build());
+						new UserData.UserDataBuilder().setLogin(rs.getString(UserSQL.SQL_COLUM_LABEL_LOGIN.getSQL()))
+								.setName(rs.getString(UserSQL.SQL_COLUM_LABEL_NAME.getSQL())).build());
 			}
 
 			return usersData;

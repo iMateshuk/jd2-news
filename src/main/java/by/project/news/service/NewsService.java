@@ -5,6 +5,7 @@ import java.util.List;
 
 import by.project.news.bean.News;
 import by.project.news.bean.User;
+import by.project.news.bean.UserData;
 
 public interface NewsService {
 	
@@ -16,9 +17,13 @@ public interface NewsService {
 	
 	void sgnAuthor(News news, User user) throws ServiceException;
 	
+	void unsgnAuthor (UserData author, User user) throws ServiceException;
+	
 	List<News> choose(News news, User user) throws ServiceException;
 	
 	List<News> load() throws ServiceException;
+	
+	List<News> sgnAuthorView(User user) throws ServiceException;
 	
 	News choose(News news) throws ServiceException;
 

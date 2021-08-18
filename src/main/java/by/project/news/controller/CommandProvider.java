@@ -25,6 +25,8 @@ import by.project.news.controller.impl.NewsOperADD;
 import by.project.news.controller.impl.NewsOperChoose;
 import by.project.news.controller.impl.NewsOperDelete;
 import by.project.news.controller.impl.NewsOperSgnAuthor;
+import by.project.news.controller.impl.NewsOperSgnView;
+import by.project.news.controller.impl.NewsOperUnsgnAuthor;
 import by.project.news.controller.impl.NewsOperUpdate;
 import by.project.news.controller.impl.UnknownCommand;
 import by.project.news.controller.impl.UserAuthorization;
@@ -70,6 +72,8 @@ public class CommandProvider {
 		commands.put(CommandName.NEWS_VIEW, new GoToNewsViewPage());
 		commands.put(CommandName.NEWS_SGNAUTHOR, new NewsOperSgnAuthor());
 		commands.put(CommandName.NEWS_TOOLS_SGN, new GoToNewsSgnPage());
+		commands.put(CommandName.NEWS_TOOLS_UNSGN, new NewsOperUnsgnAuthor());
+		commands.put(CommandName.NEWS_TOOLS_SGNVIEW, new NewsOperSgnView());
 		
 		commands.put(CommandName.UNKNOWN_COMMAND, new UnknownCommand());
 		
