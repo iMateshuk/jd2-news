@@ -10,9 +10,6 @@ public enum NewsSQL {
 
 	SQL_ORDER_BY_DATE("ORDER BY date DESC"),
 
-	SQL_IN("IN (?)"),
-	SQL_NOT_IN_ADULT("NOT IN ('adult')"),
-
 	SQL_COLUM_LABEL_ID("id"),
 	SQL_COLUM_LABEL_TITLE("title"),
 	SQL_COLUM_LABEL_U_ID("u_id"),
@@ -27,12 +24,16 @@ public enum NewsSQL {
 	SQL_SELECT_UID_W_TITLE("SELECT u_id FROM mynews.news WHERE title=?"),
 	SQL_SELECT_ALL_W_TITLE_A_STYLE("SELECT * FROM mynews.news WHERE title=? AND style=?"),
 	SQL_SELECT_ALL_FOR_LOAD("SELECT * FROM mynews.news WHERE style NOT IN ('adult') ORDER BY date DESC LIMIT 10"),
-	SQL_SELECT_ALL_W_TITLE_A_STYLE_CONCAT("SELECT * FROM mynews.news WHERE title LIKE ? AND style "),
+	SQL_SELECT_ALL_W_TITLE_A_STYLE_ADULT(
+			"SELECT * FROM mynews.news WHERE title LIKE ? AND style IN (?) ORDER BY date DESC"),
+	SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT(
+			"SELECT * FROM mynews.news WHERE title LIKE ? AND style NOT IN ('adult') ORDER BY date DESC"),
 	SQL_SELECT_ALL_W_TITLE("SELECT * FROM mynews.news WHERE title=?"),
-	SQL_SELECT_ALL_W_UID_S_LOGIN("SELECT * FROM mynews.news WHERE u_id IN "
-			+ "(SELECT n_u_id FROM mynews.sgnauthor WHERE u_id IN (SELECT id FROM mynews.users WHERE login=?)) "
-			+ "ORDER BY date DESC"),
-	SQL_SELECT_ALL_W_UID_S_LOGIN_NO_ADULT("SELECT * FROM mynews.news WHERE style NOT IN ('adult') AND u_id IN "
+	SQL_SELECT_ALL_W_UID_S_LOGIN(
+			"SELECT * FROM mynews.news WHERE u_id IN (SELECT n_u_id FROM mynews.sgnauthor WHERE u_id IN "
+			+ "(SELECT id FROM mynews.users WHERE login=?)) ORDER BY date DESC"),
+	SQL_SELECT_ALL_W_UID_S_LOGIN_NO_ADULT(
+			"SELECT * FROM mynews.news WHERE style NOT IN ('adult') AND u_id IN "
 			+ "(SELECT n_u_id FROM mynews.sgnauthor WHERE u_id IN (SELECT id FROM mynews.users WHERE login=?)) "
 			+ "ORDER BY date DESC"),
 	;

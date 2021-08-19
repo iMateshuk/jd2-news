@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToIndexPage implements Command{
 	
-	final static String PATH = "/".concat(CommandName.INDEX.toString().toLowerCase()).concat(".jsp");
+	private final static String PATH = "/".concat(CommandName.INDEX.toString().toLowerCase()).concat(".jsp");
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

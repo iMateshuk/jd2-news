@@ -34,8 +34,8 @@ public class UserOperPassword implements Command {
 
 	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserPass)
 			.concat(MESSAGE);
-	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandUserPass).concat(MESSAGE);
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserPass)
+			.concat(MESSAGE);
 	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserPass)
 			.concat(MESSAGE);
 	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
@@ -52,8 +52,7 @@ public class UserOperPassword implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
-		
-		
+
 		try {
 
 			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);

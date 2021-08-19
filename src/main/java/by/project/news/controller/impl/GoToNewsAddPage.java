@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToNewsAddPage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS_ADD.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS_ADD.toString().toLowerCase())
 			.concat(".jsp");
 
 	private final static String COMMAND = "Controller?command=";

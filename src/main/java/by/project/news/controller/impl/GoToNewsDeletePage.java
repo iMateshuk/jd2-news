@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToNewsDeletePage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS_DELETE.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_TOOLS_DELETE.toString().toLowerCase())
 			.concat(".jsp");
 
 	private final static String COMMAND = "Controller?command=";

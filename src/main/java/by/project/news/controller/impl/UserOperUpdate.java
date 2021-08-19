@@ -35,8 +35,8 @@ public class UserOperUpdate implements Command {
 
 	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION)
 			.concat(commandUserUpdate).concat(MESSAGE);
-	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION)
-			.concat(commandUserUpdate).concat(MESSAGE);
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserUpdate)
+			.concat(MESSAGE);
 	private final static String REDIRECT_SE = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandUserUpdate)
 			.concat(MESSAGE);
 	private final static String REDIRECT_UE = COMMAND.concat(commandAuth).concat(MESSAGE);
@@ -53,9 +53,8 @@ public class UserOperUpdate implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
-		
-		try {
 
+		try {
 
 			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
 

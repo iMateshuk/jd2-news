@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 
 public class GoToMainPage implements Command {
 
-	private static String COMMAND = CommandName.MAIN.toString().toLowerCase();
+	private final static String COMMAND = CommandName.MAIN.toString().toLowerCase();
 
 	private final static String PATH = "/WEB-INF/jsp/".concat(COMMAND).concat(".jsp");
 	private final static NewsService newsService = ServiceProvider.getInstance().getNewsService();

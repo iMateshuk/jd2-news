@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class NewsOperSgnView implements Command {
 
-	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
+	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static String commandAnswer = CommandName.NEWS_ANSWER.toString().toLowerCase();
 	private final static String commandSgn = CommandName.NEWS_TOOLS_SGNVIEW.toString().toLowerCase();
@@ -28,10 +28,10 @@ public class NewsOperSgnView implements Command {
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
 	private final static String PATH = "/WEB-INF/jsp/".concat(commandMain).concat(".jsp");
-	
+
 	private final static String ATTRIBUTE_NEWSES = "newses";
 
-	private static final String USER = "user";
+	private final static String USER = "user";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -48,17 +48,8 @@ public class NewsOperSgnView implements Command {
 
 			CheckSession.validate(request);
 
-		} catch (UtilException e) {
-
-			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
-			return;
-		}
-
-		try {
-
 			List<News> newses = newsServices.sgnAuthorView((User) request.getSession(false).getAttribute(USER));
-			
+
 			request.setAttribute(ATTRIBUTE_NEWSES, newses);
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
@@ -68,6 +59,11 @@ public class NewsOperSgnView implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+			return;
 		}
 
 	}

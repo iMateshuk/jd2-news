@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToUserUpdatePage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_UPDATE.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_UPDATE.toString().toLowerCase())
 			.concat(".jsp");
 
 	private final static UserService userService = ServiceProvider.getInstance().getUserService();

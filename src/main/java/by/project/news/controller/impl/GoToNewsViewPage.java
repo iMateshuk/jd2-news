@@ -8,7 +8,9 @@ import by.project.news.controller.CommandName;
 import by.project.news.service.NewsService;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
+import by.project.news.util.CheckSession;
 import by.project.news.util.LogWriter;
+import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +19,9 @@ import jakarta.servlet.http.HttpSession;
 
 public class GoToNewsViewPage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_VIEW.toString().toLowerCase()).concat(".jsp");
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_VIEW.toString().toLowerCase()).concat(".jsp");
 
-	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
+	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -41,13 +43,18 @@ public class GoToNewsViewPage implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
+		try {
 
-		if (session == null) {
+			CheckSession.validate(request);
 
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_SESSION.concat("usersessiontimeout"));
 			return;
 		}
+		
+		HttpSession session = request.getSession(false);
 
 		String title = null;
 
@@ -67,7 +74,7 @@ public class GoToNewsViewPage implements Command {
 
 		try {
 
-			request.setAttribute(ATTRIBUTE_NEWS, newsServices.choose(new News.NewsBuilder().setTitle(title).build()));
+			request.setAttribute(ATTRIBUTE_NEWS, newsServices.chooseNewsByTitle(new News.NewsBuilder().setTitle(title).build()));
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);

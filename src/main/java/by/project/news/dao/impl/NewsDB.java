@@ -119,8 +119,8 @@ public class NewsDB implements NewsDAO {
 
 		final String newsStyle = news.getStyle();
 
-		final String sql = NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_CONCAT.getSQL().concat(checkStyle(newsStyle)).concat(" ")
-				.concat(NewsSQL.SQL_ORDER_BY_DATE.getSQL());
+		final String sql = CheckField.checkKVN(newsStyle) ? NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT.getSQL()
+				: NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_ADULT.getSQL();
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(sql);) {
@@ -252,11 +252,6 @@ public class NewsDB implements NewsDAO {
 			throw new DAOException("newsdaosgnauthorview", e);
 		}
 
-	}
-
-	private String checkStyle(String newsStyle) {
-
-		return CheckField.checkKVN(newsStyle) ? NewsSQL.SQL_NOT_IN_ADULT.getSQL() : NewsSQL.SQL_IN.getSQL();
 	}
 
 	private List<News> newsCreator(ResultSet rs) throws UtilException, SQLException {

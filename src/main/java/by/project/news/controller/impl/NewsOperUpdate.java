@@ -18,13 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class NewsOperUpdate implements Command {
 
-	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
+	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static String commandAnswer = CommandName.NEWS_ANSWER.toString().toLowerCase();
 	private final static String commandUpdate = CommandName.NEWS_UPDATE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
-	private static final String USER = "user";
+	private final static String USER = "user";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";

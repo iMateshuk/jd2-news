@@ -24,8 +24,6 @@ public class UserAuthorization implements Command {
 	private final static String commandAnswer = CommandName.USER_ANSWER.toString().toLowerCase();
 	private final static String commandAutho = CommandName.AUTHORIZATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
-
 	private final static String ATTRIBUTE_USER = "user";
 
 	private final static String COMMAND = "Controller?command=";

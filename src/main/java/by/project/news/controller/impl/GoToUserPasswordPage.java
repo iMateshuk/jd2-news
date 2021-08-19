@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToUserPasswordPage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase())
 			.concat(".jsp");
 	
 	private final static String COMMAND = "Controller?command=";

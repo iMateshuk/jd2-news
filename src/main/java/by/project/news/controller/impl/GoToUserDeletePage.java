@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class GoToUserDeletePage implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_DELETE.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_DELETE.toString().toLowerCase())
 			.concat(".jsp");
 
 	private final static String COMMAND = "Controller?command=";

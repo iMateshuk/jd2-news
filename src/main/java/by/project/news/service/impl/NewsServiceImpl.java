@@ -155,7 +155,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public News choose(News news) throws ServiceException {
+	public News chooseNewsByTitle(News news) throws ServiceException {
 
 		String key = NewsField.TITLE.toString();
 		String value = news.getTitle();

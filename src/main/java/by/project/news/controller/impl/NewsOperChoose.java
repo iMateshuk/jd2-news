@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
 
 public class NewsOperChoose implements Command {
 
-	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
+	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static String commandAnswer = CommandName.NEWS_ANSWER.toString().toLowerCase();
 	private final static String commandChoose = CommandName.NEWS_CHOOSE.toString().toLowerCase();
@@ -48,13 +48,6 @@ public class NewsOperChoose implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
-		
-		if (request.getParameter(CLEAN) != null) {
-
-			session.setAttribute(SESSION_NEWS_SEARCH, null);
-		}
-
 		try {
 
 			CheckSession.validate(request);
@@ -63,6 +56,13 @@ public class NewsOperChoose implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+		}
+
+		HttpSession session = request.getSession(false);
+
+		if (request.getParameter(CLEAN) != null) {
+
+			session.setAttribute(SESSION_NEWS_SEARCH, null);
 		}
 
 		try {

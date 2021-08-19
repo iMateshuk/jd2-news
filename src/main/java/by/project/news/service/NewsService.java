@@ -25,6 +25,6 @@ public interface NewsService {
 	
 	List<News> sgnAuthorView(User user) throws ServiceException;
 	
-	News choose(News news) throws ServiceException;
+	News chooseNewsByTitle(News news) throws ServiceException;
 
 }

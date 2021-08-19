@@ -25,8 +25,6 @@ public class UserRegistration implements Command {
 	private final static String commandAutho = CommandName.AUTHORIZATION.toString().toLowerCase();
 	private final static String commandReg = CommandName.REGISTRATION.toString().toLowerCase();
 
-	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
-
 	private final static String ATTRIBUTE_USER = "user";
 	private final static String ROLE_ADMIN = "admin";
 

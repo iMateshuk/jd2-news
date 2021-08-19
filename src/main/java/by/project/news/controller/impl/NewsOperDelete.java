@@ -18,13 +18,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class NewsOperDelete implements Command {
 
-	private static final NewsService newsServices = ServiceProvider.getInstance().getNewsService();
+	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
 	private final static String commandAnswer = CommandName.NEWS_ANSWER.toString().toLowerCase();
 	private final static String commandDelete = CommandName.NEWS_DELETE.toString().toLowerCase();
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
-
-	final static String PATH = "/WEB-INF/jsp/".concat(commandAnswer).concat(".jsp");
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";

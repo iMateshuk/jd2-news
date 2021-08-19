@@ -42,17 +42,8 @@ public class GoToNewsSgnPage implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-
+			
 			CheckSession.validate(request);
-
-		} catch (UtilException e) {
-
-			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
-			return;
-		}
-
-		try {
 
 			request.setAttribute(ATTRIBUTE_USER_SGN,
 					userService.loadSgnAuthor((User) request.getSession(false).getAttribute(USER)));
@@ -64,6 +55,10 @@ public class GoToNewsSgnPage implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+		} catch (UtilException e) {
+
+			LogWriter.writeLog(e);
+			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
 
 	}

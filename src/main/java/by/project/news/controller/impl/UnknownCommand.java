@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class UnknownCommand implements Command {
 
-	final static String PATH = "/WEB-INF/jsp/".concat(CommandName.UNKNOWN_COMMAND.toString().toLowerCase())
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.UNKNOWN_COMMAND.toString().toLowerCase())
 			.concat(".jsp");
 
 	@Override
