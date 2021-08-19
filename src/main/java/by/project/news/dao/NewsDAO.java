@@ -23,7 +23,7 @@ public interface NewsDAO {
 	
 	List<News> sgnAuthorView(User user) throws DAOException;
 	
-	News chooseNewsByTitle(News news) throws DAOException;
+	News chooseNews(News news) throws DAOException;
 	
 	List<News> load() throws DAOException;
 

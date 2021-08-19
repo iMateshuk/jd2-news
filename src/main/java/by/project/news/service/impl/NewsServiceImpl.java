@@ -155,7 +155,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public News chooseNewsByTitle(News news) throws ServiceException {
+	public News chooseNews(News news) throws ServiceException {
 
 		String key = NewsField.TITLE.toString();
 		String value = news.getTitle();
@@ -169,7 +169,7 @@ public class NewsServiceImpl implements NewsService {
 				CheckField.checkKVE(key, value, EXP_TITLE);
 			}
 
-			return newsDAO.chooseNewsByTitle(news);
+			return newsDAO.chooseNews(news);
 
 		} catch (DAOException e) {
 

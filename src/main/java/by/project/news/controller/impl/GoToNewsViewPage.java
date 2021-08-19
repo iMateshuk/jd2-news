@@ -74,7 +74,7 @@ public class GoToNewsViewPage implements Command {
 
 		try {
 
-			request.setAttribute(ATTRIBUTE_NEWS, newsServices.chooseNewsByTitle(new News.NewsBuilder().setTitle(title).build()));
+			request.setAttribute(ATTRIBUTE_NEWS, newsServices.chooseNews(new News.NewsBuilder().setTitle(title).build()));
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);

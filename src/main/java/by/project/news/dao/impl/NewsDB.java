@@ -156,7 +156,7 @@ public class NewsDB implements NewsDAO {
 	}
 
 	@Override
-	public News chooseNewsByTitle(News news) throws DAOException {
+	public News chooseNews(News news) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(NewsSQL.SQL_SELECT_ALL_W_TITLE.getSQL());) {
