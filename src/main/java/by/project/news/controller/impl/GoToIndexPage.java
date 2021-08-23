@@ -9,8 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToIndexPage implements Command{
-	
+public class GoToIndexPage implements Command {
+
 	private final static String PATH = "/".concat(CommandName.INDEX.toString().toLowerCase()).concat(".jsp");
 
 	@Override

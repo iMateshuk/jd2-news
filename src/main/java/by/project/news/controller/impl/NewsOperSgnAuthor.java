@@ -48,13 +48,14 @@ public class NewsOperSgnAuthor implements Command {
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 			return;
 		}
-		
+
 		try {
-			
-			newsServices.sgnAuthor(BeanCreator.createNews(request), (User) request.getSession(false).getAttribute(USER));
+
+			newsServices.sgnAuthor(BeanCreator.createNews(request),
+					(User) request.getSession(false).getAttribute(USER));
 
 			response.sendRedirect(REDIRECT);
-			
+
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);

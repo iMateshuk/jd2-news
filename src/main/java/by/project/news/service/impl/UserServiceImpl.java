@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 

@@ -28,6 +28,7 @@ public class GoToUserUpdatePage implements Command {
 	private final static String commandAuth = CommandName.USER_AUTHORIZATION.toString().toLowerCase();
 
 	private final static String ROLE_ADMIN = "admin";
+	private final static String USER = "user";
 	private final static String ATTRIBUTE_USER_DATA = "userData";
 
 	private final static String COMMAND = "Controller?command=";
@@ -45,7 +46,7 @@ public class GoToUserUpdatePage implements Command {
 
 			CheckSession.validate(request);
 
-			User user = (User) request.getSession().getAttribute("user");
+			User user = (User) request.getSession().getAttribute(USER);
 
 			if (!user.getRole().equals(ROLE_ADMIN)) {
 

@@ -52,7 +52,7 @@ public class UserOperDelete implements Command {
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 		}
-		
+
 		try {
 
 			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);

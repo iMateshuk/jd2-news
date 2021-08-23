@@ -56,16 +56,17 @@ public class NewsOperChoose implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
-		}
-
-		HttpSession session = request.getSession(false);
-
-		if (request.getParameter(CLEAN) != null) {
-
-			session.setAttribute(SESSION_NEWS_SEARCH, null);
+			return;
 		}
 
 		try {
+			
+			HttpSession session = request.getSession(false);
+
+			if (request.getParameter(CLEAN) != null) {
+
+				session.setAttribute(SESSION_NEWS_SEARCH, null);
+			}
 
 			User user = (User) request.getSession(false).getAttribute(USER);
 

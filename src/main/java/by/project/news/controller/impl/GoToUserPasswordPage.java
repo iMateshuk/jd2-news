@@ -16,7 +16,7 @@ public class GoToUserPasswordPage implements Command {
 
 	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.USER_TOOLS_PASSWORD.toString().toLowerCase())
 			.concat(".jsp");
-	
+
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
 
@@ -37,7 +37,7 @@ public class GoToUserPasswordPage implements Command {
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
 			return;
 		}
-		
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 		requestDispatcher.forward(request, response);
 

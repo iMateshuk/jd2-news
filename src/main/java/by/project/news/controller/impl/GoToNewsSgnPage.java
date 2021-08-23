@@ -42,7 +42,7 @@ public class GoToNewsSgnPage implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			
+
 			CheckSession.validate(request);
 
 			request.setAttribute(ATTRIBUTE_USER_SGN,

@@ -46,7 +46,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -68,7 +68,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -88,7 +88,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -106,7 +106,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		}
 
@@ -146,7 +146,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -173,7 +173,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -201,7 +201,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -226,7 +226,7 @@ public class NewsServiceImpl implements NewsService {
 
 		} catch (DAOException e) {
 
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 
 		} catch (UtilException e) {
 
@@ -243,7 +243,7 @@ public class NewsServiceImpl implements NewsService {
 			return newsDAO.sgnAuthorView(user);
 		} catch (DAOException e) {
 			
-			throw new ServiceException(e.getMessage(), e);
+			throw new ServiceException(e);
 		}
 	}
 

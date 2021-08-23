@@ -52,6 +52,7 @@ public class UserOperUpdate implements Command {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+			return;
 		}
 
 		try {

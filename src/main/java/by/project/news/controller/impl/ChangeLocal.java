@@ -8,18 +8,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ChangeLocal implements Command{
-	
+public class ChangeLocal implements Command {
+
 	private final static String CONTROLLER = "Controller?command=";
 	private final static String URL = "url";
-	
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Local.change(request);
-		
+
 		response.sendRedirect(CONTROLLER.concat((String) request.getSession().getAttribute(URL)));
-		
+
 	}
 
 }

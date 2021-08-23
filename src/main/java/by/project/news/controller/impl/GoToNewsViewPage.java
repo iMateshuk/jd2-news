@@ -19,7 +19,8 @@ import jakarta.servlet.http.HttpSession;
 
 public class GoToNewsViewPage implements Command {
 
-	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_VIEW.toString().toLowerCase()).concat(".jsp");
+	private final static String PATH = "/WEB-INF/jsp/".concat(CommandName.NEWS_VIEW.toString().toLowerCase())
+			.concat(".jsp");
 
 	private final static NewsService newsServices = ServiceProvider.getInstance().getNewsService();
 
@@ -53,7 +54,7 @@ public class GoToNewsViewPage implements Command {
 			response.sendRedirect(REDIRECT_SESSION.concat("usersessiontimeout"));
 			return;
 		}
-		
+
 		HttpSession session = request.getSession(false);
 
 		String title = null;
@@ -74,7 +75,8 @@ public class GoToNewsViewPage implements Command {
 
 		try {
 
-			request.setAttribute(ATTRIBUTE_NEWS, newsServices.chooseNews(new News.NewsBuilder().setTitle(title).build()));
+			request.setAttribute(ATTRIBUTE_NEWS,
+					newsServices.chooseNews(new News.NewsBuilder().setTitle(title).build()));
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
