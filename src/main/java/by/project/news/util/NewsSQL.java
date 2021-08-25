@@ -13,7 +13,10 @@ public enum NewsSQL {
 
 	SQL_ORDER_BY_DATE("ORDER BY date DESC"),
 
-	SQL_COLUM_LABEL_ID("id"), SQL_COLUM_LABEL_TITLE("title"), SQL_COLUM_LABEL_U_ID("u_id"),
+	SQL_COLUM_LABEL_ID("id"),
+	SQL_COLUM_LABEL_TITLE("title"),
+	SQL_COLUM_LABEL_U_ID("u_id"),
+	SQL_COLUM_LABEL_COUNT("count"),
 
 	SQL_DELETE_NEWS_TITLE("DELETE FROM mynews.news WHERE title=?"),
 	SQL_DELETE_NEWS_ID("DELETE FROM mynews.news WHERE id=?"),

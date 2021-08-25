@@ -31,7 +31,6 @@ public class NewsDB implements NewsDAO {
 	private static final String STYLE_LIKE = "%";
 
 	private static final int RECORDS_PER_PAGE = 3;
-	private static final String COLUM_COUNT = "count";
 
 	@Override
 	public void add(News news, User user) throws DAOException {
@@ -149,7 +148,7 @@ public class NewsDB implements NewsDAO {
 
 			if (rs.next()) {
 
-				newsData.setMaxNewses(rs.getInt(COLUM_COUNT));
+				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
 			}
 
@@ -275,7 +274,7 @@ public class NewsDB implements NewsDAO {
 
 			if (rs.next()) {
 
-				newsData.setMaxNewses(rs.getInt(COLUM_COUNT));
+				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
 			}
 
