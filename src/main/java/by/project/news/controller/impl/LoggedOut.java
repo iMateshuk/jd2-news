@@ -17,15 +17,14 @@ public class LoggedOut implements Command {
 	private final static String MESSAGE = "&message=loggedoutuser";
 	private final static String ACTION = "&action=";
 
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandLoggedOut)
+			.concat(MESSAGE);
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		/* User user = (User) request.getSession().getAttribute("user"); */
-
-		String redirect = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandLoggedOut).concat(MESSAGE);
-
 		request.getSession().invalidate();
 
-		response.sendRedirect(redirect);
+		response.sendRedirect(REDIRECT);
 	}
 }

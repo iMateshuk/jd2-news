@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import by.project.news.controller.Command;
 import by.project.news.controller.CommandName;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
@@ -29,7 +29,7 @@ public class GoToUserDeletePage implements Command {
 
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(request.getSession(false));
 
 		} catch (UtilException e) {
 

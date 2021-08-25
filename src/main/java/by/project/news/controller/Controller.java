@@ -33,13 +33,8 @@ public class Controller extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		if (request != null && response != null) {
-			
 			String commandName = request.getParameter(COMMAND_REQUEST_PARAM);
 			Command command = provider.findCommand(commandName);
 			command.execute(request, response);
-		}
-
 	}
-
 }

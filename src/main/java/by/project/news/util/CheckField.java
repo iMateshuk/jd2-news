@@ -3,86 +3,93 @@ package by.project.news.util;
 public class CheckField {
 
 	private static final String AGE_STRING = "18";
+	private static final String ADULT = "adult";
 
-	private static final String IS_EMPTY = " is empty";
-	private static final String ILLEGAL_VALUE = ": find illegal value in: ";
-	private static final String NOT_NUMBER = " is not are number ";
-	private static final String LENGHT_MORE = " lenght must be more then ";
-	private static final String LENGHT_LESS = " lenght must be less then ";
-	private static final String DENY_STYLE = ": forbidden style for users younger ";
+	public static void checkValueNull(String value) throws UtilException {
 
-	public static void checkKVN(String key, String value) throws UtilException {
+		if (isValueNull(value)) {
 
-		if (checkKVN(value)) {
-
-			throw new UtilException(key + IS_EMPTY);
+			throw new UtilException("cvn");
 		}
 	}
 
-	public static boolean checkKVN(String value) {
+	public static boolean isValueNull(String value) {
 
 		return (value == null || value.isEmpty() || value.isBlank());
 	}
+	
+	public static void checkValueNull(Integer value) throws UtilException {
 
-	public static void checkKVE(String key, String value, String expression) throws UtilException {
+		if (isValueNull(value)) {
+
+			throw new UtilException("cvn");
+		}
+	}
+	
+	public static boolean isValueNull(Integer value) {
+
+		return (value == null);
+	}
+
+	public static void checkValueExpression(String value, String expression) throws UtilException {
 
 		if (value.matches(expression)) {
 
-			throw new UtilException(key + ILLEGAL_VALUE + value);
+			throw new UtilException("cve");
 		}
 
 	}
 
-	public static void checkKVEnot(String key, String value, String expression) throws UtilException {
+	public static void checkValueNotExpression(String value, String expression) throws UtilException {
 
 		if (!value.matches(expression)) {
 
-			throw new UtilException(key + ILLEGAL_VALUE + value);
+			throw new UtilException("cvne");
 		}
 
 	}
 
-	public static void checkKI(String key, String age) throws UtilException {
+	public static void checkStringIsNumber(String number) throws UtilException {
 
 		try {
 
-			Integer.parseInt(age);
+			Integer.parseInt(number);
 
 		} catch (NumberFormatException | NullPointerException e) {
 
-			throw new UtilException(key + NOT_NUMBER + age);
+			throw new UtilException("csin");
 		}
 
 	}
 
-	public static void checkKVLMin(String key, String value, int lenght) throws UtilException {
+	public static void checkValueLengthMin(String value, int length) throws UtilException {
 
-		if (value.length() < lenght) {
+		if (value.length() < length) {
 
-			throw new UtilException(key + LENGHT_MORE + lenght);
+			throw new UtilException("cvlmi");
 		}
 
 	}
 
-	public static void checkKVLMax(String key, String value, int lenght) throws UtilException {
+	public static void checkValueLengthMax(String value, int length) throws UtilException {
 
-		if (value.length() > lenght) {
+		if (value.length() > length) {
 
-			throw new UtilException(key + LENGHT_LESS + lenght);
+			throw new UtilException("cvlma");
 		}
 
 	}
 
-	public static void checkVA(String value, String age) throws UtilException {
+	public static void checkAdultAndAge(String adult, String age) throws UtilException {
 
-		if (value.equals("adult") && checkA(age)) {
+		if (adult.equals(ADULT) && checkAge(age)) {
 
-			throw new UtilException(value + DENY_STYLE + AGE_STRING);
+			throw new UtilException("caaa");
 		}
 
 	}
 
-	public static boolean checkA(String age) {
+	public static boolean checkAge(String age) {
 
 		return age.compareTo(AGE_STRING) < 0;
 	}

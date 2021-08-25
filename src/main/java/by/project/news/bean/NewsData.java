@@ -14,7 +14,7 @@ public class NewsData implements Serializable {
 
 	private int page;
 	private int recordsPerPage;
-	private int endPages;
+	private int maxNewses;
 	private List<News> newses;
 
 	NewsData() {
@@ -23,7 +23,7 @@ public class NewsData implements Serializable {
 	NewsData(NewsDataBuilder newsDataBuilder) {
 		this.page = newsDataBuilder.page;
 		this.recordsPerPage = newsDataBuilder.recordsPerPage;
-		this.endPages = newsDataBuilder.endPages;
+		this.maxNewses = newsDataBuilder.maxNewses;
 		this.newses = newsDataBuilder.newses;
 
 	}
@@ -40,16 +40,16 @@ public class NewsData implements Serializable {
 		return recordsPerPage;
 	}
 
-	public void setRecordsPerPage(int recordsPerPage) {
-		this.recordsPerPage = recordsPerPage;
+	public void setRecordsPerPage(int newsPerPage) {
+		this.recordsPerPage = newsPerPage;
 	}
 
-	public int getEndPages() {
-		return endPages;
+	public int getMaxNewses() {
+		return maxNewses;
 	}
 
-	public void setEndPages(int endPages) {
-		this.endPages = endPages;
+	public void setMaxNewses(int endPages) {
+		this.maxNewses = endPages;
 	}
 
 	public List<News> getNewses() {
@@ -59,10 +59,10 @@ public class NewsData implements Serializable {
 	public void setNewses(List<News> newses) {
 		this.newses = newses;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(endPages, newses, page, recordsPerPage);
+		return Objects.hash(maxNewses, recordsPerPage, newses, page);
 	}
 
 	@Override
@@ -74,17 +74,16 @@ public class NewsData implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		NewsData other = (NewsData) obj;
-		return endPages == other.endPages && Objects.equals(newses, other.newses) && page == other.page
-				&& recordsPerPage == other.recordsPerPage;
+		return maxNewses == other.maxNewses && recordsPerPage == other.recordsPerPage
+				&& Objects.equals(newses, other.newses) && page == other.page;
 	}
 
-	
 	@Override
 	public String toString() {
-		return getClass().getName() + " [page=" + page + ", recordsPerPage=" + recordsPerPage + ", endPages=" + endPages + ", newses="
-				+ newses + "]";
+		return getClass().getName() + " [page=" + page + ", recordsPerPage=" + recordsPerPage + ", maxNewses="
+				+ maxNewses + ", newses=" + newses + "]";
 	}
-	
+
 	// Builder
 
 	public static class NewsDataBuilder {
@@ -92,7 +91,7 @@ public class NewsData implements Serializable {
 		// optional
 		private int page;
 		private int recordsPerPage;
-		private int endPages;
+		private int maxNewses;
 		private List<News> newses;
 
 		public NewsDataBuilder() {
@@ -110,9 +109,9 @@ public class NewsData implements Serializable {
 			return this;
 		}
 
-		public NewsDataBuilder setEndPages(int endPages) {
+		public NewsDataBuilder setMaxNewses(int maxNewses) {
 
-			this.endPages = endPages;
+			this.maxNewses = maxNewses;
 			return this;
 		}
 

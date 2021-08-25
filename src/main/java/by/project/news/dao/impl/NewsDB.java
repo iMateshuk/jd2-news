@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import by.project.news.bean.News;
+import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import by.project.news.bean.UserData;
 import by.project.news.dao.DAOException;
@@ -28,6 +29,9 @@ public class NewsDB implements NewsDAO {
 	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private static final String STYLE_LIKE = "%";
+
+	private static final int RECORDS_PER_PAGE = 3;
+	private static final String COLUM_COUNT = "count";
 
 	@Override
 	public void add(News news, User user) throws DAOException {
@@ -115,24 +119,41 @@ public class NewsDB implements NewsDAO {
 	}
 
 	@Override
-	public List<News> choose(News news) throws DAOException {
+	public NewsData choose(News news, NewsData newsData) throws DAOException {
 
 		final String newsStyle = news.getStyle();
 
-		final String sql = CheckField.checkKVN(newsStyle) ? NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT.getSQL()
+		final String sql = CheckField.isValueNull(newsStyle) 
+				? NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT.getSQL()
 				: NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_ADULT.getSQL();
+		
+		newsData.setRecordsPerPage(RECORDS_PER_PAGE);
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(sql);) {
 
 			ps.setString(1, STYLE_LIKE.concat(news.getTitle()).concat(STYLE_LIKE));
+			
+			int count = 2;
 
-			if (!CheckField.checkKVN(newsStyle)) {
+			if (!CheckField.isValueNull(newsStyle)) {
 
 				ps.setString(2, newsStyle);
+				count++;
+			}
+			
+			ps.setInt(count++, (newsData.getPage() - 1) * RECORDS_PER_PAGE);
+			ps.setInt(count, RECORDS_PER_PAGE);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				newsData.setMaxNewses(rs.getInt(COLUM_COUNT));
+				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
 			}
 
-			return newsCreator(ps.executeQuery());
+			return newsData;
 
 		} catch (SQLException | ConnectionPoolException | UtilException e) {
 
@@ -235,23 +256,35 @@ public class NewsDB implements NewsDAO {
 	}
 
 	@Override
-	public List<News> sgnAuthorView(User user) throws DAOException {
+	public NewsData sgnAuthorView(User user, NewsData newsData) throws DAOException {
 
-		final String sql = CheckField.checkA(user.getAge()) ? NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN_NO_ADULT.getSQL()
-				: NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN.getSQL();
+		final String sql = CheckField.checkAge(user.getAge())
+				? NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN_NO_ADULT_LIMIT.getSQL()
+				: NewsSQL.SQL_SELECT_ALL_W_UID_S_LOGIN_LIMIT.getSQL();
+
+		newsData.setRecordsPerPage(RECORDS_PER_PAGE);
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(sql);) {
 
 			ps.setString(1, user.getLogin());
+			ps.setInt(2, (newsData.getPage() - 1) * RECORDS_PER_PAGE);
+			ps.setInt(3, RECORDS_PER_PAGE);
 
-			return newsCreator(ps.executeQuery());
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				newsData.setMaxNewses(rs.getInt(COLUM_COUNT));
+				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
+			}
+
+			return newsData;
 
 		} catch (SQLException | ConnectionPoolException | UtilException e) {
 
 			throw new DAOException("newsdaosgnauthorview", e);
 		}
-
 	}
 
 	private List<News> newsCreator(ResultSet rs) throws UtilException, SQLException {
@@ -266,4 +299,15 @@ public class NewsDB implements NewsDAO {
 		return newses;
 	}
 
+	private List<News> newsCreator(ResultSet rs, List<News> newses) throws UtilException, SQLException {
+
+		newses.add(BeanCreator.createNews(rs));
+
+		while (rs.next()) {
+
+			newses.add(BeanCreator.createNews(rs));
+		}
+
+		return newses;
+	}
 }

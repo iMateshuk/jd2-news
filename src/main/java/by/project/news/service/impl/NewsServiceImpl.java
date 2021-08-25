@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import by.project.news.bean.News;
+import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import by.project.news.bean.UserData;
 import by.project.news.dao.DAOException;
@@ -15,7 +16,6 @@ import by.project.news.util.CheckField;
 import by.project.news.util.CombineEnum;
 import by.project.news.util.FieldMapCreator;
 import by.project.news.util.NewsField;
-import by.project.news.util.UserDataField;
 import by.project.news.util.UtilException;
 import by.project.news.util.WorkWithObjectField;
 
@@ -28,7 +28,7 @@ public class NewsServiceImpl implements NewsService {
 	private static final String EXP_TITLE = ".*\\*+.*";
 
 	private static final String EMPTY = "";
-
+	
 	private static final int TITLE_LENGHT = 2;
 	private static final int FIELD_LENGHT = 3;
 	private static final int AUTHOR_LOGIN_LENGHT = 3;
@@ -40,19 +40,15 @@ public class NewsServiceImpl implements NewsService {
 
 			checkField(news);
 
-			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
+			CheckField.checkValueExpression(news.getBody(), EXP_BODY);
 
 			newsDAO.add(news, user);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
@@ -62,19 +58,15 @@ public class NewsServiceImpl implements NewsService {
 
 			checkField(news);
 
-			CheckField.checkKVE(NewsField.BODY.toString(), news.getBody(), EXP_BODY);
+			CheckField.checkValueExpression(news.getBody(), EXP_BODY);
 
 			newsDAO.update(news, user);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
@@ -82,19 +74,15 @@ public class NewsServiceImpl implements NewsService {
 
 		try {
 
-			CheckField.checkKVN(NewsField.TITLE.toString(), news.getTitle());
+			CheckField.checkValueNull(news.getTitle());
 
 			newsDAO.delete(news);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
@@ -109,22 +97,20 @@ public class NewsServiceImpl implements NewsService {
 			throw new ServiceException(e);
 
 		}
-
 	}
 
 	@Override
-	public List<News> choose(News news, User user) throws ServiceException {
+	public NewsData choose(News news, User user, NewsData newsData) throws ServiceException {
 
 		try {
 
-			String key = NewsField.TITLE.toString();
 			String value = news.getTitle();
 
-			if (!CheckField.checkKVN(value)) {
+			if (!CheckField.isValueNull(value)) {
 
-				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
+				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 
-				CheckField.checkKVE(key, value, EXP_TITLE);
+				CheckField.checkValueExpression(value, EXP_TITLE);
 
 			} else {
 
@@ -133,116 +119,100 @@ public class NewsServiceImpl implements NewsService {
 
 			value = news.getStyle();
 
-			if (!CheckField.checkKVN(value)) {
+			if (!CheckField.isValueNull(value)) {
 
-				CheckField.checkVA(value, user.getAge());
+				CheckField.checkAdultAndAge(value, user.getAge());
 
 			} else {
 
 				news.setStyle(EMPTY);
 			}
 
-			return newsDAO.choose(news);
+			return newsDAO.choose(news, newsData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 	}
 
 	@Override
 	public News chooseNews(News news) throws ServiceException {
 
-		String key = NewsField.TITLE.toString();
 		String value = news.getTitle();
 
 		try {
 
-			if (!CheckField.checkKVN(value)) {
+			if (!CheckField.isValueNull(value)) {
 
-				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
+				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 
-				CheckField.checkKVE(key, value, EXP_TITLE);
+				CheckField.checkValueExpression(value, EXP_TITLE);
 			}
 
 			return newsDAO.chooseNews(news);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
 	public void sgnAuthor(News news, User user) throws ServiceException {
 
-		String key = NewsField.TITLE.toString();
 		String value = news.getTitle();
 
 		try {
 
-			if (!CheckField.checkKVN(value)) {
+			if (!CheckField.isValueNull(value)) {
 
-				CheckField.checkKVLMin(key, value, TITLE_LENGHT);
+				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 
-				CheckField.checkKVE(key, value, EXP_TITLE);
+				CheckField.checkValueExpression(value, EXP_TITLE);
 			}
 
 			newsDAO.sgnAuthor(news, user);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
 	public void unsgnAuthor(UserData author, User user) throws ServiceException {
 
-		String key = UserDataField.LOGIN.toString();
 		String value = author.getLogin();
 
 		try {
 
-			CheckField.checkKVN(key, value);
+			CheckField.checkValueNull(value);
 
-			CheckField.checkKVLMin(key, value, AUTHOR_LOGIN_LENGHT);
+			CheckField.checkValueLengthMin(value, AUTHOR_LOGIN_LENGHT);
 
 			newsDAO.unsgnAuthor(author, user);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
-	
+
 	@Override
-	public List<News> sgnAuthorView(User user) throws ServiceException {
+	public NewsData sgnAuthorView(User user, NewsData newsData) throws ServiceException {
 
 		try {
 			
-			return newsDAO.sgnAuthorView(user);
-		} catch (DAOException e) {
-			
+			CheckField.checkValueNull(newsData.getPage());
+
+			return newsDAO.sgnAuthorView(user, newsData);
+		} catch (DAOException | UtilException e) {
+
 			throw new ServiceException(e);
 		}
 	}
@@ -261,20 +231,15 @@ public class NewsServiceImpl implements NewsService {
 			}
 		});
 
-		String key;
 		String value;
 
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
 
-			key = fields.getKey().toString();
 			value = fields.getValue();
 
-			CheckField.checkKVN(key, value);
+			CheckField.checkValueNull(value);
 
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-
+			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
 		}
-
 	}
-
 }

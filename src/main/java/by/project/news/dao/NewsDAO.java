@@ -4,6 +4,7 @@ package by.project.news.dao;
 import java.util.List;
 
 import by.project.news.bean.News;
+import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import by.project.news.bean.UserData;
 
@@ -19,9 +20,9 @@ public interface NewsDAO {
 	
 	void unsgnAuthor(UserData author, User user) throws DAOException;
 	
-	List<News> choose(News news) throws DAOException;
+	NewsData choose(News news, NewsData newsData) throws DAOException;
 	
-	List<News> sgnAuthorView(User user) throws DAOException;
+	NewsData sgnAuthorView(User user, NewsData newsData) throws DAOException;
 	
 	News chooseNews(News news) throws DAOException;
 	

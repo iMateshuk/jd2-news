@@ -9,12 +9,14 @@ import by.project.news.service.NewsService;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.util.BeanCreator;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class NewsOperDelete implements Command {
 
@@ -36,9 +38,11 @@ public class NewsOperDelete implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+		
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
 		} catch (UtilException e) {
 
@@ -49,7 +53,7 @@ public class NewsOperDelete implements Command {
 
 		try {
 
-			CheckSession.validateRoleUser(request);
+			SessionWork.validateRoleUser(session);
 
 		} catch (UtilException e) {
 
@@ -69,7 +73,7 @@ public class NewsOperDelete implements Command {
 
 			LogWriter.writeLog(e);
 
-			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage())));
 
 		} catch (UtilException e) {
 

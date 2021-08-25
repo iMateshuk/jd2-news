@@ -28,7 +28,7 @@ public class WorkWithObjectField {
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 
-				throw new UtilException(e.getMessage(), e);
+				throw new UtilException("wwofv", e);
 			}
 
 		}
@@ -56,7 +56,7 @@ public class WorkWithObjectField {
 					
 				} catch (IllegalAccessException | InvocationTargetException e) {
 
-					throw new UtilException(e.getMessage(), e);
+					throw new UtilException("wwofmg", e);
 				}
 			}
 		}
@@ -85,7 +85,7 @@ public class WorkWithObjectField {
 					
 				} catch (IllegalAccessException | InvocationTargetException e) {
 
-					throw new UtilException(e.getMessage(), e);
+					throw new UtilException("wwofms", e);
 				}
 			}
 		}

@@ -11,6 +11,7 @@ import by.project.news.service.ServiceProvider;
 import by.project.news.service.UserService;
 import by.project.news.util.BeanCreator;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class UserAuthorization implements Command {
 			return;
 		}
 
-		User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
+		User user = (User) session.getAttribute(ATTRIBUTE_USER);
 
 		if (user != null) {
 
@@ -72,7 +73,7 @@ public class UserAuthorization implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_EX.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage())));
 
 		} catch (UtilException e) {
 

@@ -98,6 +98,11 @@ input {
   overflow: hidden;
 }
 
+
+#pagination {
+	display: inline-block;
+	text-align: center;
+}
 /* .clear {
 	clear: both;
 } */

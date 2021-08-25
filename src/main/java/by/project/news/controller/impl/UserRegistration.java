@@ -11,6 +11,7 @@ import by.project.news.service.ServiceProvider;
 import by.project.news.service.UserService;
 import by.project.news.util.BeanCreator;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,7 +75,7 @@ public class UserRegistration implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			redirect = REDIRECT_EX.concat(e.getMessage());
+			redirect = REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage()));
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);

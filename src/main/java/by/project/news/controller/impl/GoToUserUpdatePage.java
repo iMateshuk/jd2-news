@@ -8,13 +8,15 @@ import by.project.news.controller.CommandName;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.service.UserService;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class GoToUserUpdatePage implements Command {
 
@@ -42,11 +44,13 @@ public class GoToUserUpdatePage implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+		
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
-			User user = (User) request.getSession().getAttribute(USER);
+			User user = (User) session.getAttribute(USER);
 
 			if (!user.getRole().equals(ROLE_ADMIN)) {
 
@@ -59,7 +63,7 @@ public class GoToUserUpdatePage implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_SE.concat(Parser.excRemovePath(e.getMessage())));
 
 		} catch (UtilException e) {
 

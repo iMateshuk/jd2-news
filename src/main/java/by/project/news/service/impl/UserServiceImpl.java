@@ -11,8 +11,6 @@ import by.project.news.service.ServiceException;
 import by.project.news.service.UserService;
 import by.project.news.util.CheckField;
 import by.project.news.util.Generator;
-import by.project.news.util.UserDataField;
-import by.project.news.util.UserField;
 import by.project.news.util.UtilException;
 
 public class UserServiceImpl implements UserService {
@@ -39,15 +37,11 @@ public class UserServiceImpl implements UserService {
 
 			userDAO.registration(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
-
 	}
 
 	@Override
@@ -55,28 +49,23 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			String key = UserDataField.NAME.toString();
 			String value = userData.getName();
 
-			CheckField.checkKVN(key, value);
-			CheckField.checkKVE(key, value, EXP_SYMBOLS);
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
+			CheckField.checkValueNull(value);
+			CheckField.checkValueExpression(value, EXP_SYMBOLS);
+			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
 
-			key = UserDataField.EMAIL.toString();
 			value = userData.getEmail();
 
-			CheckField.checkKVN(key, value);
-			CheckField.checkKVEnot(key, value, EXP_EMAIL);
+			CheckField.checkValueNull(value);
+			CheckField.checkValueNotExpression(value, EXP_EMAIL);
 
 			userDAO.update(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -86,21 +75,17 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			String key = UserDataField.LOGIN.toString();
 			String value = userData.getLogin();
 
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+			CheckField.checkValueExpression(value, EXP_SYMBOLS);
 
 			userDAO.delete(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -110,19 +95,16 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), 8);
+			CheckField.checkValueLengthMin(userData.getPassword(), 8);
 
 			userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 			userDAO.password(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -132,25 +114,21 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			String key = UserDataField.LOGIN.toString();
 			String value = userData.getLogin();
 
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+			CheckField.checkValueExpression(value, EXP_SYMBOLS);
 
-			CheckField.checkKVLMin(UserDataField.PASSWORD.toString(), userData.getPassword(), FIELD_LENGHT);
+			CheckField.checkValueLengthMin(userData.getPassword(), FIELD_LENGHT);
 
 			userData.setPassword(Generator.genStringHash(userData.getPassword()));
 
 			return userDAO.authorization(userData);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 
 	}
@@ -173,60 +151,53 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			String key = UserField.LOGIN.toString();
 			String value = user.getLogin();
 
-			CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-			CheckField.checkKVE(key, value, EXP_SYMBOLS);
+			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+			CheckField.checkValueExpression(value, EXP_SYMBOLS);
 
 			return userDAO.loadSgnAuthor(user);
 
-		} catch (DAOException e) {
+		} catch (DAOException | UtilException e) {
 
 			throw new ServiceException(e);
 
-		} catch (UtilException e) {
-
-			throw new ServiceException("commonerror", e);
 		}
 
 	}
 
 	private void checkField(UserData userData) throws UtilException {
 
-		String key = UserDataField.LOGIN.toString();
 		String value = userData.getLogin();
 
-		CheckField.checkKVN(key, value);
-		CheckField.checkKVLMin(key, value, FIELD_LENGHT);
-		CheckField.checkKVE(key, value, EXP_SYMBOLS);
+		CheckField.checkValueNull(value);
+		CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+		CheckField.checkValueExpression(value, EXP_SYMBOLS);
 
-		key = UserDataField.AGE.toString();
 		value = userData.getAge();
 
-		CheckField.checkKVN(key, value);
-		CheckField.checkKVLMin(key, value, AGE_MIN_LENGHT);
-		CheckField.checkKVLMax(key, value, AGE_MAX_LENGHT);
-		CheckField.checkKI(key, value);
+		CheckField.checkValueNull(value);
+		CheckField.checkValueLengthMin(value, AGE_MIN_LENGHT);
+		CheckField.checkValueLengthMax(value, AGE_MAX_LENGHT);
+		CheckField.checkStringIsNumber(value);
 
-		key = UserDataField.PASSWORD.toString();
 		value = userData.getPassword();
 
-		CheckField.checkKVN(key, value);
-		CheckField.checkKVLMin(key, value, FIELD_LENGHT);
+		CheckField.checkValueNull(value);
+		CheckField.checkValueLengthMin(value, FIELD_LENGHT);
 
 		value = userData.getEmail();
 
-		if (!CheckField.checkKVN(value)) {
+		if (!CheckField.isValueNull(value)) {
 
-			CheckField.checkKVEnot(UserDataField.EMAIL.toString(), value, EXP_EMAIL);
+			CheckField.checkValueNotExpression(value, EXP_EMAIL);
 		}
 
 		value = userData.getName();
 
-		if (!CheckField.checkKVN(value)) {
+		if (!CheckField.isValueNull(value)) {
 
-			CheckField.checkKVE(UserDataField.NAME.toString(), value, EXP_SYMBOLS);
+			CheckField.checkValueExpression(value, EXP_SYMBOLS);
 		}
 
 	}

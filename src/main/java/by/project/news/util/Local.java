@@ -24,7 +24,7 @@ public class Local {
 
 		if (local != null) {
 
-			request.getSession(true).setAttribute(LOCAL, local);
+			request.getSession(false).setAttribute(LOCAL, local);
 		}
 
 	}

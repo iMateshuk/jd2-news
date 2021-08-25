@@ -58,35 +58,37 @@
 
 			<h1>${header_txt}</h1>
 
-			<form action="Controller" method="post">
-			
-				<c:if test="${userSgn == null || empty userSgn}">
-				
-					<p class="info"> ${info_text} </p>
-				</c:if>
+			<c:if test="${userSgn == null || empty userSgn}">
 
-				<c:if test="${userSgn != null && not empty userSgn}">
+				<p class="info"> ${info_text} </p>
+			</c:if>
+
+			<c:if test="${userSgn != null && not empty userSgn}">
+			
+				<form action="Controller" method="post">
 
 					<c:forEach var="userData" items="${userSgn}">
 					
 						<c:out value="${name_text} ${userData.getName()} :@ ${userData.getLogin()}" />
 						<br />
-					
 					</c:forEach>
 					<br />
 					
 					${del_btn}
-					<br /> <br />
-					${login_text} :	<input type="text" name="login" value="" />
+					<br />
+					${login_text} :@ <input type="text" name="login" value="" />
 					<br /> <br />
 					<button type="submit" name="command" value="news_tools_unsgn">${del_btn}</button>
 					<br /> <br />
-					
+				</form>
+				
+				<form action="Controller" method="post">
+				
+					<input type="hidden" name="clean" value="clean" />
 					<button type="submit" name="command" value="news_tools_sgnview">${sgn_btn}</button>
 					<br /> <br />
-				</c:if>
-
-			</form>
+				</form>
+			</c:if>
 
 			<form action="Controller" method="post">
 

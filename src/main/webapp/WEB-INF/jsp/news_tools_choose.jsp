@@ -81,8 +81,6 @@
 				<br />
 				<br />
 				
-				<c:set var="para" value="valueHere" scope="session"  />
-				
 				<input type="hidden" name="clean" value="clean" />
 				<button type="submit" name="command" value="news_choose">${send_btn}</button>
 

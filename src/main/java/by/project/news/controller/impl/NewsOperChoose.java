@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import by.project.news.bean.News;
+import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import by.project.news.controller.Command;
 import by.project.news.controller.CommandName;
@@ -11,8 +12,9 @@ import by.project.news.service.NewsService;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.util.BeanCreator;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -31,11 +33,18 @@ public class NewsOperChoose implements Command {
 
 	private final static String PATH = "/WEB-INF/jsp/".concat(commandMain).concat(".jsp");
 
-	private final static String SESSION_NEWS_SEARCH = "searchNews";
 	private final static String CLEAN = "clean";
 	private final static String USER = "user";
+
 	private final static String ATTRIBUTE_NEWSES = "newses";
-	private final static String ATTRIBUTE_SEARCH_NEWS = "searchNews";
+	
+	private final static String PAGE = "page";
+	private final static String MAX_PAGES = "maxPages";
+	private final static String RECORDS_NEWSES = "recordsNewses";
+	
+	private final static String COMMAND_SAVE = "cmdSave";
+
+	private final static String ATTRIBUTE_SESSION_SEARCH_NEWS = "searchNews";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -48,9 +57,11 @@ public class NewsOperChoose implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
 		} catch (UtilException e) {
 
@@ -60,31 +71,46 @@ public class NewsOperChoose implements Command {
 		}
 
 		try {
-			
-			HttpSession session = request.getSession(false);
 
 			if (request.getParameter(CLEAN) != null) {
 
-				session.setAttribute(SESSION_NEWS_SEARCH, null);
+				SessionWork.cleanAttributes(session);
 			}
 
-			User user = (User) request.getSession(false).getAttribute(USER);
+			User user = (User) session.getAttribute(USER);
 
-			News news = (News) request.getSession(false).getAttribute(SESSION_NEWS_SEARCH);
+			News news = (News) session.getAttribute(ATTRIBUTE_SESSION_SEARCH_NEWS);
 
 			if (news == null) {
 
 				news = BeanCreator.createNews(request);
 			}
 
-			List<News> newses = newsServices.choose(news, user);
+			int page = SessionWork.takePage(request, session);
+			
+			session.setAttribute(PAGE, page);
 
-			request.setAttribute(ATTRIBUTE_NEWSES, newses);
+			NewsData newsData = newsServices.choose(news, user, new NewsData.NewsDataBuilder().setPage(page).build());
 
+			List<News> newses = newsData.getNewses();
+			
+			if (newses == null) {
+				
+				SessionWork.cleanAttributes(session);
+				response.sendRedirect(REDIRECT_SE.concat("newsdaoload"));
+				return;
+			}
+			
 			if (!newses.isEmpty()) {
 
-				session.setAttribute(ATTRIBUTE_SEARCH_NEWS, news);
+				session.setAttribute(ATTRIBUTE_SESSION_SEARCH_NEWS, news);
+				session.setAttribute(COMMAND_SAVE, commandChoose);
 			}
+			
+			request.setAttribute(ATTRIBUTE_NEWSES, newses);
+			request.setAttribute(MAX_PAGES,
+					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
+			request.setAttribute(RECORDS_NEWSES, newsData.getRecordsPerPage());
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
@@ -92,7 +118,8 @@ public class NewsOperChoose implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+			SessionWork.cleanAttributes(session);
+			response.sendRedirect(REDIRECT_SE.concat(Parser.excRemovePath(e.getMessage())));
 
 		} catch (UtilException e) {
 

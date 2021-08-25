@@ -10,6 +10,8 @@ import by.project.news.service.NewsService;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
+import by.project.news.util.SessionWork;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,17 +25,16 @@ public class GoToMainPage implements Command {
 	private final static String PATH = "/WEB-INF/jsp/".concat(COMMAND).concat(".jsp");
 	private final static NewsService newsService = ServiceProvider.getInstance().getNewsService();
 
-	private final static String CommandChoose = CommandName.NEWS_CHOOSE.toString().toLowerCase();
-
 	private final static String CLEAN = "clean";
-	private final static String SESSION_NEWS_SEARCH = "searchNews";
+	
+	private final static String COMMAND_SAVE = "cmdSave";
 
 	private final static String PARAM_TITLE = "title";
 
 	private final static String ATTRIBUTE_NEWSES = "newses";
 	private final static String ATTRIBUTE_MESSAGE = "message";
 
-	private final static String REDIRECT = "Controller?command=".concat(CommandChoose);
+	private final static String REDIRECT_CMD = "Controller?command=";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,12 +43,12 @@ public class GoToMainPage implements Command {
 
 		if (request.getParameter(CLEAN) != null) {
 
-			session.setAttribute(SESSION_NEWS_SEARCH, null);
+			SessionWork.cleanAttributes(session);
 		}
 
-		if (session.getAttribute(SESSION_NEWS_SEARCH) != null) {
+		if (session.getAttribute(COMMAND_SAVE) != null) {
 
-			response.sendRedirect(REDIRECT);
+			response.sendRedirect(REDIRECT_CMD.concat((String) session.getAttribute(COMMAND_SAVE)));
 			return;
 		}
 
@@ -67,7 +68,7 @@ public class GoToMainPage implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			request.setAttribute(ATTRIBUTE_MESSAGE, e.getMessage());
+			request.setAttribute(ATTRIBUTE_MESSAGE, Parser.excRemovePath(e.getMessage()));
 		}
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);

@@ -10,13 +10,14 @@ import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.service.UserService;
 import by.project.news.util.BeanCreator;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
-import by.project.news.util.View;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class UserOperUpdate implements Command {
 
@@ -44,9 +45,11 @@ public class UserOperUpdate implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+		
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
 		} catch (UtilException e) {
 
@@ -57,7 +60,7 @@ public class UserOperUpdate implements Command {
 
 		try {
 
-			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
+			User user = (User) session.getAttribute(ATTRIBUTE_USER);
 
 			UserData userData = BeanCreator.createUserData(request);
 
@@ -65,8 +68,6 @@ public class UserOperUpdate implements Command {
 
 				userData.setRole(user.getRole());
 			}
-
-			View.print(userData);
 
 			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals(ROLE_ADMIN))) {
 
@@ -81,7 +82,7 @@ public class UserOperUpdate implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_SE.concat(Parser.excRemovePath(e.getMessage())));
 
 		} catch (UtilException e) {
 

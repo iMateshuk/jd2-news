@@ -8,13 +8,15 @@ import by.project.news.controller.CommandName;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
 import by.project.news.service.UserService;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class GoToNewsSgnPage implements Command {
 
@@ -41,12 +43,13 @@ public class GoToNewsSgnPage implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
-			request.setAttribute(ATTRIBUTE_USER_SGN,
-					userService.loadSgnAuthor((User) request.getSession(false).getAttribute(USER)));
+			request.setAttribute(ATTRIBUTE_USER_SGN, userService.loadSgnAuthor((User) session.getAttribute(USER)));
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
@@ -54,7 +57,7 @@ public class GoToNewsSgnPage implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_SE.concat(Parser.excRemovePath(e.getMessage())));
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);

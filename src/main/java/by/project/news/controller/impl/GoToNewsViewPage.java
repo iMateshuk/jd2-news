@@ -8,8 +8,9 @@ import by.project.news.controller.CommandName;
 import by.project.news.service.NewsService;
 import by.project.news.service.ServiceException;
 import by.project.news.service.ServiceProvider;
-import by.project.news.util.CheckSession;
+import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -44,9 +45,11 @@ public class GoToNewsViewPage implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession(false);
+
 		try {
 
-			CheckSession.validate(request);
+			SessionWork.validateSession(session);
 
 		} catch (UtilException e) {
 
@@ -55,11 +58,9 @@ public class GoToNewsViewPage implements Command {
 			return;
 		}
 
-		HttpSession session = request.getSession(false);
+		String title = (String) request.getParameter(PARAM_TITLE);
 
-		String title = null;
-
-		if ((title = (String) request.getParameter(PARAM_TITLE)) == null) {
+		if (title == null) {
 
 			title = (String) session.getAttribute(PARAM_TITLE);
 		} else {
@@ -84,7 +85,7 @@ public class GoToNewsViewPage implements Command {
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SE.concat(e.getMessage()));
+			response.sendRedirect(REDIRECT_SE.concat(Parser.excRemovePath(e.getMessage())));
 		}
 
 	}
