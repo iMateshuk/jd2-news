@@ -149,10 +149,11 @@ public class NewsDB implements NewsDAO {
 
 				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
+			} else {
+				
+				throw new DAOException("newsdaoload");
 			}
 			
-			CheckField.checkListNullEmp(newsData.getNewses());
-
 			return newsData;
 
 		} catch (SQLException | ConnectionPoolException e) {
@@ -284,10 +285,11 @@ public class NewsDB implements NewsDAO {
 
 				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
+			} else {
+				
+				throw new DAOException("newsdaoload");
 			}
 			
-			CheckField.checkListNullEmp(newsData.getNewses());
-
 			return newsData;
 
 		} catch (SQLException | ConnectionPoolException e) {
