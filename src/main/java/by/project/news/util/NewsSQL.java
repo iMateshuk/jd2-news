@@ -11,8 +11,6 @@ public enum NewsSQL {
 			+ "SET brief=?, body=?, style=?, date=? WHERE n.id=s.id "
 			+ "AND n.u_id=(select id from mynews.users where login=?)"),
 
-	SQL_ORDER_BY_DATE("ORDER BY date DESC"),
-
 	SQL_COLUM_LABEL_ID("id"),
 	SQL_COLUM_LABEL_TITLE("title"),
 	SQL_COLUM_LABEL_U_ID("u_id"),

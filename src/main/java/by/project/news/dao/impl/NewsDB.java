@@ -122,17 +122,16 @@ public class NewsDB implements NewsDAO {
 
 		final String newsStyle = news.getStyle();
 
-		final String sql = CheckField.isValueNull(newsStyle) 
-				? NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT.getSQL()
+		final String sql = CheckField.isValueNull(newsStyle) ? NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_NOTADULT.getSQL()
 				: NewsSQL.SQL_SELECT_ALL_W_TITLE_A_STYLE_ADULT.getSQL();
-		
+
 		newsData.setRecordsPerPage(RECORDS_PER_PAGE);
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(sql);) {
 
 			ps.setString(1, STYLE_LIKE.concat(news.getTitle()).concat(STYLE_LIKE));
-			
+
 			int count = 2;
 
 			if (!CheckField.isValueNull(newsStyle)) {
@@ -140,7 +139,7 @@ public class NewsDB implements NewsDAO {
 				ps.setString(2, newsStyle);
 				count++;
 			}
-			
+
 			ps.setInt(count++, (newsData.getPage() - 1) * RECORDS_PER_PAGE);
 			ps.setInt(count, RECORDS_PER_PAGE);
 
@@ -151,12 +150,17 @@ public class NewsDB implements NewsDAO {
 				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
 			}
+			
+			CheckField.checkListNullEmp(newsData.getNewses());
 
 			return newsData;
 
-		} catch (SQLException | ConnectionPoolException | UtilException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException("newsdaochoose", e);
+		} catch (UtilException e) {
+
+			throw new DAOException(e);
 		}
 
 	}
@@ -168,9 +172,12 @@ public class NewsDB implements NewsDAO {
 
 			return newsCreator(con.createStatement().executeQuery(NewsSQL.SQL_SELECT_ALL_FOR_LOAD.getSQL()));
 
-		} catch (SQLException | ConnectionPoolException | UtilException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException("newsdaoload", e);
+		} catch (UtilException e) {
+
+			throw new DAOException(e);
 		}
 
 	}
@@ -192,9 +199,12 @@ public class NewsDB implements NewsDAO {
 
 			return BeanCreator.createNews(rs);
 
-		} catch (SQLException | ConnectionPoolException | UtilException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException("newsdaochoosetitle", e);
+		} catch (UtilException e) {
+
+			throw new DAOException(e);
 		}
 
 	}
@@ -240,8 +250,6 @@ public class NewsDB implements NewsDAO {
 				count++;
 			}
 
-			System.out.println(psUnsgn);
-
 			if (psUnsgn.executeUpdate() != 1) {
 
 				throw new DAOException("newsdaounsgnauthorps");
@@ -277,12 +285,17 @@ public class NewsDB implements NewsDAO {
 				newsData.setMaxNewses(rs.getInt(NewsSQL.SQL_COLUM_LABEL_COUNT.getSQL()));
 				newsData.setNewses(newsCreator(rs, new ArrayList<News>()));
 			}
+			
+			CheckField.checkListNullEmp(newsData.getNewses());
 
 			return newsData;
 
-		} catch (SQLException | ConnectionPoolException | UtilException e) {
+		} catch (SQLException | ConnectionPoolException e) {
 
 			throw new DAOException("newsdaosgnauthorview", e);
+		} catch (UtilException e) {
+
+			throw new DAOException(e);
 		}
 	}
 

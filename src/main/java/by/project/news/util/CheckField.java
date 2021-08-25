@@ -1,5 +1,7 @@
 package by.project.news.util;
 
+import java.util.List;
+
 public class CheckField {
 
 	private static final String AGE_STRING = "18";
@@ -94,4 +96,11 @@ public class CheckField {
 		return age.compareTo(AGE_STRING) < 0;
 	}
 
+	public static void checkListNullEmp(List<?> list) throws UtilException{
+
+		if (list == null || list.isEmpty()) {
+
+			throw new UtilException("newsdaoload");
+		}
+	}
 }

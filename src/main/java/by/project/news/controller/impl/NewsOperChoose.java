@@ -1,7 +1,6 @@
 package by.project.news.controller.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import by.project.news.bean.News;
 import by.project.news.bean.NewsData;
@@ -37,11 +36,11 @@ public class NewsOperChoose implements Command {
 	private final static String USER = "user";
 
 	private final static String ATTRIBUTE_NEWSES = "newses";
-	
+
 	private final static String PAGE = "page";
 	private final static String MAX_PAGES = "maxPages";
 	private final static String RECORDS_NEWSES = "recordsNewses";
-	
+
 	private final static String COMMAND_SAVE = "cmdSave";
 
 	private final static String ATTRIBUTE_SESSION_SEARCH_NEWS = "searchNews";
@@ -87,27 +86,15 @@ public class NewsOperChoose implements Command {
 			}
 
 			int page = SessionWork.takePage(request, session);
-			
+
 			session.setAttribute(PAGE, page);
 
 			NewsData newsData = newsServices.choose(news, user, new NewsData.NewsDataBuilder().setPage(page).build());
 
-			List<News> newses = newsData.getNewses();
-			
-			if (newses == null) {
-				
-				SessionWork.cleanAttributes(session);
-				response.sendRedirect(REDIRECT_SE.concat("newsdaoload"));
-				return;
-			}
-			
-			if (!newses.isEmpty()) {
+			session.setAttribute(ATTRIBUTE_SESSION_SEARCH_NEWS, news);
+			session.setAttribute(COMMAND_SAVE, commandChoose);
 
-				session.setAttribute(ATTRIBUTE_SESSION_SEARCH_NEWS, news);
-				session.setAttribute(COMMAND_SAVE, commandChoose);
-			}
-			
-			request.setAttribute(ATTRIBUTE_NEWSES, newses);
+			request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
 			request.setAttribute(MAX_PAGES,
 					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
 			request.setAttribute(RECORDS_NEWSES, newsData.getRecordsPerPage());

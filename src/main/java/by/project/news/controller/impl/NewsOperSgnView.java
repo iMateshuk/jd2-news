@@ -1,9 +1,7 @@
 package by.project.news.controller.impl;
 
 import java.io.IOException;
-import java.util.List;
 
-import by.project.news.bean.News;
 import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import by.project.news.controller.Command;
@@ -81,21 +79,9 @@ public class NewsOperSgnView implements Command {
 			NewsData newsData = newsServices.sgnAuthorView((User) session.getAttribute(USER),
 					new NewsData.NewsDataBuilder().setPage(page).build());
 
-			List<News> newses = newsData.getNewses();
+			session.setAttribute(COMMAND_SAVE, commandSgn);
 
-			if (newses == null) {
-
-				SessionWork.cleanAttributes(session);
-				response.sendRedirect(REDIRECT_EX.concat("newsdaoload"));
-				return;
-			}
-
-			if (!newses.isEmpty()) {
-
-				session.setAttribute(COMMAND_SAVE, commandSgn);
-			}
-
-			request.setAttribute(ATTRIBUTE_NEWSES, newses);
+			request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
 			request.setAttribute(MAX_PAGES,
 					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
 			request.setAttribute(RECORDS_NEWSES, newsData.getRecordsPerPage());

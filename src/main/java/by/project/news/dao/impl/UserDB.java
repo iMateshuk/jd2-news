@@ -67,12 +67,12 @@ public class UserDB implements UserDAO {
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
 				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_DELETE_LOGIN.getSQL());) {
 
-				ps.setString(1, userData.getLogin());
+			ps.setString(1, userData.getLogin());
 
-				if (ps.executeUpdate() != 1) {
+			if (ps.executeUpdate() != 1) {
 
-					throw new DAOException("userdaodeletepsf");
-				}
+				throw new DAOException("userdaodeletepsf");
+			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
@@ -106,7 +106,7 @@ public class UserDB implements UserDAO {
 
 		} catch (UtilException e) {
 
-			throw new DAOException(e.getMessage(), e);
+			throw new DAOException(e);
 		}
 
 	}
@@ -121,7 +121,7 @@ public class UserDB implements UserDAO {
 			ps.setString(2, userData.getLogin());
 
 			if (ps.executeUpdate() != 1) {
-				
+
 				throw new DAOException("userdaopassword");
 			}
 
@@ -160,8 +160,7 @@ public class UserDB implements UserDAO {
 	public List<UserData> loadSgnAuthor(User user) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con
-						.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID_S_LOGIN.getSQL());) {
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_SELECT_NAME_LOGIN_W_ID_S_LOGIN.getSQL());) {
 
 			ps.setString(1, user.getLogin());
 
@@ -182,7 +181,5 @@ public class UserDB implements UserDAO {
 
 			throw new DAOException("userdaoloadsgndata", e);
 		}
-
 	}
-
 }
