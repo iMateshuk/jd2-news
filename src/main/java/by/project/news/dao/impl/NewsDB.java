@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import by.project.news.bean.News;
@@ -26,8 +25,6 @@ import by.project.news.util.UtilException;
 
 public class NewsDB implements NewsDAO {
 
-	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 	private static final String STYLE_LIKE = "%";
 
 	private static final int RECORDS_PER_PAGE = 3;
@@ -42,7 +39,7 @@ public class NewsDB implements NewsDAO {
 			ps.setString(2, news.getBrief());
 			ps.setString(3, news.getBody());
 			ps.setString(4, news.getStyle());
-			ps.setString(5, SDF.format(new Date()));
+			ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 			ps.setString(6, user.getLogin());
 
 			if (ps.executeUpdate() != 1) {
@@ -67,7 +64,7 @@ public class NewsDB implements NewsDAO {
 			ps.setString(2, news.getBrief());
 			ps.setString(3, news.getBody());
 			ps.setString(4, news.getStyle());
-			ps.setString(5, SDF.format(new Date()));
+			ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 			ps.setString(6, user.getLogin());
 
 			if (ps.executeUpdate() != 1) {
@@ -247,8 +244,7 @@ public class NewsDB implements NewsDAO {
 
 			while (rs.next()) {
 
-				psUnsgn.setInt(count, rs.getInt(UserSQL.SQL_COLUM_LABEL_ID.getSQL()));
-				count++;
+				psUnsgn.setInt(count++, rs.getInt(UserSQL.SQL_COLUM_LABEL_ID.getSQL()));
 			}
 
 			if (psUnsgn.executeUpdate() != 1) {

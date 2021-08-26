@@ -39,7 +39,6 @@ public class NewsOperChoose implements Command {
 
 	private final static String PAGE = "page";
 	private final static String MAX_PAGES = "maxPages";
-	private final static String RECORDS_NEWSES = "recordsNewses";
 
 	private final static String COMMAND_SAVE = "cmdSave";
 
@@ -97,7 +96,6 @@ public class NewsOperChoose implements Command {
 			request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
 			request.setAttribute(MAX_PAGES,
 					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
-			request.setAttribute(RECORDS_NEWSES, newsData.getRecordsPerPage());
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);
