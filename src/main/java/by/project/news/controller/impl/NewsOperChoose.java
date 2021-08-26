@@ -35,11 +35,6 @@ public class NewsOperChoose implements Command {
 	private final static String CLEAN = "clean";
 	private final static String USER = "user";
 
-	private final static String ATTRIBUTE_NEWSES = "newses";
-
-	private final static String PAGE = "page";
-	private final static String MAX_PAGES = "maxPages";
-
 	private final static String COMMAND_SAVE = "cmdSave";
 
 	private final static String ATTRIBUTE_SESSION_SEARCH_NEWS = "searchNews";
@@ -84,18 +79,13 @@ public class NewsOperChoose implements Command {
 				news = BeanCreator.createNews(request);
 			}
 
-			int page = SessionWork.takePage(request, session);
-
-			session.setAttribute(PAGE, page);
-
-			NewsData newsData = newsServices.choose(news, user, new NewsData.NewsDataBuilder().setPage(page).build());
+			NewsData newsData = newsServices.choose(news, user,
+					new NewsData.NewsDataBuilder().setPage(SessionWork.takePage(request, session)).build());
 
 			session.setAttribute(ATTRIBUTE_SESSION_SEARCH_NEWS, news);
 			session.setAttribute(COMMAND_SAVE, commandChoose);
 
-			request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
-			request.setAttribute(MAX_PAGES,
-					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
+			SessionWork.setAttributePagination(newsData, request, session);
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);

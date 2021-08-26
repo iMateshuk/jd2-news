@@ -30,13 +30,8 @@ public class NewsOperSgnView implements Command {
 
 	private final static String PATH = "/WEB-INF/jsp/".concat(commandMain).concat(".jsp");
 
-	private final static String ATTRIBUTE_NEWSES = "newses";
-
 	private final static String CLEAN = "clean";
 	private final static String USER = "user";
-
-	private final static String PAGE = "page";
-	private final static String MAX_PAGES = "maxPages";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
@@ -69,20 +64,14 @@ public class NewsOperSgnView implements Command {
 			SessionWork.cleanAttributes(session);
 		}
 
-		int page = SessionWork.takePage(request, session);
-
-		session.setAttribute(PAGE, page);
-
 		try {
-
+			
 			NewsData newsData = newsServices.sgnAuthorView((User) session.getAttribute(USER),
-					new NewsData.NewsDataBuilder().setPage(page).build());
+					new NewsData.NewsDataBuilder().setPage(SessionWork.takePage(request, session)).build());
 
 			session.setAttribute(COMMAND_SAVE, commandSgn);
 
-			request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
-			request.setAttribute(MAX_PAGES,
-					(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
+			SessionWork.setAttributePagination(newsData, request, session);
 
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(PATH);
 			requestDispatcher.forward(request, response);

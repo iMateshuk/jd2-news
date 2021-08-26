@@ -2,6 +2,7 @@ package by.project.news.util;
 
 import java.io.IOException;
 
+import by.project.news.bean.NewsData;
 import by.project.news.bean.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,9 @@ public class SessionWork {
 
 	private static final String USER = "user";
 	
+	private final static String ATTRIBUTE_NEWSES = "newses";
+	private final static String MAX_PAGES = "maxPages";
+
 	private final static String ATTRIBUTE_SESSION_SEARCH_NEWS = "searchNews";
 	private final static String ATTRIBUTE_SESSION_NEWS_SGN = "sgnNews";
 	private final static String COMMAND_SAVE = "cmdSave";
@@ -47,7 +51,7 @@ public class SessionWork {
 		session.setAttribute(COMMAND_SAVE, null);
 		session.setAttribute(PAGE, null);
 	}
-	
+
 	public static Integer takePage(HttpServletRequest request, HttpSession session) {
 
 		Integer page;
@@ -59,12 +63,20 @@ public class SessionWork {
 
 			page = (Integer) session.getAttribute(PAGE);
 		}
-		
+
 		if (page == null) {
-			
+
 			page = 1;
 		}
-		
+
 		return page;
+	}
+
+	public static void setAttributePagination(NewsData newsData, HttpServletRequest request, HttpSession session) {
+
+		session.setAttribute(PAGE, newsData.getPage());
+		request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
+		request.setAttribute(MAX_PAGES,
+				(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
 	}
 }
