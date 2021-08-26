@@ -115,10 +115,12 @@ public class UserDB implements UserDAO {
 	public void password(UserData userData) throws DAOException {
 
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD.getSQL());) {
+				PreparedStatement ps = con
+						.prepareStatement(UserSQL.SQL_UPDATE_PASSWORD_SELECT_LOGIN_OLDPASS.getSQL());) {
 
-			ps.setString(1, userData.getPassword());
-			ps.setString(2, userData.getLogin());
+			ps.setString(1, userData.getLogin());
+			ps.setString(2, userData.getOldpass());
+			ps.setString(3, userData.getPassword());
 
 			if (ps.executeUpdate() != 1) {
 

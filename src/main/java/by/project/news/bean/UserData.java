@@ -16,6 +16,7 @@ public class UserData implements Serializable {
 	private String email;
 	private String role;
 	private String age;
+	private String oldpass;
 
 	public UserData() {
 
@@ -28,6 +29,7 @@ public class UserData implements Serializable {
 		this.password = builder.password;
 		this.email = builder.email;
 		this.age = builder.age;
+		this.oldpass = builder.oldpass;
 	}
 
 	public String getName() {
@@ -77,10 +79,18 @@ public class UserData implements Serializable {
 	public void setAge(String age) {
 		this.age = age;
 	}
+	
+	public String getOldpass() {
+		return oldpass;
+	}
+
+	public void setOldpass(String oldpass) {
+		this.oldpass = oldpass;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(age, email, login, name, password, role);
+		return Objects.hash(age, email, login, name, oldpass, password, role);
 	}
 
 	@Override
@@ -94,13 +104,14 @@ public class UserData implements Serializable {
 		UserData other = (UserData) obj;
 		return Objects.equals(age, other.age) && Objects.equals(email, other.email)
 				&& Objects.equals(login, other.login) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(role, other.role);
+				&& Objects.equals(oldpass, other.oldpass) && Objects.equals(password, other.password)
+				&& Objects.equals(role, other.role);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getClass().getName() + " [name=" + name + ", login=" + login + ", password=" + password + ", email=" + email + ", role="
-				+ role + ", age=" + age + "]";
+				+ role + ", age=" + age + ", oldpass=" + oldpass + "]";
 	}
 
 	// Builder
@@ -116,6 +127,7 @@ public class UserData implements Serializable {
 		private String name;
 		private String email;
 		private String age;
+		private String oldpass;
 
 		public UserDataBuilder() {
 		}
@@ -147,6 +159,11 @@ public class UserData implements Serializable {
 
 		public UserDataBuilder setAge(String age) {
 			this.age = age;
+			return this;
+		}
+		
+		public UserDataBuilder setOldpass(String oldpass) {
+			this.oldpass = oldpass;
 			return this;
 		}
 		

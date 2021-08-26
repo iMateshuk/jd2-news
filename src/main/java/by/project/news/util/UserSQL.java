@@ -6,6 +6,8 @@ public enum UserSQL {
 	
 	SQL_UPDATE_USER("UPDATE mynews.users SET name=?, email=?, role=? WHERE login=?"),
 	SQL_UPDATE_PASSWORD("UPDATE mynews.users SET password=? WHERE login=?"),
+	SQL_UPDATE_PASSWORD_SELECT_LOGIN_OLDPASS("UPDATE mynews.users AS u, "
+			+ "(select id from mynews.users where login=? AND password=?) AS s SET password=? WHERE u.id=s.id"),
 	
 	SQL_SELECT_ID_W_LOGIN("SELECT id FROM mynews.users WHERE login=?"),
 	SQL_SELECT_ALL_W_LOGIN("SELECT * FROM mynews.users WHERE login=?"),

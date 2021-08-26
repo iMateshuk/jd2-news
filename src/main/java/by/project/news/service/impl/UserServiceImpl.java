@@ -95,9 +95,16 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			CheckField.checkValueLengthMin(userData.getPassword(), 8);
-
-			userData.setPassword(Generator.genStringHash(userData.getPassword()));
+			String newpass = userData.getPassword();
+			String oldpass = userData.getOldpass();
+			
+			CheckField.checkValueNull(oldpass);
+			CheckField.checkValueNull(newpass);
+			
+			CheckField.checkValueLengthMin(newpass, 8);
+			
+			userData.setOldpass(Generator.genStringHash(oldpass));
+			userData.setPassword(Generator.genStringHash(newpass));
 
 			userDAO.password(userData);
 

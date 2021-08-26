@@ -21,7 +21,8 @@
 <fmt:message bundle="${loc}" key="local.locbutton.name.main" var="main_button" />
 
 <fmt:message bundle="${loc}" key="local.loctext.name.login" var="login_text" />
-<fmt:message bundle="${loc}" key="local.loctext.name.password" var="password_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.oldpassword" var="oldpassword_text" />
+<fmt:message bundle="${loc}" key="local.loctext.name.newpassword" var="password_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.required" var="required_txt" />
 
 <fmt:message bundle="${loc}" key="local.loctextusertoolspassword.name.header" var="user_text" />
@@ -63,6 +64,11 @@
 				${login_text}<em>*</em>:
 				<br />
 					<input type="text" name="login" value="" />
+				<br />
+				
+				${oldpassword_text}<em>*</em>:
+				<br />
+				<input type="password" name="oldpass" value="" />
 				<br />
 
 				${password_text}<em>*</em>:
