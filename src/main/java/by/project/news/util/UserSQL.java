@@ -5,6 +5,13 @@ public enum UserSQL {
 	SQL_INSERT_USER("INSERT INTO mynews.users(name,login,password,email,role,age) VALUES(?,?,?,?,?,?)"),
 	
 	SQL_UPDATE_USER("UPDATE mynews.users SET name=?, email=?, role=? WHERE login=?"),
+	SQL_UPDATE_USER_IF_NOT_NULL_EMPTY(
+			"UPDATE mynews.users SET name=COALESCE(NULLIF(?, ''), name), email=COALESCE(NULLIF(?, ''), email), "
+			+ "role=COALESCE(NULLIF(?, ''), role) WHERE login=?"),
+	SQL_UPDATE_USER_INCLUDE_AGE("UPDATE mynews.users SET name=?, email=?, role=?, age=? WHERE login=?"),
+	SQL_UPDATE_USER_INCLUDE_AGE_IF_NOT_NULL_EMPTY(
+			"UPDATE mynews.users SET name=COALESCE(NULLIF(?, ''), name), email=COALESCE(NULLIF(?, ''), email), "
+			+ "role=COALESCE(NULLIF(?, ''), role), age=COALESCE(NULLIF(?, ''), age) WHERE login=?"),
 	SQL_UPDATE_PASSWORD("UPDATE mynews.users SET password=? WHERE login=?"),
 	SQL_UPDATE_PASSWORD_SELECT_LOGIN_OLDPASS("UPDATE mynews.users AS u, "
 			+ "(select id from mynews.users where login=? AND password=?) AS s SET password=? WHERE u.id=s.id"),

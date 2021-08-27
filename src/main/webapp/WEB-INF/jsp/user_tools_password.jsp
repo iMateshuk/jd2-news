@@ -68,7 +68,7 @@
 				
 				${oldpassword_text}<em>*</em>:
 				<br />
-				<input type="password" name="oldpass" value="" />
+				<input type="password" name="oldpassword" value="" />
 				<br />
 
 				${password_text}<em>*</em>:

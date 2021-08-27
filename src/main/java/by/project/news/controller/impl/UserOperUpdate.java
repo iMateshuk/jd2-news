@@ -64,11 +64,11 @@ public class UserOperUpdate implements Command {
 
 			UserData userData = BeanCreator.createUserData(request);
 
-			if (!userData.getRole().equals(user.getRole()) && !user.getRole().equals(ROLE_ADMIN)) {
-
-				userData.setRole(user.getRole());
-			}
-
+			/*
+			 * if (!user.getRole().equals(ROLE_ADMIN)) {
+			 * 
+			 * userData.setRole(user.getRole()); }
+			 */
 			if (!(user.getLogin().equals(userData.getLogin()) || user.getRole().equals(ROLE_ADMIN))) {
 
 				response.sendRedirect(REDIRECT_SESSION.concat("wronguserlogin"));

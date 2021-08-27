@@ -2,7 +2,7 @@ package by.project.news.util;
 
 public enum UserDataField implements CombineEnum {
 	
-	NAME, LOGIN, PASSWORD, EMAIL, ROLE, AGE, OLDPASS;
+	NAME, LOGIN, PASSWORD, EMAIL, ROLE, AGE, OLDPASSWORD;
 
 	@Override
 	public void getDescription() {

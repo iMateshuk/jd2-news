@@ -31,7 +31,9 @@
 <fmt:message bundle="${loc}" key="local.loctext.name.admin" var="admin_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.editor" var="editor_text" />
 <fmt:message bundle="${loc}" key="local.loctext.name.user" var="user_text" />
+<fmt:message bundle="${loc}" key="local.loctextregistration.name.age" var="age_txt" />
 
+<fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.info" var="info_txt" />
 <fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.header" var="header_txt" />
 <fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.onlyname" var="oname_txt" />
 <fmt:message bundle="${loc}" key="local.loctextusertoolsupdate.name.onlyemail" var="oemail_txt" />
@@ -87,20 +89,15 @@
 			
 			<form action="Controller" method="post">
 
-				${login_text}<em>*</em>: <br /> <input type="text" name="login"
-					value="" /> <br />
+				${login_text}<em>*</em>: <br /> <input type="text" name="login" value="" /> <br />
 
-				${name_text}<em>*</em>:
-				<br />
-					<input type="text" name="name" value="" />
-				<br />
-			
-				${email_text}<em>*</em>:
-				<br />
-					<input type="text" name="email" value="" />
-				<br />
+				<br /> ${info_txt}: <br />
+				${name_text}: <br /> <input type="text" name="name" value="" /> <br />
+				${email_text}:<br /> <input type="text" name="email" value="" /> <br />
 
 				<c:if test="${user != null && user.getRole() == 'admin'}">
+				
+					${age_txt}: <br /> <input type="text" name="age" value="" /> <br /> 
 			
 					${role_text}:
 					<br />

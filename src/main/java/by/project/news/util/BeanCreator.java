@@ -31,7 +31,7 @@ public class BeanCreator {
 	public static News createNews(HttpServletRequest request) throws UtilException {
 
 		Map<CombineEnum, String> fieldsData = createDataWithRQ(
-				FieldMapCreator.create(NewsField.class.getEnumConstants()),	request);
+				FieldMapCreator.create(NewsField.class.getEnumConstants()), request);
 
 		NewsBuilder newsBuilder = new News.NewsBuilder();
 
@@ -42,14 +42,14 @@ public class BeanCreator {
 	}
 
 	public static News createNews(ResultSet rs) throws UtilException {
-		
+
 		Map<CombineEnum, String> fieldsData = createDataWithRS(
 				FieldMapCreator.create(NewsField.class.getEnumConstants()), rs);
-		
+
 		NewsBuilder newsBuilder = new News.NewsBuilder();
 
 		createBeanBuilder(fieldsData, newsBuilder);
-		
+
 		return newsBuilder.build();
 	}
 

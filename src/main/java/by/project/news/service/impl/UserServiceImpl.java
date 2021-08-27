@@ -51,14 +51,24 @@ public class UserServiceImpl implements UserService {
 
 			String value = userData.getName();
 
-			CheckField.checkValueNull(value);
-			CheckField.checkValueExpression(value, EXP_SYMBOLS);
-			CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+			if (!CheckField.isValueNull(value)) {
+				
+				CheckField.checkValueExpression(value, EXP_SYMBOLS);
+				CheckField.checkValueLengthMin(value, FIELD_LENGHT);
+			}
 
 			value = userData.getEmail();
 
-			CheckField.checkValueNull(value);
-			CheckField.checkValueNotExpression(value, EXP_EMAIL);
+			if (!CheckField.isValueNull(value)) {
+				CheckField.checkValueNotExpression(value, EXP_EMAIL);
+			}
+
+			value = userData.getAge();
+
+			if (!CheckField.isValueNull(value)) {
+
+				CheckField.checkStringIsNumber(value);
+			}
 
 			userDAO.update(userData);
 
@@ -95,16 +105,16 @@ public class UserServiceImpl implements UserService {
 
 		try {
 
-			String newpass = userData.getPassword();
-			String oldpass = userData.getOldpass();
-			
-			CheckField.checkValueNull(oldpass);
-			CheckField.checkValueNull(newpass);
-			
-			CheckField.checkValueLengthMin(newpass, 8);
-			
-			userData.setOldpass(Generator.genStringHash(oldpass));
-			userData.setPassword(Generator.genStringHash(newpass));
+			String newPass = userData.getPassword();
+			String oldPass = userData.getOldPassword();
+
+			CheckField.checkValueNull(oldPass);
+			CheckField.checkValueNull(newPass);
+
+			CheckField.checkValueLengthMin(newPass, 8);
+
+			userData.setOldPassword(Generator.genStringHash(oldPass));
+			userData.setPassword(Generator.genStringHash(newPass));
 
 			userDAO.password(userData);
 
