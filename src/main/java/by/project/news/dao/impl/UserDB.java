@@ -14,7 +14,6 @@ import by.project.news.dao.UserDAO;
 import by.project.news.dao.util.ConnectionPool;
 import by.project.news.dao.util.ConnectionPoolException;
 import by.project.news.util.BeanCreator;
-import by.project.news.util.CheckField;
 import by.project.news.util.UserSQL;
 import by.project.news.util.UtilException;
 
@@ -45,33 +44,16 @@ public class UserDB implements UserDAO {
 	@Override
 	public void update(UserData userData) throws DAOException {
 
-		String age = userData.getAge();
-
-		String sql = CheckField.isValueNull(age) ? UserSQL.SQL_UPDATE_USER_IF_NOT_NULL_EMPTY.getSQL()
-				: UserSQL.SQL_UPDATE_USER_INCLUDE_AGE_IF_NOT_NULL_EMPTY.getSQL();
-
 		try (Connection con = ConnectionPool.getInstance().takeConnection();
-				PreparedStatement ps = con.prepareStatement(sql);) {
-
-			int count = 4;
+				PreparedStatement ps = con.prepareStatement(UserSQL.SQL_UPDATE_USER_DATA_IF_NOT_NULL_EMPTY.getSQL());) {
 
 			ps.setString(1, userData.getName());
 			ps.setString(2, userData.getEmail());
 			ps.setString(3, userData.getRole());
+			ps.setString(4, userData.getAge());
+			ps.setString(5, userData.getLogin());
 
-			if (!CheckField.isValueNull(age)) {
-
-				ps.setString(count++, age);
-			}
-
-			ps.setString(count, userData.getLogin());
-			
-			System.out.println(ps);
-
-			if (ps.executeUpdate() != 1) {
-
-				throw new DAOException("userdaoupdate");
-			}
+			ps.executeUpdate();
 
 		} catch (SQLException | ConnectionPoolException e) {
 

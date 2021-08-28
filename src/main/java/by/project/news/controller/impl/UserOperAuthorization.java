@@ -18,29 +18,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-public class UserRegistration implements Command {
+public class UserOperAuthorization implements Command {
 
 	private final static UserService userService = ServiceProvider.getInstance().getUserService();
 
 	private final static String commandAnswer = CommandName.USER_ANSWER.toString().toLowerCase();
 	private final static String commandAutho = CommandName.AUTHORIZATION.toString().toLowerCase();
-	private final static String commandReg = CommandName.REGISTRATION.toString().toLowerCase();
 
 	private final static String ATTRIBUTE_USER = "user";
-	private final static String ROLE_ADMIN = "admin";
 
 	private final static String COMMAND = "Controller?command=";
 	private final static String MESSAGE = "&message=";
 	private final static String ACTION = "&action=";
-	private final static String NEW_USER = "&newuser=";
 
-	private final static String REDIRECT_SESSION = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+	private final static String REDIRECT_SESSION = COMMAND.concat(commandAutho).concat(ACTION).concat(commandAutho)
 			.concat(MESSAGE);
-	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+	private final static String REDIRECT_USER = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
 			.concat(MESSAGE);
-	private final static String REDIRECT_USER_NEW = COMMAND.concat(commandAutho).concat(MESSAGE);
-	private final static String REDIRECT = COMMAND.concat(CommandName.INDEX.toString().toLowerCase());
-	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandReg)
+	private final static String REDIRECT = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho);
+	private final static String REDIRECT_EX = COMMAND.concat(commandAnswer).concat(ACTION).concat(commandAutho)
 			.concat(MESSAGE);
 
 	@Override
@@ -54,35 +50,36 @@ public class UserRegistration implements Command {
 			return;
 		}
 
-		String redirect = REDIRECT;
+		User user = (User) session.getAttribute(ATTRIBUTE_USER);
+
+		if (user != null) {
+
+			response.sendRedirect(REDIRECT_USER.concat("userloggedin"));
+			return;
+		}
 
 		try {
 
 			UserData userData = BeanCreator.createUserData(request);
 
-			userService.registration(userData);
+			user = userService.authorization(userData);
 
-			User user = (User) request.getSession().getAttribute(ATTRIBUTE_USER);
+			session = request.getSession(true);
 
-			if (user != null && user.getRole().equals(ROLE_ADMIN)) {
+			session.setAttribute(ATTRIBUTE_USER, user);
 
-				redirect = REDIRECT_USER.concat("registrationsuccess");
-			} else {
-
-				redirect = REDIRECT_USER_NEW.concat("registrationsuccess").concat(NEW_USER).concat(userData.getLogin());
-			}
+			response.sendRedirect(REDIRECT);
 
 		} catch (ServiceException e) {
 
 			LogWriter.writeLog(e);
-			redirect = REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage()));
+			response.sendRedirect(REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage())));
+
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
 			response.sendRedirect(REDIRECT_EX.concat("commonerror"));
 		}
-
-		response.sendRedirect(redirect);
 
 	}
 

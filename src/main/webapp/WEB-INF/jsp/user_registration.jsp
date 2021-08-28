@@ -68,7 +68,7 @@
 
 			<form action="Controller" method="post">
 
-				<input type="hidden" name="command" value="user_registration" />
+				<input type="hidden" name="command" value="registration" />
 
 				${name_text}: <br /> <input type="text" name="name" value="" /> <br />
 

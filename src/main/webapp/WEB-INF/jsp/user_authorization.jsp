@@ -70,7 +70,7 @@
 
 			<form action="Controller" method="post">
 
-				<input type="hidden" name="command" value="user_authorization" />
+				<input type="hidden" name="command" value="authorization" />
 
 				${login_text}<em>*</em>: <br /> <input type="text" name="login"
 					value="" /> <br /> ${password_text}<em>*</em>: <br /> <input

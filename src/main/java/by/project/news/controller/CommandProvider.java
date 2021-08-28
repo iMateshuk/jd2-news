@@ -29,11 +29,11 @@ import by.project.news.controller.impl.NewsOperSgnView;
 import by.project.news.controller.impl.NewsOperUnsgnAuthor;
 import by.project.news.controller.impl.NewsOperUpdate;
 import by.project.news.controller.impl.UnknownCommand;
-import by.project.news.controller.impl.UserAuthorization;
+import by.project.news.controller.impl.UserOperAuthorization;
 import by.project.news.controller.impl.UserOperDelete;
 import by.project.news.controller.impl.UserOperPassword;
 import by.project.news.controller.impl.UserOperUpdate;
-import by.project.news.controller.impl.UserRegistration;
+import by.project.news.controller.impl.UserOperRegistration;
 import by.project.news.util.LogWriter;
 
 public class CommandProvider {
@@ -45,12 +45,12 @@ public class CommandProvider {
 		commands.put(CommandName.INDEX, new GoToMainPage());
 		commands.put(CommandName.MAIN, new GoToMainPage());
 		
-		commands.put(CommandName.AUTHORIZATION, new GoToAuthorizationPage());
-		commands.put(CommandName.REGISTRATION, new GoToRegistrationPage());
+		commands.put(CommandName.USER_AUTHORIZATION, new GoToAuthorizationPage());
+		commands.put(CommandName.USER_REGISTRATION, new GoToRegistrationPage());
 		commands.put(CommandName.USER_TOOLS, new GoToUserToolsPage());
 		commands.put(CommandName.USER_ANSWER, new GoToUserAnswerPage());
-		commands.put(CommandName.USER_AUTHORIZATION, new UserAuthorization());
-		commands.put(CommandName.USER_REGISTRATION, new UserRegistration());
+		commands.put(CommandName.AUTHORIZATION, new UserOperAuthorization());
+		commands.put(CommandName.REGISTRATION, new UserOperRegistration());
 		commands.put(CommandName.USER_TOOLS_UPDATE, new GoToUserUpdatePage());
 		commands.put(CommandName.USER_TOOLS_DELETE, new GoToUserDeletePage());
 		commands.put(CommandName.USER_TOOLS_PASSWORD, new GoToUserPasswordPage());

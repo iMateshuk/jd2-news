@@ -61,7 +61,7 @@
 
 				<form action="Controller" method="post">
 
-					<button type="submit" name="command" value="registration">${reg_bt}</button>
+					<button type="submit" name="command" value="user_registration">${reg_bt}</button>
 
 				</form>
 
@@ -72,7 +72,7 @@
 
 				<form action="Controller" method="post">
 
-					<button type="submit" name="command" value="authorization">${autho_bt}</button>
+					<button type="submit" name="command" value="user_authorization">${autho_bt}</button>
 
 				</form>
 				<br />
