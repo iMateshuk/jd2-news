@@ -78,7 +78,7 @@ public class UserOperAuthorization implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_EX.concat("commonerror"));
+			response.sendRedirect(REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage())));
 		}
 
 	}

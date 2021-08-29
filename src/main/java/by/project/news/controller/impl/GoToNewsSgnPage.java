@@ -61,7 +61,7 @@ public class GoToNewsSgnPage implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+			response.sendRedirect(REDIRECT_UE.concat(Parser.excRemovePath(e.getMessage())));
 		}
 
 	}

@@ -6,6 +6,7 @@ import by.project.news.controller.Command;
 import by.project.news.controller.CommandName;
 import by.project.news.util.SessionWork;
 import by.project.news.util.LogWriter;
+import by.project.news.util.Parser;
 import by.project.news.util.UtilException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -34,7 +35,7 @@ public class GoToNewsDeletePage implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+			response.sendRedirect(REDIRECT_UE.concat(Parser.excRemovePath(e.getMessage())));
 			return;
 		}
 

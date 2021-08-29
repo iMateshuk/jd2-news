@@ -54,7 +54,7 @@ public class GoToNewsViewPage implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_SESSION.concat("usersessiontimeout"));
+			response.sendRedirect(REDIRECT_SESSION.concat(Parser.excRemovePath(e.getMessage())));
 			return;
 		}
 

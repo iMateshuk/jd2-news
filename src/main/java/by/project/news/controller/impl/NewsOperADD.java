@@ -49,7 +49,7 @@ public class NewsOperADD implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_UE.concat("usersessiontimeout"));
+			response.sendRedirect(REDIRECT_UE.concat(Parser.excRemovePath(e.getMessage())));
 			return;
 		}
 
@@ -68,7 +68,7 @@ public class NewsOperADD implements Command {
 		} catch (UtilException e) {
 
 			LogWriter.writeLog(e);
-			response.sendRedirect(REDIRECT_EX.concat("userwrongrole"));
+			response.sendRedirect(REDIRECT_EX.concat(Parser.excRemovePath(e.getMessage())));
 		}
 
 	}
