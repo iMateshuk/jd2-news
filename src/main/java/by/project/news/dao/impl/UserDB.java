@@ -36,7 +36,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaoregistration", e);
+			throw new DAOException("Can't regist user (sql) :: userdaoregistration", e);
 		}
 
 	}
@@ -57,7 +57,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaoupdate", e);
+			throw new DAOException("Can't update user data (sql) :: userdaoupdate", e);
 		}
 
 	}
@@ -72,12 +72,12 @@ public class UserDB implements UserDAO {
 
 			if (ps.executeUpdate() != 1) {
 
-				throw new DAOException("userdaodeletepsf");
+				throw new DAOException("Can't delete user. Not exist :: userdaodeletepsf");
 			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaodeletecon", e);
+			throw new DAOException("Can't delete user (sql) :: userdaodeletecon", e);
 
 		}
 
@@ -96,14 +96,14 @@ public class UserDB implements UserDAO {
 
 			if (!rs.next()) {
 
-				throw new DAOException("userdaoauthorizationrs");
+				throw new DAOException("Can't auth user. Not exist :: userdaoauthorizationrs");
 			}
 
 			return BeanCreator.createUser(rs);
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaoauthorization", e);
+			throw new DAOException("Can't auth user (sql) :: userdaoauthorization", e);
 
 		} catch (UtilException e) {
 
@@ -125,12 +125,12 @@ public class UserDB implements UserDAO {
 
 			if (ps.executeUpdate() != 1) {
 
-				throw new DAOException("userdaopassword");
+				throw new DAOException("Can't change password. Check Login and oldPass :: userdaopassword");
 			}
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaopassword", e);
+			throw new DAOException("Can't change password (sql) :: userdaopassword", e);
 		}
 
 	}
@@ -147,7 +147,7 @@ public class UserDB implements UserDAO {
 
 			if (!rs.next()) {
 
-				throw new DAOException("userdaoloaduserdatars");
+				throw new DAOException("Can't load userData. User not exist :: userdaoloaduserdatars");
 			}
 
 			return new UserData.UserDataBuilder().setEmail(rs.getString(UserSQL.SQL_COLUM_LABEL_EMAIL.getSQL()))
@@ -155,7 +155,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaoloaduserdata", e);
+			throw new DAOException("Can't load userData (sql) :: userdaoloaduserdata", e);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class UserDB implements UserDAO {
 
 		} catch (SQLException | ConnectionPoolException e) {
 
-			throw new DAOException("userdaoloadsgndata", e);
+			throw new DAOException("Can't load data sgnAuthor (sql) :: userdaoloadsgndata", e);
 		}
 	}
 }

@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 public class SessionWork {
 
 	private static final String USER = "user";
-	
+
 	private final static String ATTRIBUTE_NEWSES = "newses";
 	private final static String MAX_PAGES = "maxPages";
 
@@ -23,14 +23,14 @@ public class SessionWork {
 
 		if (session == null) {
 
-			throw new UtilException("swvs");
+			throw new UtilException("Session is timeout :: swvs");
 		}
 
 		User user = (User) session.getAttribute(USER);
 
 		if (user == null) {
 
-			throw new UtilException("swvsu");
+			throw new UtilException("User in session is null :: swvsu");
 		}
 	}
 
@@ -40,7 +40,7 @@ public class SessionWork {
 
 		if (user.getRole().equals(USER)) {
 
-			throw new UtilException("swvru");
+			throw new UtilException("User has wrong role :: swvru");
 		}
 	}
 
@@ -74,9 +74,17 @@ public class SessionWork {
 
 	public static void setAttributePagination(NewsData newsData, HttpServletRequest request, HttpSession session) {
 
+		final int recordsPerPage = newsData.getRecordsPerPage();
+		int maxPages = 1;
+
 		session.setAttribute(PAGE, newsData.getPage());
 		request.setAttribute(ATTRIBUTE_NEWSES, newsData.getNewses());
-		request.setAttribute(MAX_PAGES,
-				(int) Math.ceil(newsData.getMaxNewses() * 1.0 / newsData.getRecordsPerPage()));
+
+		if (!CheckField.thisValueNull(recordsPerPage) && recordsPerPage > 0) {
+
+			maxPages = (int) Math.ceil(newsData.getMaxNewses() * 1.0 / recordsPerPage);
+		}
+
+		request.setAttribute(MAX_PAGES, maxPages);
 	}
 }

@@ -106,7 +106,7 @@ public class NewsServiceImpl implements NewsService {
 
 			String value = news.getTitle();
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 
 				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 
@@ -119,7 +119,7 @@ public class NewsServiceImpl implements NewsService {
 
 			value = news.getStyle();
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 
 				CheckField.checkAdultAndAge(value, user.getAge());
 
@@ -144,7 +144,7 @@ public class NewsServiceImpl implements NewsService {
 
 		try {
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 
 				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 
@@ -167,7 +167,7 @@ public class NewsServiceImpl implements NewsService {
 
 		try {
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 
 				CheckField.checkValueLengthMin(value, TITLE_LENGHT);
 

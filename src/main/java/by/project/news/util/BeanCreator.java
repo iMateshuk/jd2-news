@@ -18,8 +18,16 @@ public class BeanCreator {
 
 	public static User createUser(ResultSet rs) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = createDataWithRS(
-				FieldMapCreator.create(UserField.class.getEnumConstants()), rs);
+		Map<CombineEnum, String> fieldsData = null;
+		
+		try {
+			
+			fieldsData = createDataWithRS(FieldMapCreator.create(UserField.class.getEnumConstants()), rs);
+			
+		} catch (SQLException e) {
+
+			throw new UtilException("Cann't createUser with rs :: commonerror", e);
+		}
 
 		UserBuilder userBuilder = new User.UserBuilder();
 
@@ -43,8 +51,16 @@ public class BeanCreator {
 
 	public static News createNews(ResultSet rs) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = createDataWithRS(
-				FieldMapCreator.create(NewsField.class.getEnumConstants()), rs);
+		Map<CombineEnum, String> fieldsData = null;
+
+		try {
+
+			fieldsData = createDataWithRS(FieldMapCreator.create(NewsField.class.getEnumConstants()), rs);
+
+		} catch (SQLException e) {
+
+			throw new UtilException("Cann't createNews with rs :: commonerror", e);
+		}
 
 		NewsBuilder newsBuilder = new News.NewsBuilder();
 
@@ -72,8 +88,16 @@ public class BeanCreator {
 
 	public static UserData createUserData(ResultSet rs) throws UtilException {
 
-		Map<CombineEnum, String> fieldsData = createDataWithRS(
-				FieldMapCreator.create(UserDataField.class.getEnumConstants()), rs);
+		Map<CombineEnum, String> fieldsData = null;
+
+		try {
+
+			fieldsData = createDataWithRS(FieldMapCreator.create(UserDataField.class.getEnumConstants()), rs);
+
+		} catch (SQLException e) {
+
+			throw new UtilException("Cann't createUserData with rs :: commonerror", e);
+		}
 
 		UserDataBuilder userDataBuilder = new UserData.UserDataBuilder();
 
@@ -83,19 +107,13 @@ public class BeanCreator {
 	}
 
 	private static Map<CombineEnum, String> createDataWithRS(Map<CombineEnum, String> fieldsData, ResultSet rs)
-			throws UtilException {
+			throws SQLException {
 
 		for (Map.Entry<CombineEnum, String> fields : fieldsData.entrySet()) {
 
 			CombineEnum key = fields.getKey();
 
-			try {
-
-				fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
-			} catch (SQLException e) {
-
-				throw new UtilException(e.getMessage(), e);
-			}
+			fieldsData.replace(key, rs.getString(key.toString().toLowerCase()));
 		}
 
 		return fieldsData;

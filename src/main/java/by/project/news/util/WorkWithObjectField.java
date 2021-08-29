@@ -28,7 +28,7 @@ public class WorkWithObjectField {
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 
-				throw new UtilException("wwofv", e);
+				throw new UtilException("Illegal exception in get field :: wwofv", e);
 			}
 
 		}
@@ -56,7 +56,7 @@ public class WorkWithObjectField {
 					
 				} catch (IllegalAccessException | InvocationTargetException e) {
 
-					throw new UtilException("wwofmg", e);
+					throw new UtilException("Illegal exception in reflect get method :: wwofmg", e);
 				}
 			}
 		}
@@ -85,7 +85,7 @@ public class WorkWithObjectField {
 					
 				} catch (IllegalAccessException | InvocationTargetException e) {
 
-					throw new UtilException("wwofms", e);
+					throw new UtilException("Illegal exception in reflect set method :: wwofms", e);
 				}
 			}
 		}

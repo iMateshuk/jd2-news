@@ -9,26 +9,26 @@ public class CheckField {
 
 	public static void checkValueNull(String value) throws UtilException {
 
-		if (isValueNull(value)) {
+		if (thisValueNull(value)) {
 
-			throw new UtilException("cvn");
+			throw new UtilException("String is null or empty :: cvn");
 		}
 	}
 
-	public static boolean isValueNull(String value) {
+	public static boolean thisValueNull(String value) {
 
 		return (value == null || value.isEmpty() || value.isBlank());
 	}
 	
 	public static void checkValueNull(Integer value) throws UtilException {
 
-		if (isValueNull(value)) {
+		if (thisValueNull(value)) {
 
-			throw new UtilException("cvn");
+			throw new UtilException("Integer is null :: cvn");
 		}
 	}
 	
-	public static boolean isValueNull(Integer value) {
+	public static boolean thisValueNull(Integer value) {
 
 		return (value == null);
 	}
@@ -37,7 +37,7 @@ public class CheckField {
 
 		if (value.matches(expression)) {
 
-			throw new UtilException("cve");
+			throw new UtilException(value + " match the expression " + expression +" :: cve");
 		}
 
 	}
@@ -46,7 +46,7 @@ public class CheckField {
 
 		if (!value.matches(expression)) {
 
-			throw new UtilException("cvne");
+			throw new UtilException(value + " not match the expression " + expression +" :: cvne");
 		}
 
 	}
@@ -59,7 +59,7 @@ public class CheckField {
 
 		} catch (NumberFormatException | NullPointerException e) {
 
-			throw new UtilException("csin");
+			throw new UtilException(number + " error parseInt  :: csin");
 		}
 
 	}
@@ -68,7 +68,7 @@ public class CheckField {
 
 		if (value.length() < length) {
 
-			throw new UtilException("cvlmi");
+			throw new UtilException(value + " < " + length + " :: cvlmi");
 		}
 
 	}
@@ -77,7 +77,7 @@ public class CheckField {
 
 		if (value.length() > length) {
 
-			throw new UtilException("cvlma");
+			throw new UtilException(value + " > " + length + " :: cvlma");
 		}
 
 	}
@@ -86,7 +86,7 @@ public class CheckField {
 
 		if (adult.equals(ADULT) && checkAge(age)) {
 
-			throw new UtilException("caaa");
+			throw new UtilException(adult + " or " + age + " user incorrect :: caaa");
 		}
 
 	}
@@ -100,7 +100,7 @@ public class CheckField {
 
 		if (list == null || list.isEmpty()) {
 
-			throw new UtilException("newsdaoload");
+			throw new UtilException("List is null or empty :: newsdaoload");
 		}
 	}
 }

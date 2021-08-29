@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
 			String value = userData.getName();
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 				
 				CheckField.checkValueExpression(value, EXP_SYMBOLS);
 				CheckField.checkValueLengthMin(value, FIELD_LENGHT);
@@ -59,13 +59,13 @@ public class UserServiceImpl implements UserService {
 
 			value = userData.getEmail();
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 				CheckField.checkValueNotExpression(value, EXP_EMAIL);
 			}
 
 			value = userData.getAge();
 
-			if (!CheckField.isValueNull(value)) {
+			if (!CheckField.thisValueNull(value)) {
 
 				CheckField.checkStringIsNumber(value);
 			}
@@ -205,14 +205,14 @@ public class UserServiceImpl implements UserService {
 
 		value = userData.getEmail();
 
-		if (!CheckField.isValueNull(value)) {
+		if (!CheckField.thisValueNull(value)) {
 
 			CheckField.checkValueNotExpression(value, EXP_EMAIL);
 		}
 
 		value = userData.getName();
 
-		if (!CheckField.isValueNull(value)) {
+		if (!CheckField.thisValueNull(value)) {
 
 			CheckField.checkValueExpression(value, EXP_SYMBOLS);
 		}
